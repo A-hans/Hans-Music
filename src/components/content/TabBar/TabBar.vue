@@ -1,39 +1,40 @@
 <template>
   <div class="tab-bar">
-    <el-header>
-      <el-row type="flex" align="middle" justify="center">
-        <el-col :span="4">
-          <div class="left">
-            <img src="~assets/img/music.svg" alt="" />
-            <span>HansMusic</span>
+    <el-row type="flex" align="middle" justify="center">
+      <el-col :span="6">
+        <div class="left" @click='backHome'>
+          <img src="~assets/img/music.svg" alt="" />
+          <span>HansMusic</span>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="center">
+          <ul>
+            <li
+              v-for="(item, index) in linkList"
+              :key="index"
+              class="tab-item"
+              @click="itemClick(index)"
+            >
+              <router-link
+                :to="item.link"
+                :class="{ active: index == currentIndex }"
+                >{{ item.title }}</router-link
+              >
+            </li>
+            <div class="line" ref="line"></div>
+          </ul>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="right">
+          <div class="search">
+            <i class="el-icon-search"></i>
           </div>
-        </el-col>
-        <el-col :span="17">
-          <div class="center">
-            <ul>
-              <li v-for='(item,index) in linkList' 
-              :key='index'
-              class='tab-item'
-              @click='itemClick(index)'>
-                <router-link 
-                :to="item.link" 
-                :class="{active:index==currentIndex}">{{item.title}}</router-link>
-              </li>
-              <div class='line' ref="line"></div>
-            </ul>
-            
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="right">
-            <div class="search">
-              <i class="el-icon-search"></i>
-            </div>
-            <div class="login">登录</div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-header>
+          <div class="login">登录</div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -60,53 +61,57 @@ export default {
           title: "歌手",
         },
       ],
-      currentIndex:0,
+      currentIndex: 0,
     };
   },
-  methods:{
+  methods: {
     //实现选项卡滚动切换
-    itemClick (index){
+    itemClick(index) {
       this.currentIndex = index;
       //通过ref获取元素,起到定位过
-      let oDiv = this.$refs.line
+      let oDiv = this.$refs.line;
       switch (index) {
         case 0:
-          oDiv.style.width = '70px';
-          oDiv.style.left = '8px';
+          oDiv.style.width = "70px";
+          oDiv.style.left = "8px";
           break;
         case 1:
-          oDiv.style.width = '55px';
-          oDiv.style.left = '94px';
+          oDiv.style.width = "55px";
+          oDiv.style.left = "94px";
           break;
         case 2:
-          oDiv.style.width = '35px';
-          oDiv.style.left = '169px';
+          oDiv.style.width = "35px";
+          oDiv.style.left = "169px";
           break;
         case 3:
-          oDiv.style.width = '35px';
-          oDiv.style.left = '228px';
+          oDiv.style.width = "35px";
+          oDiv.style.left = "228px";
           break;
         default:
-          oDiv.style.width = '70px';
-          oDiv.style.left = '8px';
+          oDiv.style.width = "70px";
+          oDiv.style.left = "8px";
           break;
       }
+    },
+    //回到首页
+    backHome(){
+      this.$router.push('home');
+      let oDiv = this.$refs.line;
+      oDiv.style.width = "70px";
+      oDiv.style.left = "8px";
+      setTimeout(() => {
+         this.currentIndex = 0;
+      }, 0.3);
+     
     }
   },
-  mounted:{
-    
-
-  }
 };
 </script>
 
 <style scoped>
-.el-header {
+.tab-bar {
   height: 60px;
   width: 100%;
-  border: 1px solid transparent;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
-  background: var(--color-background);
 }
 .el-row {
   margin-top: 10px;
@@ -120,7 +125,11 @@ export default {
   padding-left: 20px;
   font-size: 16px;
   font-weight: bold;
+  cursor:pointer;
   font-family: "Helvetica Neue";
+}
+.left span:hover{
+  color: var(--color-high-text);
 }
 .left img {
   width: 30px;
@@ -135,8 +144,9 @@ export default {
   margin: 0;
   list-style: none;
 }
-.center li a{
-  margin: 10px 15px;
+.center li a {
+  margin: 0 15px;
+  display: block;
 }
 .center a:hover {
   color: var(--color-high-text);
@@ -166,12 +176,11 @@ export default {
   color: var(--color-high-text);
 }
 
-.center .active{
+.center .active {
   color: var(--color-high-text);
- 
 }
 
-.center .line{
+.center .line {
   position: absolute;
   left: 8px;
   bottom: 0;
@@ -180,21 +189,20 @@ export default {
   background: var(--color-high-text);
   transition: all 0.3s ease;
 }
-.center .tab-item:nth-child(1):hover ~ .line{
+.center .tab-item:nth-child(1):hover ~ .line {
   width: 70px !important;
   left: 8px !important;
 }
-.center .tab-item:nth-child(2):hover ~ .line{
+.center .tab-item:nth-child(2):hover ~ .line {
   width: 55px !important;
   left: 94px !important;
 }
-.center .tab-item:nth-child(3):hover ~ .line{
+.center .tab-item:nth-child(3):hover ~ .line {
   width: 35px !important;
   left: 169px !important;
 }
-.center .tab-item:nth-child(4):hover ~ .line{
+.center .tab-item:nth-child(4):hover ~ .line {
   width: 35px !important;
   left: 228px !important;
 }
-
 </style>

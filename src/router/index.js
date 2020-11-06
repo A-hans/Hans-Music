@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 const Home = () => import('views/Home/Home.vue');
 const Rank = () => import('views/Rank/Rank.vue');
-const PlayList = () => import('views//PlayList/PlayList.vue');
+const Playlist = () => import('views//Playlist/Playlist.vue');
 const Singer = () => import('views/Singer/Singer.vue');
 
 
@@ -16,25 +16,41 @@ const routes=[
   },
   {
     path:'/home',
-    component:Home
+    component:Home,
+    meta:{
+      title:'HansMusic'
+    }
   },
   {
     path:'/rank',
-    component:Rank
+    component:Rank,
+    meta:{
+      title:'排行榜'
+    }
   },
   {
     path:'/playlist',
-    component:PlayList
+    component:Playlist,
+    meta:{
+      title:'歌单'
+    }
   },
   {
     path:'/singer',
-    component:Singer
+    component:Singer,
+    meta:{
+      title:'歌手'
+    }
   }
 ];
-
+ 
 const router = new VueRouter({
   routes,
   mode:'history'
 })
 
+router.beforeEach(function(to,from,next){
+  document.title=to.matched[0].meta.title;
+  next();
+  })
 export default router;
