@@ -1,13 +1,12 @@
 <template>
   <div class='home-playlist-item' v-if="playlistData.length !==0">
-    <!-- 一组列表显示六个 -->
       <el-row  :gutter="20">
         <el-col :span="4" 
                 v-for='(item,index) in playlistData' 
                 :key='index'>
             <div class="playlist-item" >
               <div class='img'>
-                <img :src="item.picUrl" alt="">
+                <img :src="item.coverImgUrl" alt="">
                 <div class='count'>
                   <i class='el-icon-caret-right'></i>
                   {{item.playCount}}
@@ -41,6 +40,7 @@ export default {
   margin:20px 0 ;
 }
 .el-col{
+  margin-bottom: 20px ;
   display: flex;
   justify-content: center;
 }
@@ -92,7 +92,7 @@ export default {
   text-align: left;
   color: var(--color-text);
   font-size: 10px;
-  padding-top:10px ;
+  padding-top:20px ;
   font-weight:bold;
 }
 </style>

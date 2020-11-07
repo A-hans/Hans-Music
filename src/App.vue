@@ -10,6 +10,7 @@
       <el-footer>
         <footer-bar />
       </el-footer>
+        <el-backtop class='backtop'></el-backtop>
     </el-container>
   </div>
 </template>
@@ -53,5 +54,7 @@ body {
   margin-top:60px ;
 }
 
-
+.backtop{
+  color:  #FF6347!important;
+}
 </style>

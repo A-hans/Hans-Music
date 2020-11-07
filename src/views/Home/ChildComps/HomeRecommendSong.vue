@@ -10,12 +10,12 @@
       >
         <div class="song-item">
           <el-row :gutter="10">
-            <el-col :span="2">
+            <el-col :span="3">
               <div class="song-id">
                 {{ index+1 }}
               </div>
             </el-col>
-            <el-col :span="14">
+            <el-col :span="17">
               <div class="song-info">
                 <div class="cover">
                   <img :src="item.picUrl" alt="" />
@@ -30,7 +30,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="2" :push="4" class='song-play'>
+            <el-col :span="2" class='song-play'>
               <div class="play">
                 <img src="~assets/img/play.png" alt="">
               </div>

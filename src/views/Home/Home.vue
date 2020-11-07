@@ -1,6 +1,5 @@
 <template>
   <div id="home">
-     <el-backtop class='backtop'></el-backtop>
     <transition name="el-zoom-in-top">
       <home-swiper class="swiper" :bannerData="bannerlist"></home-swiper>
     </transition>
@@ -46,6 +45,14 @@ export default {
     //获取歌单数据,可传入需要多少条数据
     getHomePlaylist(12).then((res) => {
       this.playlist = res.result;
+      //对播放量进行数据格式化
+      for (let item of this.playlist) {
+        if (parseInt(item.playCount / 10000).toString().length >= 5) {
+          item.playCount = parseInt(item.playCount / 100000000) + "亿";
+        } else {
+          item.playCount = parseInt(item.playCount / 10000) + "万";
+        }
+      }
     });
     //获取推荐歌曲
     getHomeRecommendSong().then((res) => {
@@ -60,7 +67,5 @@ export default {
 </script>
 
 <style scoped>
-.backtop{
-  color:  #FF6347;
-}
+
 </style>

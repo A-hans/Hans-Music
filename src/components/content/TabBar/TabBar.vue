@@ -62,6 +62,7 @@ export default {
         },
       ],
       currentIndex: 0,
+      currentRoute: null
     };
   },
   methods: {
@@ -105,6 +106,30 @@ export default {
      
     }
   },
+ mounted(){
+   //获取当前路由路径,$route在刷新页面后获取不了
+   this.currentRoute=window.location.href
+  let oDiv = this.$refs.line;
+  //根据当前路由的名字判断导航的激活状态
+  if(this.currentRoute.indexOf('/home') !== -1){
+      this.currentIndex = 0;
+      oDiv.style.width = "70px";
+      oDiv.style.left = "8px";
+  }else if(this.currentRoute.indexOf('/rank') !== -1){
+      this.currentIndex = 1;
+      oDiv.style.width = "55px";
+      oDiv.style.left = "94px";
+  }else if(this.currentRoute.indexOf('/playlist') !== -1){
+      this.currentIndex = 2;
+      oDiv.style.width = "35px";
+      oDiv.style.left = "169px";
+  }else if(this.currentRoute.indexOf('/singer') !== -1){
+      this.currentIndex = 3;
+      oDiv.style.width = "35px";
+      oDiv.style.left = "228px";
+  }
+ }
+
 };
 </script>
 
