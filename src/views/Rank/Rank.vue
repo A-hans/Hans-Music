@@ -1,13 +1,13 @@
 <template>
   <div id="rank">
-    <rank-hot :rankHotData='rankList'/>
-    <rank-gobal :rankHotData='rankList'/>
+    <rank-popular :rankPopularData='rankList'/>
+    <rank-gobal :rankGobalData='rankList'/>
   </div>
 </template>
 
 <script>
 import { getRankList } from "network/Rank.js";
-import RankHot from "views/Rank/ChildComps/RankHot";
+import RankPopular from "views/Rank/ChildComps/RankPopular";
 import RankGobal from "views/Rank/ChildComps/RankGobal";
 export default {
   name: "rank",
@@ -17,7 +17,7 @@ export default {
     };
   },
   components:{
-    RankHot,
+    RankPopular,
     RankGobal
   },
   created() {

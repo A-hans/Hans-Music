@@ -3,7 +3,8 @@ import {request} from './Request';
 //轮播图网络请求
 export function getHomeBanner(){
   return request({
-    url:'/banner'
+    url:'/banner',
+    isActive:true
   })
 }
 
@@ -13,7 +14,8 @@ export function getHomePlaylist(num){
     url:'/personalized',
     params:{
     limit:num //接收需要多少条数据
-    }
+    },
+    isActive:true
   })
 }
 
@@ -21,6 +23,7 @@ export function getHomePlaylist(num){
 export function getHomeRecommendSong(){
   return request({
     url:'/personalized/newsong',
+    isActive:true
   })
 }
 
@@ -28,6 +31,7 @@ export function getHomeRecommendSong(){
 export function getRecommendSinger(num1,num2){
   return request({
     url:'/top/artists',
+    isActive:true,
     params:{
       offset: num1,
       limit: num2

@@ -55,6 +55,29 @@ body {
 }
 
 .backtop{
-  color:  #FF6347!important;
+  color:#FF6347!important;
 }
+
+.create-isLoading .el-loading-spinner {
+      top: 50%;
+      left: 50%;
+      margin-left: -55px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 4px;
+      width: auto;
+      text-align: center;
+      position: absolute;
+    }
+ .create-isLoading .el-loading-spinner i {
+        font-size: 40px;
+        padding: 10px;
+        color: #eee;
+      }
+
+ .create-isLoading .el-loading-spinner .el-loading-text {
+        color: #eee;
+        font-family: PingFang SC;
+        font-size: 16px;
+      }
 </style>

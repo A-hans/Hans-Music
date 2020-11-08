@@ -1,46 +1,44 @@
 <template>
-  <div class='home-playlist-item' v-if="playlistData.length !==0">
-      <el-row  :gutter="20">
-        <el-col :span="4" 
-                v-for='(item,index) in playlistData' 
-                :key='index'>
-            <div class="playlist-item" >
-              <div class='img'>
-                <img :src="item.coverImgUrl" alt="">
-                <div class='count'>
-                  <i class='el-icon-caret-right'></i>
-                  {{item.playCount}}
-                </div>
-              </div>
-              <div class='text'>
-                {{item.name}}
-          </div>
+  <!-- 一行6个栏目 -->
+  <el-col :span="4" v-if="Object.keys(listItemData).length !== 0">
+    <div class="playlist-item">
+      <div class="img">
+        <img :src=" showImg" alt="" />
+        <div class="count">
+          <i class="el-icon-caret-right"></i>
+          {{ listItemData.playCount }}
         </div>
-        </el-col>
-      </el-row>
-  </div>
+      </div>
+      <div class="text">
+        {{ listItemData.name }}
+      </div>
+    </div>
+  </el-col>
 </template>
 
 <script>
 export default {
-  name:'HomePlaylistItem',
-  props:{
-    playlistData:{
-      type:Array,
-      default(){
-        return [];
-      }
-    }
+  name: "PlaylistItem",
+  props: {
+    listItemData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
-}
+  computed: {
+    showImg() {
+      return this.listItemData.coverImgUrl || this.listItemData.picUrl;
+    },
+  },
+};
 </script>
 
 <style scoped>
-.el-row{
-  margin:20px 0 ;
-}
 .el-col{
   margin-bottom: 20px ;
+  height: 230px;
   display: flex;
   justify-content: center;
 }

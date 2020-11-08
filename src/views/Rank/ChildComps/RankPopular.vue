@@ -1,20 +1,20 @@
 <template>
-  <div class='rank-hot'>
+  <div class='rank-popular'>
     <div class='title'>
     <h3>云音乐热榜</h3>
     </div>
     <transition name="el-zoom-in-top">
-    <play-list :playlistData='rankHotData.slice(0,4)'/>
+    <song-list :playlistData='rankPopularData.slice(0,4)'/>
     </transition>
   </div>
 </template>
 
 <script>
-import PlayList from 'views/Rank/ChildComps/RankPlayListItem'
+import SongList from "components/content/SongList/SongList";
 export default {
-  name:'RankHot',
+  name:'RankPopular',
   props:{
-    rankHotData:{
+    rankPopularData:{
       type: Array,
       default(){
         return []
@@ -22,7 +22,7 @@ export default {
     }
   },
   components:{
-    PlayList
+   SongList
   }
 }
 </script>

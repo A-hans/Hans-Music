@@ -124,7 +124,7 @@ export default {
       oDiv.style.width = "35px";
       oDiv.style.left = "169px";
   }else if(this.currentRoute.indexOf('/singer') !== -1){
-      this.currentIndex = 3;
+      this.currentIndex = 3;''
       oDiv.style.width = "35px";
       oDiv.style.left = "228px";
   }

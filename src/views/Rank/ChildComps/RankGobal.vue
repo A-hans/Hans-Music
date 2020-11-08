@@ -4,17 +4,17 @@
       <h3>全球音乐热榜</h3>
     </div>
     <transition name="el-zoom-in-top">
-    <play-list :playlistData='rankHotData.slice(0,rankHotData.length)'/>
+    <song-list :playlistData='rankGobalData.slice(4,rankGobalData.length)'/>
     </transition>
   </div>
 </template>
 
 <script>
-import PlayList from 'views/Rank/ChildComps/RankPlayListItem'
+import SongList from "components/content/SongList/SongList"
 export default {
-  name:'RankHot',
+  name:'RankGobal',
   props:{
-    rankHotData:{
+    rankGobalData:{
       type: Array,
       default(){
         return []
@@ -22,7 +22,7 @@ export default {
     }
   },
   components:{
-    PlayList
+    SongList
   }
 }
 </script>
