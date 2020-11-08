@@ -1,10 +1,10 @@
 <template>
 <div class='playList'>
   <el-row  :gutter="20">
-        <song-list-item  
-        v-for='(item,index) in playlistData' 
-        :key= 'index'
-        :listItemData= 'item'>
+        <song-list-item 
+        :listItemData= 'item'
+         v-for='(item,index) in playlistData' 
+        :key= 'index'>
         </song-list-item>
       </el-row>
 </div>  

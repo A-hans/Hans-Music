@@ -1,8 +1,10 @@
 <template>
   <!-- 一行6个栏目 -->
-  <el-col :span="4" v-if="Object.keys(listItemData).length !== 0">
+  <el-col 
+  :span="4" 
+  v-if="Object.keys(listItemData).length !== 0">
     <div class="playlist-item">
-      <div class="img">
+      <div class="img"> 
         <img :src=" showImg" alt="" />
         <div class="count">
           <i class="el-icon-caret-right"></i>
@@ -32,6 +34,10 @@ export default {
       return this.listItemData.coverImgUrl || this.listItemData.picUrl;
     },
   },
+  methods:{
+   
+    
+  }
 };
 </script>
 
