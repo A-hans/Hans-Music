@@ -14,6 +14,8 @@
 <script>
 import { getHotListTag, getAllListTag, getAllList } from "network/Playlist";
 
+import { formartPlayCount } from "common/utils"
+
 import ListNav from "views/Playlist/ChildComps/ListNav";
 import SongList from "components/content/SongList/SongList"
 export default {
@@ -36,13 +38,7 @@ export default {
       getAllList(this.currentType, 42).then((res) => {
         this.playlist = res.playlists;
         //对播放量进行数据格式化
-         for (let item of this.playlist) {
-        if (parseInt(item.playCount / 10000).toString().length >= 5) {
-          item.playCount = parseInt(item.playCount / 100000000) + "亿";
-        } else {
-          item.playCount = parseInt(item.playCount / 10000) + "万";
-        }
-      }
+        formartPlayCount(this.playlist);
       });
     },
     //获取数组最大长度进行offset传值
@@ -57,17 +53,16 @@ export default {
       //获取更多歌单
     loadMore(){
        getAllList(this.currentType, 42,this.offset).then((res) => {
-        //将请求到的新数据添加进新数组
+        //将请求到的新数据存储在临时变量做数据格式化
+        let tempArr = [];
         for(let item of res.playlists){
-          this.playlist.push(item);
+          tempArr.push(item);
         }
-        //对播放数量进行格式化
-       for (let item of this.playlist) {
-        if (parseInt(item.playCount / 10000).toString().length >= 5) {
-          item.playCount = parseInt(item.playCount / 100000000) + "亿";
-        } else {
-          item.playCount = parseInt(item.playCount / 10000) + "万";
-        }
+        //对新数据播放数量进行格式化
+       formartPlayCount(tempArr);
+      //将格式化好的新数据加入数组
+      for(let item of tempArr){
+        this.playlist.push(item);
       }
       //获取最后一各歌单更新时间
       this.getOffset()
@@ -91,13 +86,7 @@ export default {
     getAllList(this.currentType,42).then((res) => {
         this.playlist = res.playlists;
         //对播放数量进行格式化
-       for (let item of this.playlist) {
-        if (parseInt(item.playCount / 10000).toString().length >= 5) {
-          item.playCount = parseInt(item.playCount / 100000000) + "亿";
-        } else {
-          item.playCount = parseInt(item.playCount / 10000) + "万";
-        }
-      }
+      formartPlayCount(this.playlist);
       //获取最后一各歌单更新时间
       this.getOffset()
     });
@@ -112,8 +101,9 @@ export default {
   }
   #play-list .text{
     text-align: center;
+    cursor: pointer;
   }
   #play-list .text:hover{
-      color:var(--color-high-text);
+      color: var(--color-high-text);
     }
 </style>

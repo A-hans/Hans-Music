@@ -9,6 +9,7 @@ export function debounce(func,delay){
   }
 }
 
+//时间格式化函数
 export function formatDate(date, fmt) {
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
@@ -32,3 +33,15 @@ export function formatDate(date, fmt) {
 function padLeftZero (str) {
   return ('00' + str).substr(str.length);
 };
+
+//播放量格式化函数
+export function formartPlayCount(list){
+  for (let item of list) {
+    if (parseInt(item.playCount / 10000).toString().length >= 5) {
+      item.playCount = parseInt(item.playCount / 100000000) + "亿";
+    } else {
+      item.playCount = parseInt(item.playCount / 10000) + "万";
+    }
+  }
+}
+

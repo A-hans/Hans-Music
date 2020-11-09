@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import ListAllTagContent from 'views/Playlist/ChildComps/ListAllTagContent'
 export default {
   name:'ListNav',
   props:{
@@ -81,18 +80,15 @@ export default {
       this.$emit('sListType',item);
     }
   },
-  components:{
-    ListAllTagContent 
-  }
 }
 </script>
 
 <style scoped>
 .list-nav{
   padding:20px;
+  height: 100%;
   background: var(--color-background);
   border-radius: 30px;
-  box-shadow:    0 2px 4px rgba(0, 0, 0, .12);
 }
 .list-nav ul{
   margin: 0;

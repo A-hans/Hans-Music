@@ -12,6 +12,8 @@
 <script>
 import { getHomeBanner,getHomePlaylist,getHomeRecommendSong,getRecommendSinger } from "network/Home";
 
+import { formartPlayCount } from "common/utils";
+
 import HomeSwiper from "views/Home/ChildComps/HomeSwiper";
 import HomePlaylist from "views/Home/ChildComps/HomePlaylist";
 import HomeRecommendSong from "views/Home/ChildComps/HomeRecommendSong"
@@ -46,13 +48,7 @@ export default {
     getHomePlaylist(12).then((res) => {
       this.playlist = res.result;
       //对播放量进行数据格式化
-      for (let item of this.playlist) {
-        if (parseInt(item.playCount / 10000).toString().length >= 5) {
-          item.playCount = parseInt(item.playCount / 100000000) + "亿";
-        } else {
-          item.playCount = parseInt(item.playCount / 10000) + "万";
-        }
-      }
+      formartPlayCount(this.playlist)
     });
     //获取推荐歌曲
     getHomeRecommendSong().then((res) => {
