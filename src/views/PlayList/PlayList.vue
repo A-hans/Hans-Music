@@ -33,7 +33,6 @@ export default {
     //当前标签类型
     sCurrentType(item){
        this.currentType = item.name;
-       console.log(item);
       //每次点击请求对应标签数据
       getAllList(this.currentType, 42).then((res) => {
         this.playlist = res.playlists;
@@ -64,7 +63,7 @@ export default {
       for(let item of tempArr){
         this.playlist.push(item);
       }
-      //获取最后一各歌单更新时间
+      //获取新数组数组长度
       this.getOffset()
     });
     }
@@ -87,7 +86,7 @@ export default {
         this.playlist = res.playlists;
         //对播放数量进行格式化
       formartPlayCount(this.playlist);
-      //获取最后一各歌单更新时间
+      //获取最后一数组长度
       this.getOffset()
     });
      

@@ -5,7 +5,9 @@
         <tab-bar></tab-bar>
       </el-header>
       <el-main>
+        <keep-alive>
         <router-view />
+        </keep-alive>
       </el-main>
       <el-footer>
         <footer-bar />
