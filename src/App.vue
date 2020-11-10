@@ -5,7 +5,7 @@
         <tab-bar></tab-bar>
       </el-header>
       <el-main>
-        <keep-alive>
+        <keep-alive :exclude="['DetailPlaylist','Playlist']">
         <router-view />
         </keep-alive>
       </el-main>

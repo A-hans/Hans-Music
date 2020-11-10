@@ -6,7 +6,7 @@
     @sListType= "sCurrentType"  />  
       <song-list :playlistData='playlist' class='song-list'/>
       <div class='text' >
-        <span @click="loadMore">--------------加载更多--------------</span>
+        <span @click="loadMore">--------加载更多--------</span>
       </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ import { formartPlayCount } from "common/utils"
 import ListNav from "views/Playlist/ChildComps/ListNav";
 import SongList from "components/content/SongList/SongList"
 export default {
-  name: "PlayList",
+  name: "Playlist",
   data() {
     return {
       hotTags: [],
@@ -66,6 +66,22 @@ export default {
       //获取新数组数组长度
       this.getOffset()
     });
+    },
+    //通过外部标签跳转
+    toLoad(){
+       let currentHref =null;
+      currentHref=window.location.href;
+     //当路径中有cat才执行
+     if(currentHref.indexOf('cat') !==-1){
+        this.currentType = this.$route.query.cat;  
+      getAllList(this.currentType,42).then((res) => {
+        this.playlist = res.playlists;
+        //对播放数量进行格式化
+        formartPlayCount(this.playlist);
+        //获取最后一数组长度
+        this.getOffset();
+    });
+     }
     }
   },
   components: {
@@ -87,10 +103,12 @@ export default {
         //对播放数量进行格式化
       formartPlayCount(this.playlist);
       //获取最后一数组长度
-      this.getOffset()
-    });
+      this.getOffset();
      
-  },     
+    });
+     //通过标签跳转后的网络请求
+    this.toLoad()
+  }, 
 };
 </script>
 

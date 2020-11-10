@@ -26,3 +26,14 @@ export function getAllList(type,num,time){
     }
   })
 }
+
+//获取歌单详情数据
+export function getPlaylistDetail(num){
+  return request({
+    url:'/playlist/detail',
+    isActive:true,
+    params:{
+    id:num
+  }
+  })
+} 

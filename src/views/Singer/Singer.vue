@@ -7,7 +7,7 @@
     />
     <singer-list :singerData="singerList" class="singer-list" />
     <div class="text">
-      <span @click="loadMore">--------------加载更多--------------</span>
+      <span @click="loadMore">--------加载更多--------</span>
     </div>
   </div>
 </template>

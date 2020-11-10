@@ -5,6 +5,7 @@ const Home = () => import('views/Home/Home.vue');
 const Rank = () => import('views/Rank/Rank.vue');
 const Playlist = () => import('views//Playlist/Playlist.vue');
 const Singer = () => import('views/Singer/Singer.vue');
+const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.vue')
 
 
 Vue.use(VueRouter);
@@ -40,6 +41,13 @@ const routes=[
     component:Singer,
     meta:{
       title:'歌手'
+    }
+  },
+  {
+    path:'/playlist-detail',
+    component:DetailPlaylist,
+    meta:{
+      title:'歌单详情'
     }
   }
 ];

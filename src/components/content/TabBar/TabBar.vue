@@ -2,7 +2,7 @@
   <div class="tab-bar">
     <el-row type="flex" align="middle" justify="center">
       <el-col :span="6">
-        <div class="left" @click='backHome'>
+        <div class="left" @click="backHome">
           <img src="~assets/img/music.svg" alt="" />
           <span>HansMusic</span>
         </div>
@@ -22,7 +22,7 @@
                 >{{ item.title }}</router-link
               >
             </li>
-            <div class="line" ref="line"></div>
+            <div class="line" ref="line" v-show="isShow"></div>
           </ul>
         </div>
       </el-col>
@@ -62,7 +62,8 @@ export default {
         },
       ],
       currentIndex: 0,
-      currentRoute: null
+      currentRoute: null,
+      isShow:true
     };
   },
   methods: {
@@ -73,14 +74,17 @@ export default {
       let oDiv = this.$refs.line;
       switch (index) {
         case 0:
+          this.isShow = true;
           oDiv.style.width = "70px";
           oDiv.style.left = "8px";
           break;
         case 1:
+          this.isShow = true;
           oDiv.style.width = "55px";
           oDiv.style.left = "94px";
           break;
         case 2:
+          this.isShow = true;
           oDiv.style.width = "35px";
           oDiv.style.left = "169px";
           break;
@@ -89,47 +93,58 @@ export default {
           oDiv.style.left = "228px";
           break;
         default:
+          this.isShow = true;
           oDiv.style.width = "70px";
           oDiv.style.left = "8px";
           break;
       }
     },
     //回到首页
-    backHome(){
-      this.$router.push('home');
+    backHome() {
+      this.$router.push("home");
       let oDiv = this.$refs.line;
       oDiv.style.width = "70px";
       oDiv.style.left = "8px";
       setTimeout(() => {
-         this.currentIndex = 0;
+        this.currentIndex = 0;
       }, 0.3);
-     
-    }
+    },
   },
- mounted(){
-   //获取当前路由路径,$route在刷新页面后获取不了
-   this.currentRoute=window.location.href
-  let oDiv = this.$refs.line;
-  //根据当前路由的名字判断导航的激活状态
-  if(this.currentRoute.indexOf('/home') !== -1){
+  mounted() {
+    //获取当前路由路径,$route在刷新页面后获取不了
+    this.currentRoute = window.location.href;
+    let oDiv = this.$refs.line;
+    //根据当前路由的名字判断导航的激活状态
+    if (this.currentRoute.indexOf("/home") !== -1) {
       this.currentIndex = 0;
       oDiv.style.width = "70px";
       oDiv.style.left = "8px";
-  }else if(this.currentRoute.indexOf('/rank') !== -1){
+    } else if (this.currentRoute.indexOf("/rank") !== -1) {
       this.currentIndex = 1;
       oDiv.style.width = "55px";
       oDiv.style.left = "94px";
-  }else if(this.currentRoute.indexOf('/playlist') !== -1){
+    } else if (this.currentRoute.indexOf("/playlist") !== -1) {
       this.currentIndex = 2;
       oDiv.style.width = "35px";
       oDiv.style.left = "169px";
-  }else if(this.currentRoute.indexOf('/singer') !== -1){
-      this.currentIndex = 3;''
+    } else if (this.currentRoute.indexOf("/singer") !== -1) {
+      this.currentIndex = 3;
       oDiv.style.width = "35px";
       oDiv.style.left = "228px";
-  }
- }
-
+    }
+    //详情页刷新后依旧不选中导航
+    if (
+      this.currentRoute.indexOf('/playlist-detail') !== -1
+    ) {
+      this.currentIndex = null;
+      this.isShow = false;
+    }
+    //跳转到详细页面取消激活样式
+    this.$bus.$on("cancelActive", () => {
+      this.currentIndex = null;
+      this.isShow = false;
+    });
+  },
 };
 </script>
 
@@ -150,10 +165,10 @@ export default {
   padding-left: 20px;
   font-size: 16px;
   font-weight: bold;
-  cursor:pointer;
+  cursor: pointer;
   font-family: "Helvetica Neue";
 }
-.left span:hover{
+.left span:hover {
   color: var(--color-high-text);
 }
 .left img {

@@ -1,5 +1,5 @@
 <template>
-  <div class="list-nav" >
+  <div class="list-nav">
     <el-row>
       <el-col :span="20" class="left">
         <div class="hot-tags" v-if="isShow">
@@ -73,17 +73,22 @@ export default {
   data() {
     return {
       isShow: true,
+      //热门标签当前下标
       currentIndex1: 0,
+      //全部标签当前下标
       currentIndex2: null,
     };
   },
   methods: {
+    //点击切换为热门标签
     showHotTag() {
       this.isShow = true;
     },
+    //点击切换为全部标签
     showAllTag() {
       this.isShow = false;
     },
+    //点击匹配热门与全部相同的标签
     clcikItem1(index, item) {
       //存放重名标签的下标
       let result;
@@ -104,13 +109,14 @@ export default {
       //将当前标签内容发送出去
       this.$emit("sListType", item);
     },
+    //点击匹配全部与热门相同的标签
     clcikItem2(index, item) {
       let result;
       this.currentIndex2 = index;
       for (let i in this.hotTags) {
         if (this.hotTags[i].name.indexOf(item.name) !== -1) {
           result = i;
-          //全部标签内重名的激活
+          //热门标签内重名的激活
           this.currentIndex1 = result;
           break;
         } else {
@@ -120,6 +126,53 @@ export default {
       }
       //将当前标签内容发送出去
       this.$emit("sListType", item);
+    },
+    //对路由跳转的标签进行匹配
+    skipTag() {
+      let currentHref = null;
+      currentHref = window.location.href;
+      let currentTag = this.$route.query.cat;
+      //对当前路由传入的标签进行检索是否有相同
+      //用于存放相同的下标
+      let result;
+      let currentHotTag;
+      //当路径中有cat才执行
+      if (currentHref.indexOf("cat") !== -1) {
+        //对热门标签进行检索
+      for (let i in this.hotTags) {
+        if (this.hotTags[i].name.indexOf(currentTag) !== -1) {
+          result = i;
+          //对应热门标签激活
+          this.currentIndex1 = result;
+          //存储当前热门标签
+          currentHotTag = this.hotTags[i].name;
+          //热门标签页显示
+          break;
+        }
+      }
+
+      //若全部标签有重名的进行匹配
+      for (let i in this.allTags) {
+        if (this.allTags[i].name.indexOf(currentTag) !== -1) {
+          result = i;
+          //全部标签内重名的激活
+          this.currentIndex2 = result;
+          if(currentHotTag == currentTag){}else{
+            //热门标签中没有与当前标签相匹配时,显示全部标签栏目
+            this.isShow =false
+            this.currentIndex1 =null;
+          }
+          break;
+        }else{
+          //若全部与热门标签中都没有
+          this.currentIndex1 =null;
+          this.currentIndex2 =null;
+        }
+      }
+    }
+
+      //对全部标签进行检索
+      
     },
   },
   created() {
@@ -137,6 +190,8 @@ export default {
           this.currentIndex2 = null;
         }
       }
+      //点击标签跳转项目于导航标题匹配
+      this.skipTag();
     }, 1000);
   },
 };
@@ -158,6 +213,7 @@ export default {
 }
 .list-nav li {
   padding: 8px;
+  cursor: pointer;
   margin: 5px;
 }
 .list-nav li:hover {
