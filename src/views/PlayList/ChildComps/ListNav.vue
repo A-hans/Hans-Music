@@ -144,10 +144,14 @@ export default {
           result = i;
           //对应热门标签激活
           this.currentIndex1 = result;
+          console.log(1);
           //存储当前热门标签
           currentHotTag = this.hotTags[i].name;
           //热门标签页显示
           break;
+        }else{
+          //热门标签中都没有
+          this.currentIndex1 =null;
         }
       }
 
@@ -159,13 +163,12 @@ export default {
           this.currentIndex2 = result;
           if(currentHotTag == currentTag){}else{
             //热门标签中没有与当前标签相匹配时,显示全部标签栏目
-            this.isShow =false
+            this.isShow =false;
             this.currentIndex1 =null;
           }
           break;
         }else{
-          //若全部与热门标签中都没有
-          this.currentIndex1 =null;
+          //全部标签中都没有
           this.currentIndex2 =null;
         }
       }
