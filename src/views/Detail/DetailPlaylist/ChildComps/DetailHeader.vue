@@ -6,7 +6,7 @@
       <img :src="detailHeader.coverImgUrl" alt="">
       </div>
       </el-col>
-  <el-col :span="14" class='right'>
+  <el-col :span="16" class='right'>
     
     <div class="content">
       <h2>{{detailHeader.name}}</h2>
@@ -108,7 +108,7 @@ export default {
 
 <style scoped>
 .detail-header{
-  padding: 20px 0 20px 10px;
+  padding: 0 0 20px 10px;
 }
 .detail-header .cover{
   width: 200px;
@@ -149,7 +149,7 @@ export default {
   margin-top:20px ;
 }
 .ellipsis-two {
-  width: 480px;
+  width: 460px;
   /* 设置内容显示多少行 */
   display: -webkit-box;
   -webkit-box-orient: vertical;
