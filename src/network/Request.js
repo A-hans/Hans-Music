@@ -5,7 +5,7 @@ import { Loading } from 'element-ui'
 export function request(config) {
   //创建局部请求对象
   const instance = axios.create({
-     baseURL:'http://localhost:3000',
+     baseURL:'http://140.143.128.100:3000',
     //  baseURL: 'https://nicemusic-api.lxhcool.cn/',
     timeout: 5000
   })

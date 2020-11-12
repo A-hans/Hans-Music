@@ -9,7 +9,7 @@
   <el-col :span="16" class='right'>
     
     <div class="content">
-      <h2>{{detailHeader.name}}</h2>
+      <h3>{{detailHeader.name}}</h3>
       <div class='tags' v-if="detailHeader.tags.length !==0">
       <ul>
         <span>标签:</span> 
@@ -111,8 +111,8 @@ export default {
   padding: 0 0 20px 10px;
 }
 .detail-header .cover{
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   box-shadow: 12px 8px 0px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
@@ -129,7 +129,7 @@ export default {
  margin-top:20px ;
 }
 .user{
-  font-weight: 14px;
+  font-size: 14px;
 }
 .user-info{
   margin-top: 20px;
@@ -137,6 +137,7 @@ export default {
 .user-info img{
   width: 30px;
   height: 30px;
+  border: 1px solid #EBEEF5;
   border-radius:25px ;
 }
 .user-info span{
@@ -149,7 +150,8 @@ export default {
   margin-top:20px ;
 }
 .ellipsis-two {
-  width: 460px;
+  width: 380px;
+  font-size: 14px;
   /* 设置内容显示多少行 */
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -191,7 +193,7 @@ export default {
   
 }
 .loading{
- margin-left: 80%;
+ margin-left: 78%;
  margin-top: 20px;
 }
 </style>

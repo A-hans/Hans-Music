@@ -37,3 +37,39 @@ export function getPlaylistDetail(num){
   }
   })
 } 
+
+//获取歌曲详情
+export function getSongDetail(id){
+  return request({
+    url:'/song/detail',
+    isActive:true,
+    timeout:10000,
+    params:{
+      ids:id
+    }
+  })
+}
+
+//获取歌单评论信息
+
+//获取歌单收藏者
+export function getPlaylistSubscriber(num){
+  return request({
+    url:'/playlist/subscribers',
+    isActive:true,
+    params:{
+      id:num,
+      limit:30 //默认为20
+    }
+  })
+}
+//获取相关歌单推荐
+export function getRelatedList(num){
+  return request({
+    url:"/related/playlist",
+    isActive:true,
+    params:{
+      id:num
+    }
+  })
+}
