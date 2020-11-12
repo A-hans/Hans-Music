@@ -89,6 +89,7 @@ export default {
           oDiv.style.left = "169px";
           break;
         case 3:
+          this.isShow = true;
           oDiv.style.width = "35px";
           oDiv.style.left = "228px";
           break;
@@ -244,5 +245,14 @@ export default {
 .center .tab-item:nth-child(4):hover ~ .line {
   width: 35px !important;
   left: 228px !important;
+}
+@media only screen and (max-width: 700px){
+  .center .line{
+    display: none;
+  }
+  .center .active {
+  color: var(--color-high-text);
+  border-bottom: 3.5px solid var(--color-high-text);
+}
 }
 </style>

@@ -38,22 +38,22 @@ body {
   min-width: 1250px;
   background: rgba(	192,192,192, 0.1) ;
 }
-.el-container{
-  padding: 0 120px;
+.el-main{
+  width: 1100px;
+  margin: 0 auto;
+  margin-top:60px ;
+
 }
 .el-header{
   border: 1px solid transparent;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: var(--color-background);
+  padding: 0 120px!important;
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  padding: 0 120px!important;
   z-index: 999;
-}
-.el-main{
-  margin-top:60px ;
 }
 
 .backtop{
@@ -79,7 +79,6 @@ body {
 
  .create-isLoading .el-loading-spinner .el-loading-text {
         color: #eee;
-        font-family: PingFang SC;
         font-size: 16px;
       }
 </style>

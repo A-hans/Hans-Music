@@ -7,7 +7,7 @@
       :key="index"
       >
         <div class="subscriber">
-          <img :src="item.avatarUrl" alt="">
+          <img :src="item.avatarUrl+'?param=100y100'" alt="">
           </div>
           </el-col>
     </el-row>
@@ -43,9 +43,13 @@ export default {
     margin-bottom:5px;
   }
   .subscriber img{
-    width: 35px;
-    height: 35px;
+    width: 90%;
+    height: 90%;
     border-radius: 4px;
+  }
+  .subscriber-none{
+    font-size: 13px;
+    margin-top:20px ;
   }
   .subscriber img:hover{
     box-shadow: 0 2px 12px 0 rgba(225, 0, 0, 0.3) ;

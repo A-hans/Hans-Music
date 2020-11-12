@@ -3,7 +3,7 @@
     <el-row :gutter="20" type="flex" align="center">
   <el-col :span="8" class='left'>
     <div class="cover">
-      <img :src="detailHeader.coverImgUrl" alt="">
+      <img :src="detailHeader.coverImgUrl+'?param=300y300'" alt="">
       </div>
       </el-col>
   <el-col :span="16" class='right'>
@@ -26,19 +26,22 @@
         <span>{{detailHeader.creator.nickname}}</span>
          <span>{{detailHeader.createTime | showDate}}创建</span> 
         </div>
-        <div class='text'>
+          <div  class ="desc-none" v-if=' detailHeader.description == null'>
+              <span>这个人很懒,没有简介~</span>
+            </div>
+        <div class='text' v-else>
           <p class='ellipsis-two' 
           v-html="detailHeader.description"
          ></p>
            <el-popover 
             class='detail-desc'
-            placement="left-start"
+            placement="right"
            :title="detailHeader.name"
             width="400"
             trigger="click"
             >
             <!-- 插入html识别换行 -->
-            <div class="popover-content" v-html="detailHeader.description"></div>
+            <div class="popover-content" v-html="detailHeader.description" ></div>
             <span slot="reference" 
              v-if="txtLength(detailHeader.description)>1||detailHeader.description.length>50">全部</span>
             </el-popover>
@@ -111,8 +114,6 @@ export default {
   padding: 0 0 20px 10px;
 }
 .detail-header .cover{
-  width: 160px;
-  height: 160px;
   box-shadow: 12px 8px 0px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
@@ -124,6 +125,8 @@ export default {
 }
 .right{
   display: flex;
+  padding-left: 20px!important;
+  padding-right: 20px!important;
 }
 .content{
  margin-top:20px ;
@@ -146,11 +149,14 @@ export default {
 .created{
   margin-top: 20px;
 }
+.desc-none{
+  margin-top: 20px;
+}
 .text{
   margin-top:20px ;
 }
 .ellipsis-two {
-  width: 380px;
+  width: 90%;
   font-size: 14px;
   /* 设置内容显示多少行 */
   display: -webkit-box;

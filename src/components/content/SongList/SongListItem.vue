@@ -3,7 +3,7 @@
   <el-col :span="4" v-if="Object.keys(listItemData).length !== 0">
     <div class="playlist-item">
       <div class="img">
-        <img :src="showImg" alt="" />
+        <img :src="showImg+'?param=200y200'" alt="" />
         <div class="count">
           <i class="el-icon-caret-right"></i>
           {{ listItemData.playCount }}
@@ -45,12 +45,12 @@ export default {
   cursor: pointer;
 }
 .playlist-item .img {
-  box-shadow: 6px 3px 12px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 9px -6px 3px -1px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   position: relative;
 }
 .playlist-item .img:hover {
-  box-shadow: 6px 3px 12px 2px rgba(220, 20, 60, 0.2);
+  box-shadow: 9px -6px 3px -1px rgba(220, 20, 60, 0.2);
 }
 .playlist-item .img img {
   width: 100%;
@@ -89,10 +89,16 @@ export default {
 }
 
 .playlist-item .text {
-  font-family: PingFang SC, Arial, Microsoft YaHei, sans-serif;
   text-align: left;
+  width: 150px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  /* 显示几行,多余内容用省略号替代 */
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  margin-bottom: 10px;
   color: var(--color-text);
-  font-size: 10px;
+  font-size: 10px!important;
   padding-top: 20px;
   font-weight: bold;
 }

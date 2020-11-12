@@ -254,7 +254,7 @@ export default {
 .singer-nav ul li {
   height: 100%;
   cursor: pointer;
-  padding: 8px 10px;
+  padding: 8px;
   margin: 0 5px;
   margin-bottom: 18px;
   text-align: center;

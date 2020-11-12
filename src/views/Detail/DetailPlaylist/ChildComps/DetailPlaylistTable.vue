@@ -28,7 +28,7 @@
                 </span>
               </td>
               <td class="song-name">
-                <span class='cover'><img :src="item[0].al.picUrl" alt=""></span>
+                <span class='cover'><img :src="item[0].al.picUrl+'?param=100y100'" alt=""></span>
                 {{ item[0].name }}
                 </td>
               <td class="art-name">{{ item[0].ar[0].name }}</td>

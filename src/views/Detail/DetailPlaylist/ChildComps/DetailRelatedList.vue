@@ -12,7 +12,7 @@
         <div class="list-item">
           <el-col :span="6" class="cover">
             <div>
-              <img :src="item.coverImgUrl" alt="" />
+              <img :src="item.coverImgUrl+'?param=100y100'" alt="" />
             </div>
           </el-col>
           <el-col :span="18" class="content">

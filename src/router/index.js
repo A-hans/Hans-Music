@@ -5,7 +5,7 @@ const Home = () => import('views/Home/Home.vue');
 const Rank = () => import('views/Rank/Rank.vue');
 const Playlist = () => import('views//Playlist/Playlist.vue');
 const Singer = () => import('views/Singer/Singer.vue');
-const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.vue')
+const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.vue');
 
 
 Vue.use(VueRouter);

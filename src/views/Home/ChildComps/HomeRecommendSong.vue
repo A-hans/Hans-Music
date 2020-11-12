@@ -18,7 +18,7 @@
             <el-col :span="17">
               <div class="song-info">
                 <div class="cover">
-                  <img :src="item.picUrl" alt="" />
+                  <img :src="item.picUrl+'?param=100y100'" alt="" />
                 </div>
                 <div class="song">
                   <div class="song-name">
