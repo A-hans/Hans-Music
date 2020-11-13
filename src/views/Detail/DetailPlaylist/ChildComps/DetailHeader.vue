@@ -35,7 +35,8 @@
          ></p>
            <el-popover 
             class='detail-desc'
-            placement="right"
+            placement="right-start"
+            offset=0
            :title="detailHeader.name"
             width="400"
             trigger="click"
@@ -156,7 +157,7 @@ export default {
   margin-top:20px ;
 }
 .ellipsis-two {
-  width: 90%;
+  width: 95%;
   font-size: 14px;
   /* 设置内容显示多少行 */
   display: -webkit-box;

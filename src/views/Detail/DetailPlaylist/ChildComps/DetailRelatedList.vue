@@ -66,10 +66,10 @@ export default {
 .list-cotanier {
   margin-bottom: 10px;
   border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background: rgba(	245,245,245,0.5);
 }
 .list-cotanier:hover {
-  box-shadow: 0 2px 12px 0 rgba(225, 0, 0, 0.3);
+  box-shadow: 0 2px 12px 0 rgba(225, 0, 0, 0.2);
 }
 .el-col {
   height: 70px;

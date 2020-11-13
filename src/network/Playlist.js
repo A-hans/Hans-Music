@@ -50,7 +50,18 @@ export function getSongDetail(id){
   })
 }
 
-//获取歌单评论信息
+//获取歌单热评信息(默认20条)
+export function getCommentInfo(num){
+  return request({
+    url:"/comment/hot",
+    isActive:true,
+    params:{
+      id:num,
+      limit:10,
+      type:2
+    }
+  })
+}
 
 //获取歌单收藏者
 export function getPlaylistSubscriber(num){

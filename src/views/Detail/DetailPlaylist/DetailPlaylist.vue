@@ -10,18 +10,20 @@
       <el-col :span="8" class="right">
         <detail-subscribers :subscribers="subscriber"/>
         <detail-related-list :relatedList="relatedList"  />
+        <detail-hot-comments :hotComments="hotComments"/>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { getPlaylistDetail, getSongDetail,getPlaylistSubscriber,getRelatedList} from "network/Playlist";
+import { getPlaylistDetail, getSongDetail,getPlaylistSubscriber,getRelatedList,getCommentInfo} from "network/Playlist";
 
 import DetailHeader from "views/Detail/DetailPlaylist/ChildComps/DetailHeader";
 import DetailPlaylistTable from "views/Detail/DetailPlaylist/ChildComps/DetailPlaylistTable";
 import DetailSubscribers from "views/Detail/DetailPlaylist/ChildComps/DetailSubscribers";
 import DetailRelatedList from "views/Detail/DetailPlaylist/ChildComps/DetailRelatedList";
+import DetailHotComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments"
 export default {
   name: "DetailPlaylist",
   data() {
@@ -35,7 +37,9 @@ export default {
       //喜欢此歌单的人
       subscriber:[],
       //存放相近歌单
-      relatedList:[]
+      relatedList:[],
+      //存放热门评论
+      hotComments:[]
     };
   },
   methods: {
@@ -79,7 +83,8 @@ export default {
     DetailHeader,
     DetailPlaylistTable,
     DetailSubscribers,
-    DetailRelatedList
+    DetailRelatedList,
+    DetailHotComments
   },
   created() {
     //获取点击传入歌单的id信息
@@ -100,10 +105,12 @@ export default {
     getRelatedList(num).then((res)=>{
      this.relatedList = res.playlists;
     })
+    //获取热门评论
+    getCommentInfo(num).then((res)=>{
+      this.hotComments = res.hotComments;
+    })
   },
-  activated(){
-    console.log(1);
-  }
+ 
 };
 </script>
 

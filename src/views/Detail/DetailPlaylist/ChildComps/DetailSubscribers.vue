@@ -1,7 +1,7 @@
 <template>
   <div class="playlist-subscribers">
     <div class="title"><h4>喜欢这个歌单的人:</h4></div>
-    <el-row :gutter="10" v-if="subscribers.length !==0">
+    <el-row :gutter="5" v-if="subscribers.length !==0">
       <el-col :span="4" 
       v-for="(item,index) in subscribers" 
       :key="index"
