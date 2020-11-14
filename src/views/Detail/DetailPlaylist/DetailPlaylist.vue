@@ -8,22 +8,28 @@
         </div>
       </el-col>
       <el-col :span="8" class="right">
-        <detail-subscribers :subscribers="subscriber"/>
-        <detail-related-list :relatedList="relatedList"  />
-        <detail-hot-comments :hotComments="hotComments"/>
+        <detail-subscribers :subscribers="subscriber" />
+        <detail-related-list :relatedList="relatedList" />
+        <detail-hot-comments :hotComments="hotComments" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { getPlaylistDetail, getSongDetail,getPlaylistSubscriber,getRelatedList,getCommentInfo} from "network/Playlist";
+import {
+  getPlaylistDetail,
+  getSongDetail,
+  getPlaylistSubscriber,
+  getRelatedList,
+  getCommentInfo,
+} from "network/Playlist";
 
 import DetailHeader from "views/Detail/DetailPlaylist/ChildComps/DetailHeader";
 import DetailPlaylistTable from "views/Detail/DetailPlaylist/ChildComps/DetailPlaylistTable";
 import DetailSubscribers from "views/Detail/DetailPlaylist/ChildComps/DetailSubscribers";
 import DetailRelatedList from "views/Detail/DetailPlaylist/ChildComps/DetailRelatedList";
-import DetailHotComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments"
+import DetailHotComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments";
 export default {
   name: "DetailPlaylist",
   data() {
@@ -35,11 +41,11 @@ export default {
       //存放所有歌曲
       allSong: [],
       //喜欢此歌单的人
-      subscriber:[],
+      subscriber: [],
       //存放相近歌单
-      relatedList:[],
+      relatedList: [],
       //存放热门评论
-      hotComments:[]
+      hotComments: [],
     };
   },
   methods: {
@@ -66,16 +72,18 @@ export default {
       let num = 0; //用于存放当前序号
       for (let item of this.trackIds) {
         //请求所有歌曲数据
-        getSongDetail(item).then((res) => {
-          //添加序号用于排序
-          for (let item of res.songs) {
-            //循环开始则自加1
-            ++num;
-            //定义一个orderNum来存放当前序号
-            item.orderNum = num;
-          }
-          this.allSong.push(res.songs);
-        });
+        getSongDetail(item)
+          .then((res) => {
+            //添加序号用于排序
+            for (let item of res.songs) {
+              //循环开始则自加1
+              ++num;
+              //定义一个orderNum来存放当前序号
+              item.orderNum = num;
+            }
+            this.allSong.push(res.songs);
+          })
+          .catch((err) => {});
       }
     },
   },
@@ -84,33 +92,40 @@ export default {
     DetailPlaylistTable,
     DetailSubscribers,
     DetailRelatedList,
-    DetailHotComments
+    DetailHotComments,
   },
   created() {
     //获取点击传入歌单的id信息
     let num = this.$route.query.id;
     //获取歌单详细信息
-    getPlaylistDetail(num).then((res) => {
-      this.playlist = res.playlist;
-      //获取歌单中所有歌曲的id
-      this.getAllSongId();
-      //请求多有歌曲
-      this.getAllSong();
-    });
+    getPlaylistDetail(num)
+      .then((res) => {
+        this.playlist = res.playlist;
+        //获取歌单中所有歌曲的id
+        this.getAllSongId();
+        //请求多有歌曲
+        this.getAllSong();
+      })
+      .catch((err) => {});
     //获取喜欢此歌单的用户
-    getPlaylistSubscriber(num).then((res)=>{
-     this.subscriber = res.subscribers;
-    })
+    getPlaylistSubscriber(num)
+      .then((res) => {
+        this.subscriber = res.subscribers;
+      })
+      .catch((err) => {});
     //获取相似歌单列表
-    getRelatedList(num).then((res)=>{
-     this.relatedList = res.playlists;
-    })
+    getRelatedList(num)
+      .then((res) => {
+        this.relatedList = res.playlists;
+      })
+      .catch((err) => {});
     //获取热门评论
-    getCommentInfo(num).then((res)=>{
-      this.hotComments = res.hotComments;
-    })
+    getCommentInfo(num)
+      .then((res) => {
+        this.hotComments = res.hotComments;
+      })
+      .catch((err) => {});
   },
- 
 };
 </script>
 

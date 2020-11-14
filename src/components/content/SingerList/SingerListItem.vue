@@ -3,7 +3,8 @@
   <el-col 
   :span="3" 
   v-if="Object.keys(singerItemData).length !== 0"
-  class='singer-item'>
+  class='singer-item'
+  >
     <div class="singer">
       <div class='cover'>
         <img :src="singerItemData.picUrl+'?param=200y200'" alt="">
@@ -28,7 +29,7 @@ export default {
         return {}
       }
     }
-  }
+  },
 }
 </script>
 

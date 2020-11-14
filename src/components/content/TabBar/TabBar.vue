@@ -1,7 +1,7 @@
 <template>
   <div class="tab-bar">
     <el-row type="flex" align="middle" justify="center">
-      <el-col :span="6">
+      <el-col :span="4">
         <div class="left" @click="backHome">
           <img src="~assets/img/music.svg" alt="" />
           <span>HansMusic</span>
@@ -26,7 +26,7 @@
           </ul>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="right">
           <div class="search">
             <i class="el-icon-search"></i>
@@ -63,7 +63,7 @@ export default {
       ],
       currentIndex: 0,
       currentRoute: null,
-      isShow:true
+      isShow: true,
     };
   },
   methods: {
@@ -135,7 +135,9 @@ export default {
     }
     //详情页刷新后依旧不选中导航
     if (
-      this.currentRoute.indexOf('/playlist-detail') !== -1
+      this.currentRoute.indexOf("/playlist-detail") !== -1 ||
+      this.currentRoute.indexOf("/singer-detail") !== -1 ||
+      this.currentRoute.indexOf("/ablum-detail") !== -1 
     ) {
       this.currentIndex = null;
       this.isShow = false;
@@ -152,7 +154,7 @@ export default {
 <style scoped>
 .tab-bar {
   height: 60px;
-  width: 100%;
+  width: 1020px;
 }
 .el-row {
   margin-top: 10px;
@@ -246,13 +248,13 @@ export default {
   width: 35px !important;
   left: 228px !important;
 }
-@media only screen and (max-width: 700px){
-  .center .line{
+@media only screen and (max-width: 700px) {
+  .center .line {
     display: none;
   }
   .center .active {
-  color: var(--color-high-text);
-  border-bottom: 3.5px solid var(--color-high-text);
-}
+    color: var(--color-high-text);
+    border-bottom: 3.5px solid var(--color-high-text);
+  }
 }
 </style>

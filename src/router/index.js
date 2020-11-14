@@ -6,6 +6,8 @@ const Rank = () => import('views/Rank/Rank.vue');
 const Playlist = () => import('views//Playlist/Playlist.vue');
 const Singer = () => import('views/Singer/Singer.vue');
 const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.vue');
+const DetailSinger =()=> import ('views/Detail/DetailSinger/DetailSinger.vue');
+const DetailAlbumContent =()=> import ('views/Detail/DetailAlbum/DetailAlbumContent.vue');
 
 
 Vue.use(VueRouter);
@@ -48,6 +50,20 @@ const routes=[
     component:DetailPlaylist,
     meta:{
       title:'歌单详情'
+    }
+  },
+  {
+    path:'/singer-detail',
+    component:DetailSinger,
+    meta:{
+      title:'歌单详情'
+    }
+  },
+  {
+    path:'/ablum-detail',
+    component:DetailAlbumContent,
+    meta:{
+      title:'专辑详情'
     }
   }
 ];

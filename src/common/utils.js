@@ -34,7 +34,7 @@ function padLeftZero (str) {
   return ('00' + str).substr(str.length);
 };
 
-//播放量格式化函数
+//播放量格式化函数(已用过滤器替代)
 export function formartPlayCount(list){
   for (let item of list) {
     if (parseInt(item.playCount / 10000).toString().length >= 5) {

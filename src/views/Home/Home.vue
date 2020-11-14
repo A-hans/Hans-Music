@@ -3,21 +3,24 @@
     <transition name="el-zoom-in-top">
       <home-swiper class="swiper" :bannerData="bannerlist"></home-swiper>
     </transition>
-      <home-playlist :playlistData='playlist'/>
-      <home-recommend-song :recommendSongsData='recomendSongs'/>
-    <home-recommend-singer :recommendSingerData='recomendSingers'/>
+    <home-playlist :playlistData="playlist" />
+    <home-recommend-song :recommendSongsData="recomendSongs" />
+    <home-recommend-singer :recommendSingerData="recomendSingers" />
   </div>
 </template>
 
 <script>
-import { getHomeBanner,getHomePlaylist,getHomeRecommendSong,getRecommendSinger } from "network/Home";
-
-import { formartPlayCount } from "common/utils";
+import {
+  getHomeBanner,
+  getHomePlaylist,
+  getHomeRecommendSong,
+  getRecommendSinger,
+} from "network/Home";
 
 import HomeSwiper from "views/Home/ChildComps/HomeSwiper";
 import HomePlaylist from "views/Home/ChildComps/HomePlaylist";
-import HomeRecommendSong from "views/Home/ChildComps/HomeRecommendSong"
-import HomeRecommendSinger from "views/Home/ChildComps/HomeRecommendSinger"
+import HomeRecommendSong from "views/Home/ChildComps/HomeRecommendSong";
+import HomeRecommendSinger from "views/Home/ChildComps/HomeRecommendSinger";
 
 export default {
   name: "Home",
@@ -25,8 +28,8 @@ export default {
     return {
       bannerlist: [],
       playlist: [],
-      recomendSongs:[],
-      recomendSingers:[]
+      recomendSongs: [],
+      recomendSingers: [],
     };
   },
   methods: {},
@@ -34,34 +37,39 @@ export default {
     HomeSwiper,
     HomePlaylist,
     HomeRecommendSong,
-    HomeRecommendSinger
+    HomeRecommendSinger,
   },
   created() {
     /* 
     网络请求
     */
     //获取轮播图数据
-    getHomeBanner().then((res) => {
-      this.bannerlist = res.banners;
-    });
+    getHomeBanner()
+      .then((res) => {
+        this.bannerlist = res.banners;
+      })
+      .catch((err) => {});
     //获取歌单数据,可传入需要多少条数据
-    getHomePlaylist(12).then((res) => {
-      this.playlist = res.result;
-      //对播放量进行数据格式化
-      formartPlayCount(this.playlist)
-    });
+    getHomePlaylist(12)
+      .then((res) => {
+        this.playlist = res.result;
+      })
+      .catch((err) => {});
     //获取推荐歌曲
-    getHomeRecommendSong().then((res) => {
-      this.recomendSongs = res.result;
-    })
+    getHomeRecommendSong()
+      .then((res) => {
+        this.recomendSongs = res.result;
+      })
+      .catch((err) => {});
     //获取推荐歌手
-    getRecommendSinger(0,24).then((res) => {
-      this.recomendSingers = res.artists;
-    })
+    getRecommendSinger(0, 16)
+      .then((res) => {
+        this.recomendSingers = res.artists;
+      })
+      .catch((err) => {});
   },
 };
 </script>
 
 <style scoped>
-
 </style>

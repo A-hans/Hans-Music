@@ -24,14 +24,17 @@ export default {
       },
     },
   },
-  methods:{
+  methods: {
     //监听每个歌单的点击
-    clickItem(item){
+    clickItem(item) {
       //将歌单的id传递进详情页
-      this.$router.push({path:'/playlist-detail',query:{id:item.id}});
+      this.$router.push({
+        path: "/playlist-detail",
+        query: { id: item.id },
+      });
       //运用事件总线建立起与导航组件的联系,跳转详情页后取消当前激活样式
-      this.$bus.$emit('cancelActive')
-    }
+      this.$bus.$emit("cancelActive");
+    },
   },
   components: {
     SongListItem,

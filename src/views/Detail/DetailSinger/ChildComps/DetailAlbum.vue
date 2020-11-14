@@ -1,59 +1,80 @@
 <template>
-  <!-- 一行6个栏目 -->
-  <el-col :span="4" v-if="Object.keys(listItemData).length !== 0">
+  <div class="album-info">
+    <div class="title">
+      <h3>热门专辑</h3>
+    </div>  
+    <el-row :gutter="20">
+  <el-col :span="4" v-for="(item,index) in albums" 
+          :key="index"
+          @click.native="loadAlbumDetail(item)">
     <div class="playlist-item">
       <div class="img">
-        <img :src="showImg+'?param=200y200'" alt="" />
+        <img :src="item.picUrl+'?param=200y200'" alt="" />
         <div class="count">
           <i class="el-icon-caret-right"></i>
-          {{ listItemData.playCount | fomartCount}}
+          {{item.type}}
         </div>
       </div>
       <div class="text">
-        {{ listItemData.name }}
+        {{ item.name }}
+      </div>
+      <div class="publish-time">
+        {{item.publishTime | formatDate}}
       </div>
     </div>
-  </el-col>
+    </el-col>
+</el-row>
+ 
+  </div>
 </template>
 
 <script>
+import {formatDate} from "common/utils"
 export default {
-  name: "PlaylistItem",
-  props: {
-    listItemData: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
-  computed: {
-    showImg() {
-      return this.listItemData.coverImgUrl || this.listItemData.picUrl;
-    },
+  name:"DetailAlbum",
+  props:{
+    albums:{
+      type:Array,
+      default(){
+        return{}
+      }
+    }
   },
   filters:{
-    fomartCount(value){
-    if (parseInt(value / 10000).toString().length >= 5) {
-     return parseInt(value  / 100000000) + "亿";
-    } else {
-     return parseInt(value / 10000) + "万";
-    }
+    //时间格式化
+    formatDate(value){
+      let date = new Date(value);
+      return  formatDate(date,"yyyy-MM-dd")
     }
   },
-};
+  methods:{
+    //点击专辑进入专辑详情页
+    loadAlbumDetail(item){
+      this.$router.push({
+        path:"/ablum-detail",
+        query:{
+          id:item.id
+        }
+      })
+    }
+    }
+}
 </script>
 
-<style scoped>
+<style scoped> 
+.album-info{
+  font-size: 13px;
+  margin-top: 20px;
+}
 .el-col {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   height: 230px;
   display: flex;
   justify-content: center;
   cursor: pointer;
 }
 .playlist-item .img {
-  box-shadow: 9px -6px 3px -1px rgba(0, 0, 0, 0.2);
+  box-shadow:  6px -5px 8px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   position: relative;
 }
@@ -109,5 +130,8 @@ export default {
   font-size: 10px!important;
   padding-top: 20px;
   font-weight: bold;
+}
+.publish-time{
+  font-size: 12px;
 }
 </style>
