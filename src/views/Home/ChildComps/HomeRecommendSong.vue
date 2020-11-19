@@ -57,6 +57,9 @@ export default {
 </script>
 
 <style scoped>
+.recommend-song {
+  margin-bottom: 20px;
+}
 .recommend-song h3{
   margin-bottom:10px ;
 }

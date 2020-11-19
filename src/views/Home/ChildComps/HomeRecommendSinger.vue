@@ -27,7 +27,8 @@ export default {
 
 <style scoped>
 .recoomend-singer h3{
-  margin: 20px 0;
+  margin-top: 30px ;
+  margin-bottom: 10px;
 }
 
 </style>

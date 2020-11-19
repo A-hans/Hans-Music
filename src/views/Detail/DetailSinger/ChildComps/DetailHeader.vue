@@ -16,7 +16,7 @@
             <div class="singer-desc" v-html="singerInfo.briefDesc"></div>
             <el-popover
               class="detail-desc"
-              placement="right-start"
+              placement="right-end"
               :title="title"
               offset="0"
               width="400"

@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 .el-col {
-  margin-bottom: 20px;
+ 
   height: 230px;
   display: flex;
   justify-content: center;
@@ -104,7 +104,6 @@ export default {
   /* 显示几行,多余内容用省略号替代 */
   -webkit-line-clamp: 1;
   overflow: hidden;
-  margin-bottom: 10px;
   color: var(--color-text);
   font-size: 10px!important;
   padding-top: 20px;

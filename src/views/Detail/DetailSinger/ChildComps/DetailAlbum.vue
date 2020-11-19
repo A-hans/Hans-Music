@@ -1,8 +1,5 @@
 <template>
-  <div class="album-info">
-    <div class="title">
-      <h3>热门专辑</h3>
-    </div>  
+  <div class="album-info"> 
     <el-row :gutter="20">
   <el-col :span="4" v-for="(item,index) in albums" 
           :key="index"

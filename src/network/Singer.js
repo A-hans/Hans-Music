@@ -48,3 +48,13 @@ export function getSingerAlbum(num){
   })
 }
 
+//获取相似歌手 
+export function getRelatedSinger(num){
+  return request({
+    url:'/simi/artist',
+    isActive:true,  
+    params:{
+      id:num
+    }
+  })
+}

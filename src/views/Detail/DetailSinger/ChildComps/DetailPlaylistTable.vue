@@ -1,8 +1,5 @@
 <template>
-  <div class="playlist-table" v-if="playlistItem.length !==0">
-    <div class="title">
-      <h3>热门歌曲</h3> 
-    </div>
+  <div class="playlist-table" v-if="playlistItem.length !==0 ">
     <el-row :gutter="20" type="flex" align="center">
       <el-col :span="24">
         <table class="list-table" width="100%">
@@ -82,7 +79,6 @@ export default {
 
 <style scoped>
 .playlist-table {
-  padding: 20px 0;
   font-size: 13px;
 }
 .playlist-table table,

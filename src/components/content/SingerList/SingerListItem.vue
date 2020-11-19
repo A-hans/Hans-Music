@@ -38,6 +38,7 @@ export default {
   height: 160px;
   text-align: center;
   margin-bottom:20px ;
+  cursor: pointer;
 }
 
 .singer-item .cover img{
