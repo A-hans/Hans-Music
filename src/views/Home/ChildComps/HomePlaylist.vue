@@ -1,6 +1,8 @@
 <template>
   <div class="home-playlist">
-    <h3>推荐歌单</h3>
+    <div class="title">
+       <h3>推荐歌单</h3>
+    </div>
     <transition name="el-zoom-in-center">
       <song-list :playlistData='playlistData'/>
     </transition>
@@ -26,8 +28,4 @@ export default {
 </script>
 
 <style scoped>
-  .home-playlist h3{
-    padding-top: 20px;
-    color: #303133;
-  }
 </style>

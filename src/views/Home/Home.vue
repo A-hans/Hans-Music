@@ -5,7 +5,7 @@
     </transition>
     <home-playlist :playlistData="playlist" />
     <home-recommend-song :recommendSongsData="recomendSongs" />
-    <home-recommend-singer :recommendSingerData="recomendSingers" />
+    <home-recommend-singer class="recommend-singer" :recommendSingerData="recomendSingers" />
   </div>
 </template>
 
@@ -72,4 +72,10 @@ export default {
 </script>
 
 <style scoped>
+.swiper{
+  margin-bottom: 20px;
+}
+.recommend-singer{
+  margin-top: 35px;
+}
 </style>

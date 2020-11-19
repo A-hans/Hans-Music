@@ -208,10 +208,9 @@ export default {
 .right .login {
   flex: 1;
   margin-top: 5px;
-  padding-left: 10px;
+  padding-left: 20px;
   height: 30px;
   line-height: 30px;
-  text-align: center;
   cursor: pointer;
   border-left: 1px solid var(--color-border);
 }

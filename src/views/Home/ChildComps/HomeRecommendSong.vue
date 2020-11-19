@@ -1,6 +1,8 @@
 <template>
   <div class="recommend-song" v-if="recommendSongsData.length !==0">
-    <h3>推荐歌曲</h3>
+    <div class="title">
+       <h3>推荐歌曲</h3>
+    </div>
     <el-row :gutter="20">
       <el-col
       class="contanier"
@@ -60,8 +62,8 @@ export default {
 .recommend-song {
   margin-bottom: 20px;
 }
-.recommend-song h3{
-  margin-bottom:10px ;
+.recommend-song .title{
+  margin-bottom: 10px;
 }
 .song-item {
   width: 100%;

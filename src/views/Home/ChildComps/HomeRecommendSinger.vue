@@ -1,6 +1,8 @@
 <template>
   <div class='recoomend-singer'>
-    <h3>推荐歌手</h3>
+    <div class="title">
+      <h3>推荐歌手</h3>
+    </div>
     <transition name="el-zoom-in-center">
     <singer-list :singerData='recommendSingerData'/>
       </transition>
