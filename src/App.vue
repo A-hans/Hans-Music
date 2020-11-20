@@ -11,7 +11,7 @@
             'Playlist',
             'DetailSinger',
             'DetailAblumContent',
-            'DetailSearch'
+            'DetailSearch',
           ]"
         >
           <router-view />
@@ -20,7 +20,12 @@
       <el-footer>
         <footer-bar />
       </el-footer>
-      <el-backtop class="backtop"></el-backtop>
+      <div class="player">
+        <transition name="el-zoom-in-bottom">
+        <Player />
+      </transition>
+      </div>
+      <el-backtop class="backtop" :bottom="70"></el-backtop>
     </el-container>
   </div>
 </template>
@@ -28,12 +33,14 @@
 <script>
 import TabBar from "components/content/TabBar/TabBar.vue";
 import FooterBar from "components/content/Footer/FooterBar.vue";
+import Player from "components/common/Player/Player";
 
 export default {
   name: "App",
   components: {
     TabBar,
     FooterBar,
+    Player,
   },
 };
 </script>
@@ -50,6 +57,16 @@ body {
   width: 1100px;
   margin: 0 auto;
   margin-top: 60px;
+}
+.player {
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 1px 2px rgba(0, 0, 0, 0.1);
+  background: var(--color-background);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
 }
 .el-header {
   border: 1px solid transparent;
@@ -92,14 +109,25 @@ body {
   color: #eee;
   font-size: 16px;
 }
-.el-tabs__item.is-active{
-  color:var(--color-high-text) !important;
+.el-tabs__item.is-active {
+  color: var(--color-high-text) !important;
 }
-.el-tabs__item:hover{
-  color:var(--color-high-text)!important;
+.el-tabs__item:hover {
+  color: var(--color-high-text) !important;
 }
-.el-tabs__active-bar{
-  background-color:var(--color-high-text)!important;
+.el-tabs__active-bar {
+  background-color: var(--color-high-text) !important;
 }
 
+.el-slider__button {
+  width: 12px !important;
+  height: 12px !important;
+  border: 1px solid #FD5452 !important;
+}
+.el-slider__bar {
+  background-color: #FD5452 !important;
+}
+.el-slider__runway {
+  background-color: WhiteSmoke !important;
+}
 </style>

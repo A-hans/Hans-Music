@@ -1,7 +1,7 @@
 <template>
   <el-autocomplete
     popper-class="my-autocomplete"
-    size="small"
+    size="mini"
     v-model="state"
     value-key="first"
     :debounce="300"

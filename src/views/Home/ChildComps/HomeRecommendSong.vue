@@ -1,11 +1,11 @@
 <template>
-  <div class="recommend-song" v-if="recommendSongsData.length !==0">
+  <div class="recommend-song" v-if="recommendSongsData.length !== 0">
     <div class="title">
-       <h3>推荐歌曲</h3>
+      <h3>推荐歌曲</h3>
     </div>
     <el-row :gutter="20">
       <el-col
-      class="contanier"
+        class="contanier"
         :span="12"
         v-for="(item, index) in recommendSongsData"
         :key="index"
@@ -14,13 +14,13 @@
           <el-row :gutter="10">
             <el-col :span="3">
               <div class="song-id">
-                {{ index+1 }}
+                {{ index + 1 }}
               </div>
             </el-col>
             <el-col :span="17">
               <div class="song-info">
                 <div class="cover">
-                  <img :src="item.picUrl+'?param=100y100'" alt="" />
+                  <img :src="item.picUrl + '?param=100y100'" alt="" />
                 </div>
                 <div class="song">
                   <div class="song-name">
@@ -32,9 +32,9 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="2" class='song-play'>
-              <div class="play">
-                <img src="~assets/img/play.png" alt="">
+            <el-col :span="2" class="song-play">
+              <div class="play" @click="playMusic(item)">
+                <img src="~assets/img/play.png" alt="" />
               </div>
             </el-col>
           </el-row>
@@ -45,15 +45,32 @@
 </template>
 
 <script>
+import { getMusicUrl } from "network/Song";
 export default {
   name: "HomeRecommendSong",
-  props:{
-    recommendSongsData:{
-      type:Array,
-      default(){
-        return []
-      }
-    }
+  props: {
+    recommendSongsData: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+  methods: {
+    playMusic(item) {
+      //获取音乐url
+      getMusicUrl(item.id)
+        .then((res) => {
+          let musicURL = res.data[0].url;
+          //将数据带到mutaitions
+          this.$store.commit({
+            type:"addMusic",
+            item,
+            musicURL
+          });
+        })
+        .catch((err) => {});
+    },
   },
 };
 </script>
@@ -62,7 +79,7 @@ export default {
 .recommend-song {
   margin-bottom: 20px;
 }
-.recommend-song .title{
+.recommend-song .title {
   margin-bottom: 10px;
 }
 .song-item {
@@ -72,20 +89,20 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
-.song-item:hover{
-   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+.song-item:hover {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
 }
-.song-info .cover img{
+.song-info .cover img {
   width: 60px;
   height: 60px;
 }
-.song-item .song-id{
+.song-item .song-id {
   width: 100%;
   height: 100%;
   text-align: center;
   line-height: 80px;
 }
-.song-item .song-info{
+.song-item .song-info {
   width: 100%;
   height: 100%;
   height: 80px;
@@ -94,28 +111,28 @@ export default {
   align-items: center;
   text-align: left;
 }
-.song-item .song{
+.song-item .song {
   display: block;
   padding: 0 10px;
   font-size: 14px;
-  color:var(--color-text);
+  color: var(--color-text);
 }
-.song-item .song .artist-name{
-  margin-top:10px ;
+.song-item .song .artist-name {
+  margin-top: 10px;
 }
-.song-play{
+.song-play {
   height: 80px;
 }
 .song-play .play {
   width: 30px;
   height: 30px;
-  border-radius:15px ;
-  margin-top:25px ;
+  border-radius: 15px;
+  margin-top: 25px;
 }
-.song-play .play img{
+.song-play .play img {
   width: 100%;
 }
-.song-play .play:hover{
+.song-play .play:hover {
   box-shadow: 5px 1px 12px 1px rgba(255, 69, 0, 0.2);
 }
 </style>
