@@ -12,7 +12,7 @@
       <div class='name'>
         {{singerItemData.name}}
       </div>
-      <div class='song-count'>
+      <div class='song-count' v-show="singerItemData.musicSize">
         单曲数:{{singerItemData.musicSize}}
       </div>
       </div>

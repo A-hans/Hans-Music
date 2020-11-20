@@ -5,14 +5,22 @@
         <tab-bar></tab-bar>
       </el-header>
       <el-main>
-        <keep-alive :exclude="['DetailPlaylist','Playlist','DetailSinger','DetailAblumContent']">
-        <router-view />
+        <keep-alive
+          :exclude="[
+            'DetailPlaylist',
+            'Playlist',
+            'DetailSinger',
+            'DetailAblumContent',
+            'DetailSearch'
+          ]"
+        >
+          <router-view />
         </keep-alive>
       </el-main>
       <el-footer>
         <footer-bar />
       </el-footer>
-        <el-backtop class='backtop'></el-backtop>
+      <el-backtop class="backtop"></el-backtop>
     </el-container>
   </div>
 </template>
@@ -25,7 +33,7 @@ export default {
   name: "App",
   components: {
     TabBar,
-    FooterBar
+    FooterBar,
   },
 };
 </script>
@@ -34,51 +42,64 @@ export default {
 @import "assets/css/base.css";
 body {
   height: 100%;
-  width:100%;
+  width: 100%;
   min-width: 1250px;
-  background: rgba(	192,192,192, 0.1) ;
+  background: rgba(192, 192, 192, 0.1);
 }
-.el-main{
+.el-main {
   width: 1100px;
   margin: 0 auto;
-  margin-top:60px ;
-
+  margin-top: 60px;
 }
-.el-header{
+.el-header {
   border: 1px solid transparent;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: var(--color-background);
-  padding: 0 120px!important;
+  padding: 0 120px !important;
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
   z-index: 999;
 }
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+  border-color: var(--color-high-text) !important;
+}
 
-.backtop{
-  color:#FF6347!important;
+.backtop {
+  color: #ff6347 !important;
 }
 
 .create-isLoading .el-loading-spinner {
-      top: 50%;
-      left: 50%;
-      margin-left: -55px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 4px;
-      width: auto;
-      text-align: center;
-      position: absolute;
-    }
- .create-isLoading .el-loading-spinner i {
-        font-size: 40px;
-        padding: 10px;
-        color: #eee;
-      }
+  top: 50%;
+  left: 50%;
+  margin-left: -55px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 4px;
+  width: auto;
+  text-align: center;
+  position: absolute;
+}
+.create-isLoading .el-loading-spinner i {
+  font-size: 40px;
+  padding: 10px;
+  color: #eee;
+}
 
- .create-isLoading .el-loading-spinner .el-loading-text {
-        color: #eee;
-        font-size: 16px;
-      }
+.create-isLoading .el-loading-spinner .el-loading-text {
+  color: #eee;
+  font-size: 16px;
+}
+.el-tabs__item.is-active{
+  color:var(--color-high-text) !important;
+}
+.el-tabs__item:hover{
+  color:var(--color-high-text)!important;
+}
+.el-tabs__active-bar{
+  background-color:var(--color-high-text)!important;
+}
+
 </style>

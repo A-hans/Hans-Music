@@ -29,7 +29,7 @@
       <el-col :span="8">
         <div class="right">
           <div class="search">
-            <i class="el-icon-search"></i>
+             <Search class="search-input"/>
           </div>
           <div class="login">登录</div>
         </div>
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import Search from "components/content/TabBar/Search"
 export default {
   name: "tab-bar",
   data() {
@@ -111,6 +112,9 @@ export default {
       }, 0.3);
     },
   },
+  components:{
+    Search
+  },
   mounted() {
     //获取当前路由路径,$route在刷新页面后获取不了
     this.currentRoute = window.location.href;
@@ -132,12 +136,13 @@ export default {
       this.currentIndex = 3;
       oDiv.style.width = "35px";
       oDiv.style.left = "228px";
-    }
+    } 
     //详情页刷新后依旧不选中导航
     if (
       this.currentRoute.indexOf("/playlist-detail") !== -1 ||
       this.currentRoute.indexOf("/singer-detail") !== -1 ||
-      this.currentRoute.indexOf("/ablum-detail") !== -1 
+      this.currentRoute.indexOf("/ablum-detail") !== -1 ||
+      this.currentRoute.indexOf("/search-result") !== -1 
     ) {
       this.currentIndex = null;
       this.isShow = false;
@@ -197,13 +202,14 @@ export default {
 .right {
   display: flex;
   width: 100%;
+   height: 100%;
   padding: 0 10px;
 }
 .right .search {
-  flex: 2;
+  height: 100%;
+  flex: 4;
   text-align: right;
-  padding-right: 15px;
-  height: 30px;
+  padding-right: 5px;
 }
 .right .login {
   flex: 1;
@@ -217,7 +223,9 @@ export default {
 .right .login:hover {
   color: var(--color-high-text);
 }
-
+.right .search-input {
+  margin-right: 10px;
+}
 .center .active {
   color: var(--color-high-text);
 }

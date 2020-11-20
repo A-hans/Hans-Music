@@ -8,7 +8,7 @@ const Singer = () => import('views/Singer/Singer.vue');
 const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.vue');
 const DetailSinger =()=> import ('views/Detail/DetailSinger/DetailSinger.vue');
 const DetailAlbumContent =()=> import ('views/Detail/DetailAlbum/DetailAlbumContent.vue');
-
+const DeatilSearch =()=> import ('views/Search/DeatilSearch.vue');
 
 Vue.use(VueRouter);
 
@@ -64,6 +64,13 @@ const routes=[
     component:DetailAlbumContent,
     meta:{
       title:'专辑详情'
+    }
+  },
+  {
+    path:'/search-result',
+    component:DeatilSearch,
+    meta:{
+      title:'搜索详情'
     }
   }
 ];

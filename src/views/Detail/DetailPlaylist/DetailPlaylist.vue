@@ -132,7 +132,6 @@ export default {
 <style scoped>
 .left {
   padding: 30px 0;
-  margin-right: 20px;
   height: 100%;
   border-radius: 15px;
   background: var(--color-background);

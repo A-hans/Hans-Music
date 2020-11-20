@@ -36,8 +36,10 @@ export default {
     fomartCount(value){
     if (parseInt(value / 10000).toString().length >= 5) {
      return parseInt(value  / 100000000) + "亿";
-    } else {
+    }  else if(parseInt(value / 10000).toString().length >= 1&&parseInt(value / 10000)!==0){
      return parseInt(value / 10000) + "万";
+    }else{
+      return value;
     }
     }
   },
