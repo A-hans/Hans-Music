@@ -44,7 +44,7 @@
 <script>
 import { getSearchInfo } from "network/Search";
 
-import SongList from "views/Search/ChildComps/SongList";
+import SongList from "views/Detail/DetailSinger/ChildComps/DetailPlaylistTable";
 import SingerList from "components/content/SingerList/SingerList";
 import SongLists from "components/content/SongList/SongList";
 import DetailAlbum from "views/Detail/DetailSinger/ChildComps/DetailAlbum";

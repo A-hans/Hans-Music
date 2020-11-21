@@ -33,8 +33,9 @@
               </div>
             </el-col>
             <el-col :span="2" class="song-play">
-              <div class="play" @click="playMusic(item)">
-                <img src="~assets/img/play.png" alt="" />
+              <div class="play" @click="playMusic(item,index)">
+                <img src="~assets/img/play.png" alt="" :class="{deactive:currentIndex == index}"/>
+                <img src="~assets/img/pause.png" alt="" class="pause-icon" :class="{active:currentIndex == index}"/>
               </div>
             </el-col>
           </el-row>
@@ -56,8 +57,14 @@ export default {
       },
     },
   },
+  data(){
+    return{
+      //当前下标
+      currentIndex:null
+    }
+  },
   methods: {
-    playMusic(item) {
+    playMusic(item,index) {
       //获取音乐url
       getMusicUrl(item.id)
         .then((res) => {
@@ -70,6 +77,10 @@ export default {
           });
         })
         .catch((err) => {});
+        //点击后在播放器中执行操作
+        this.$bus.$emit("reloadProcess");
+        //播放暂停图标切换
+        this.currentIndex = index;
     },
   },
 };
@@ -130,9 +141,19 @@ export default {
   margin-top: 25px;
 }
 .song-play .play img {
+  cursor: pointer;
   width: 100%;
 }
-.song-play .play:hover {
+.song-play .play:hover ,.song-play .pause-icon:hover{
   box-shadow: 5px 1px 12px 1px rgba(255, 69, 0, 0.2);
+}
+.pause-icon{
+  display: none;
+}
+.active{
+  display: block;
+}
+.deactive{
+  display: none;
 }
 </style>

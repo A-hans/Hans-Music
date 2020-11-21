@@ -5,6 +5,7 @@ import {request} from "network/Request";
 export function getMusicUrl(num){
   return request({
     url:"/song/url",
+    isActive:true,
     params:{
       id:num,
       br:128000 //128Kbps码率播放
