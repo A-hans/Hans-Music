@@ -51,6 +51,9 @@ export default {
  box-shadow: 6px 3px 12px 2px rgba(220, 20, 60, 0.1);
 }
 .singer-item .name {
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
   font-size: 14px;
   font-weight: bold;
   padding: 10px 0;

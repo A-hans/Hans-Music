@@ -8,6 +8,20 @@ export function debounce(func,delay){
     },delay)
   }
 }
+//节流函数
+export function throttle(fn,wait){
+  var timer = null;
+  return function(){
+      var context = this;
+      var args = arguments;
+      if(!timer){
+          timer = setTimeout(function(){
+              fn.apply(context,args);
+              timer = null;
+          },wait)
+      }
+  }
+}
 
 //时间格式化函数
 export function formatDate(date, fmt) {

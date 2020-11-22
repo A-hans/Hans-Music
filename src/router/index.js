@@ -1,6 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+//解决重复路由报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 const Home = () => import('views/Home/Home.vue');
 const Rank = () => import('views/Rank/Rank.vue');
 const Playlist = () => import('views//Playlist/Playlist.vue');
@@ -56,7 +62,7 @@ const routes=[
     path:'/singer-detail',
     component:DetailSinger,
     meta:{
-      title:'歌单详情'
+      title:'歌单详情',
     }
   },
   {

@@ -21,7 +21,7 @@ export function getSingerHotSong(num){
     url:'/artist/top/song',
     isActive:true,  
     params:{
-      id:num
+      id:num,
     }
   })
 }
@@ -43,7 +43,8 @@ export function getSingerAlbum(num){
     url:'/artist/album',
     isActive:true,  
     params:{
-      id:num
+      id:num,
+      limit:12
     }
   })
 }

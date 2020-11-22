@@ -6,15 +6,8 @@
       </el-header>
       <el-main>
         <keep-alive
-          :exclude="[
-            'DetailPlaylist',
-            'Playlist',
-            'DetailSinger',
-            'DetailAblumContent',
-            'DetailSearch',
-          ]"
         >
-          <router-view />
+          <router-view  :key="$route.fullPath"/>
         </keep-alive>
       </el-main>
       <el-footer>
@@ -22,8 +15,8 @@
       </el-footer>
       <div class="player">
         <transition name="el-zoom-in-bottom">
-        <Player />
-      </transition>
+          <Player />
+        </transition>
       </div>
       <el-backtop class="backtop" :bottom="70"></el-backtop>
     </el-container>
@@ -122,10 +115,10 @@ body {
 .el-slider__button {
   width: 12px !important;
   height: 12px !important;
-  border: 1px solid #FD5452 !important;
+  border: 1px solid #fd5452 !important;
 }
 .el-slider__bar {
-  background-color: #FD5452 !important;
+  background-color: #fd5452 !important;
 }
 .el-slider__runway {
   background-color: WhiteSmoke !important;

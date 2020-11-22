@@ -26,14 +26,14 @@
                 根据<span>{{ keyWord }}</span
                 >的搜索结果:
               </div>
-              <song-lists :playlistData="searchSongLists"/>
+              <song-lists :playlistData="searchSongLists" />
             </el-tab-pane>
             <el-tab-pane label="专辑" name="fourth">
               <div class="search-title">
                 根据<span>{{ keyWord }}</span
                 >的搜索结果:
               </div>
-              <detail-album :albums="searchAblums"/>
+              <detail-album :albums="searchAblums" />
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -61,9 +61,9 @@ export default {
       //存储歌手搜索结果
       searchSingers: [],
       //存储歌单搜索结果
-      searchSongLists:[],
+      searchSongLists: [],
       //存储专辑搜索结果
-      searchAblums:[]
+      searchAblums: [],
     };
   },
   methods: {
@@ -82,14 +82,14 @@ export default {
           //搜索歌单结果
           getSearchInfo(this.keyWord, 1000)
             .then((res) => {
-             this.searchSongLists= res.result.playlists;
+              this.searchSongLists = res.result.playlists;
             })
             .catch((err) => {});
           break;
         case "fourth":
           getSearchInfo(this.keyWord, 10)
             .then((res) => {
-             this.searchAblums=res.result.albums;
+              this.searchAblums = res.result.albums;
             })
             .catch((err) => {});
           break;
@@ -102,7 +102,27 @@ export default {
     SongList,
     SingerList,
     SongLists,
-    DetailAlbum
+    DetailAlbum,
+  },
+  watch: {
+    // 监听路由的变化 参数变化时更新发布订阅数据
+    $route(to, from) {
+      //对路由进行判断,决定何时进行刷新
+      if (to.fullPath.search("search-result") == 1) {
+       this.keyWord = to.query.str;
+        getSearchInfo(this.keyWord, 1)
+          .then((res) => {
+            //给歌曲列表增加序号
+            let num = 0;
+            for (let item of res.result.songs) {
+              ++num;
+              item.orderNum = num;
+            }
+            this.searchSongs = res.result.songs;
+          })
+          .catch((err) => {});
+      }
+    },
   },
   created() {
     //获取单曲搜索结果

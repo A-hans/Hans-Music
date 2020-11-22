@@ -1,20 +1,20 @@
 <template>
-  <div id="music-player" v-if="$store.state.musicInfo !== null">
+  <div id="music-player" v-if="$store.state.currentSong !== null">
     <el-row :gutter="30">
       <el-col :span="4">
         <div class="song-info">
           <div class="cover">
             <img
-              :src="$store.state.musicInfo.item.picUrl + '?param=100y100'"
+              :src="$store.state.currentSong.musicPic + '?param=100y100'"
               alt=""
             />
           </div>
           <div class="text-info">
             <div class="song-name">
-              <h4>{{ $store.state.musicInfo.item.song.name }}</h4>
+              <h4>{{ $store.state.currentSong.musicName }}</h4>
             </div>
             <div class="singer-name">
-              {{ $store.state.musicInfo.item.song.artists[0].name }}
+              {{ $store.state.currentSong.singerName }}
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
     </el-row>
     <audio
       ref="audio"
-      :src="$store.state.musicInfo.musicURL"
+      :src="$store.state.currentSong.musicUrl"
       @playing="audioReady"
       @ended="playEnd"
       autoplay

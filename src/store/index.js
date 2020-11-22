@@ -4,12 +4,15 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-    //存储音乐播放地址
-    musicInfo:null
+    //存储播放器信息
+    playlist:[],
+    //当前播放歌曲
+    currentSong:null
   },
   mutations:{
     addMusic(state,payload){
-      state.musicInfo = payload;
+      state.playlist.push(payload);
+      state.currentSong = payload
     }
   },
   actions:{},

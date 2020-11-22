@@ -24,9 +24,8 @@ import {
   getRelatedList,
   getCommentInfo,
 } from "network/Playlist";
-
 import DetailHeader from "views/Detail/DetailPlaylist/ChildComps/DetailHeader";
-import DetailPlaylistTable from "views/Detail/DetailPlaylist/ChildComps/DetailPlaylistTable";
+import DetailPlaylistTable from "views/Detail/DetailSinger/ChildComps/DetailPlaylistTable";
 import DetailSubscribers from "views/Detail/DetailPlaylist/ChildComps/DetailSubscribers";
 import DetailRelatedList from "views/Detail/DetailPlaylist/ChildComps/DetailRelatedList";
 import DetailHotComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments";
@@ -46,6 +45,8 @@ export default {
       relatedList: [],
       //存放热门评论
       hotComments: [],
+      //存放序号
+      index :0
     };
   },
   methods: {
@@ -55,7 +56,6 @@ export default {
       for (let item of res.songs) {
         //循环开始则自加1
         ++num;
-        console.log(1);
         //定义一个orderNum来存放当前序号
         item.orderNum = num;
       }
@@ -67,24 +67,61 @@ export default {
         this.trackIds.push(item.id);
       }
     },
-    //请求所有歌单歌曲
-    getAllSong() {
-      let num = 0; //用于存放当前序号
-      for (let item of this.trackIds) {
-        //请求所有歌曲数据
-        getSongDetail(item)
-          .then((res) => {
-            //添加序号用于排序
-            for (let item of res.songs) {
-              //循环开始则自加1
-              ++num;
-              //定义一个orderNum来存放当前序号
-              item.orderNum = num;
-            }
-            this.allSong.push(res.songs);
-          })
-          .catch((err) => {});
-      }
+    //请求所有歌单歌曲(使用递归函数保证每次网络请求顺序一致)
+    getAllSong(i, length) {
+      //请求所有歌曲数据
+      getSongDetail(this.trackIds[i])
+        .then((res) => {
+          this.index++;
+          res.songs[0].orderNum = this.index;
+          this.allSong.push(res.songs[0]);
+          if (++i < length) {
+            this.getAllSong(i, length);
+          }
+        })
+        .catch((err) => {});
+    },
+    //重新加载数据
+    reloadRoute() {
+      //数据重置
+      this.playlist = {};
+      this.trackIds = [];
+      this.allSong = [];
+      this.subscriber = [];
+      this.relatedList = [];
+      this.hotComments = [];
+      this.index =0;
+     //获取点击传入歌单的id信息
+    let num = this.$route.query.id;
+    //获取歌单详细信息
+    getPlaylistDetail(num)
+      .then((res) => {
+        this.playlist = res.playlist;
+        //获取歌单中所有歌曲的id
+        this.getAllSongId();
+        //请求所有歌曲
+        this.getAllSong(0, this.trackIds.length);
+      })
+      .catch((err) => {});
+
+    //获取喜欢此歌单的用户
+    getPlaylistSubscriber(num)
+      .then((res) => {
+        this.subscriber = res.subscribers;
+      })
+      .catch((err) => {});
+    //获取相似歌单列表
+    getRelatedList(num)
+      .then((res) => {
+        this.relatedList = res.playlists;
+      })
+      .catch((err) => {});
+    //获取热门评论
+    getCommentInfo(num)
+      .then((res) => {
+        this.hotComments = res.hotComments;
+      })
+      .catch((err) => {});
     },
   },
   components: {
@@ -93,6 +130,15 @@ export default {
     DetailSubscribers,
     DetailRelatedList,
     DetailHotComments,
+  },
+  watch: {
+    // 监听路由的变化 参数变化时更新发布订阅数据
+    $route(to, from) {
+      //对路由进行判断,决定何时进行刷新
+      if (to.fullPath.search("playlist-detail") == 1) {
+        this.reloadRoute();
+      }
+    },
   },
   created() {
     //获取点击传入歌单的id信息
@@ -103,10 +149,11 @@ export default {
         this.playlist = res.playlist;
         //获取歌单中所有歌曲的id
         this.getAllSongId();
-        //请求多有歌曲
-        this.getAllSong();
+        //请求所有歌曲
+        this.getAllSong(0, this.trackIds.length);
       })
       .catch((err) => {});
+
     //获取喜欢此歌单的用户
     getPlaylistSubscriber(num)
       .then((res) => {

@@ -49,8 +49,6 @@ export default {
          id:num
         },
       });
-      //重新刷新当前路由
-      this.$router.go(0)
     },
   },
 };

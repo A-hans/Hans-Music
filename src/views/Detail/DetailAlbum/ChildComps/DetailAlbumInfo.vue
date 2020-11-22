@@ -36,10 +36,7 @@ export default {
   name: "DetailAlbumInfo",
   props: {
     activeInfo: {
-      type: Object,
-      default() {
-        return {};
-      },
+      
     },
   },
 };

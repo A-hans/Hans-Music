@@ -68,12 +68,18 @@ export default {
       //获取音乐url
       getMusicUrl(item.id)
         .then((res) => {
-          let musicURL = res.data[0].url;
+          //定义需要传出去的数据
+          let musicUrl = res.data[0].url;
+          let musicName = item.name;
+          let musicPic = item.picUrl;
+          let singerName = item.song.artists[0].name
           //将数据带到mutaitions
           this.$store.commit({
             type:"addMusic",
-            item,
-            musicURL
+            musicUrl,
+            musicName,
+            musicPic,
+            singerName
           });
         })
         .catch((err) => {});

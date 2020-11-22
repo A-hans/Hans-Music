@@ -33,12 +33,6 @@ export default {
       });
       //运用事件总线建立起与导航组件的联系,跳转详情页后取消当前激活样式
       this.$bus.$emit("cancelActive");
-      //点击刷新路由
-      if(this.$route.path.indexOf("detail")!==-1){
-         this.$router.go(0);
-      }
-     
-      
     },
   },
   components: {

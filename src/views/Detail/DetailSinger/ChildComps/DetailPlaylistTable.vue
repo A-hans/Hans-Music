@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist-table" v-if="playlistItem.length !==0 ">
+  <div class="playlist-table" v-if="playlistItem.length !== 0">
     <el-row :gutter="20" type="flex" align="center">
       <el-col :span="24">
         <table class="list-table" width="100%">
@@ -16,10 +16,11 @@
           <tbody>
             <tr
               v-for="(item, index) of playlistItem"
+              :class="{ activeplay: currentIndex == index }"
               :key="index"
-              @mouseover="showPlay(index)"
+              @click="playMusic(item, index)"
             >
-             <td style="width: 50px" class="order">
+              <td style="width: 50px" class="order">
                 <span :class="{ deactive: currentIndex == index }">
                   {{ item.orderNum }}
                 </span>
@@ -28,13 +29,15 @@
                 </span>
               </td>
               <td class="song-name">
-                <span class='cover'><img :src="item.al.picUrl+'?param=100y100'" alt=""></span>
+                <span class="cover"
+                  ><img :src="item.al.picUrl + '?param=100y100'" alt=""
+                /></span>
                 {{ item.name }}
-                </td>
+              </td>
               <td class="art-name">{{ item.ar[0].name }}</td>
               <td class="collection-name">{{ item.al.name }}</td>
               <td class="time">{{ item.dt | formatTime }}</td>
-            </tr> 
+            </tr>
           </tbody>
         </table>
       </el-col>
@@ -44,6 +47,7 @@
 
 <script>
 import { formatDate } from "common/utils";
+import { getMusicUrl } from "network/Song";
 export default {
   name: "DetailPlaylistTable",
   props: {
@@ -52,7 +56,7 @@ export default {
       default() {
         return [];
       },
-    }
+    },
   },
   data() {
     return {
@@ -67,13 +71,33 @@ export default {
     },
   },
   methods: {
-    //鼠标移入展示播放图标
-    showPlay(index) {
+    playMusic(item,index) {
+      //获取音乐url
+      getMusicUrl(item.id)
+        .then((res) => {
+          let musicUrl = res.data[0].url;
+          let musicName = item.name;
+          let musicPic = item.al.picUrl;
+          let singerName = item.ar[0].name;
+          //将数据带到mutaitions
+          this.$store.commit({
+            type: "addMusic",
+            musicUrl,
+            musicName,
+            musicPic,
+            singerName,
+          });
+        })
+        .catch((err) => {});
+      //点击后在播放器中执行操作
+      this.$bus.$emit("reloadProcess");
       this.currentIndex = index;
+    },
+    showPlay(index) {
+      //播放暂停图标切换
       
     },
   },
-
 };
 </script>
 
@@ -84,13 +108,12 @@ export default {
 .playlist-table table,
 .playlist-table th,
 .playlist-table td {
-  
   border-collapse: collapse;
 }
 .playlist-table table {
   table-layout: fixed;
 }
-.playlist-table .cover img{
+.playlist-table .cover img {
   width: 30px;
   height: 30px;
   margin-right: 10px;
@@ -98,11 +121,11 @@ export default {
 }
 .playlist-table td,
 .playlist-table th {
-  padding-left:18px;
+  padding-left: 18px;
   height: 50px;
 }
 .playlist-table td {
-  padding:0 10px;
+  padding: 0 10px;
 }
 .playlist-table th {
   padding-left: 10px;
@@ -149,5 +172,8 @@ export default {
 }
 .playlist-table .active {
   display: block;
+}
+.activeplay {
+  color: var(--color-high-text);
 }
 </style>

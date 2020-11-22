@@ -55,9 +55,7 @@ export default {
         },
       });
       //只在搜索页面中进行路由更新
-      if (this.$route.path.indexOf("search-result") !== -1) {
-        this.$router.go(0);
-      }
+    
       this.$bus.$emit("cancelActive");
     },
     handleIconClick() {
@@ -69,9 +67,6 @@ export default {
           },
         });
         this.$bus.$emit("cancelActive");
-        if (this.$route.path.indexOf("search-result") !== -1) {
-          this.$router.go(0);
-        }
       }
     },
   },
