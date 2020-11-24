@@ -16,15 +16,15 @@
           <tbody>
             <tr
               v-for="(item, index) of playlistItem"
-              :class="{ activeplay: currentIndex == index }"
+              :class="{ activeplay: currentSongName== item.id}"
               :key="index"
               @click="playMusic(item, index)"
             >
               <td style="width: 50px" class="order">
-                <span :class="{ deactive: currentIndex == index }">
+                <span :class="{ deactive: currentSongName== item.id }">
                   {{ item.orderNum }}
                 </span>
-                <span class="play" :class="{ active: currentIndex == index }">
+                <span class="play" :class="{ active: currentSongName== item.id }">
                   <i class="el-icon-video-play"></i>
                 </span>
               </td>
@@ -70,8 +70,12 @@ export default {
   },
   computed:{
     ...mapGetters([
-      'currentIndex'
-    ])
+      'currentIndex',
+      'currentSong'
+    ]),
+    currentSongName(){
+       return this.currentSong ? this.currentSong.id : ""
+      }
   },
   filters: {
     formatTime(value) {
@@ -87,7 +91,6 @@ export default {
       this.SET_PLAYLIST(this.playlistItem);
       this.SET_SEQUENCELIST(this.playlistItem);
       this.SET_CURRENTINDEX(index);
-
     },
   },
 };

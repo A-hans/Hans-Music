@@ -98,9 +98,32 @@
       :src="musicData.url"
       @playing="audioReady"
       @ended="playEnd"
+      @timeupdate="updateTime"
     ></audio>
     <transition name="el-zoom-in-bottom">
-      <Lrc class="lrc" v-show="showLrc" />
+      <div class="lrc-contanier" v-show="showLrc">
+        <scroll class="contanier" ref="lrcScroll">
+          <div class="lrc">
+            <ul v-if="lrcLines.length !== 0">
+              <li
+                v-for="(item, index) in lrcLines"
+                :key="index"
+                ref="lrcItem"
+                class="lrc-item"
+                :class="{activeLrc:currentLineNum==index}"
+              >
+                {{ item.txt }}
+              </li>
+            </ul>
+            <div class ="Occupation-img" v-else>
+              <img src="~assets/img/歌词占位图.png" alt="">
+              <div>
+                 暂无歌词
+              </div>
+              </div>
+          </div>
+        </scroll>
+      </div>
     </transition>
     <transition name="el-zoom-in-bottom">
       <playlist-table class="playlist-table" v-show="showPlaylist" />
@@ -113,7 +136,7 @@ import { getMusicUrl, getMusicLrc } from "network/Song";
 import { playMode } from "common/alias";
 import { formatDate } from "common/utils";
 import { mapGetters, mapMutations } from "vuex";
-import Lrc from "components/common/Player/ChildComps/Lrc";
+import scroll from "components/common/Scroll/Scroll";
 import PlaylistTable from "components/common/Player/ChildComps/PlaylistTable";
 export default {
   name: "player",
@@ -123,8 +146,12 @@ export default {
       musicData: {},
       //歌词信息
       musicLrc: {},
+      //格式化歌词信息
+      lrcLines: [],
       //播放状态
       playing: false,
+      //当前播放歌词
+      currentLineNum:0,
       //当前播放模式
       currentMode: 0,
       //当前播放进度
@@ -209,8 +236,14 @@ export default {
     getMusicLrcApi(id) {
       getMusicLrc(id)
         .then((res) => {
-          if (res.code === 200) {
-            this.musicLrc = res.lrc;
+          if (res.code === 200 && res.lrc) {
+            this.musicLrc = res.lrc.lyric;
+            //格式化歌词
+            this.initLins();
+            //更新better-scroll
+            this.$nextTick(() => {
+              this.$refs.lrcScroll.Refresh();
+            });
           }
         })
         .catch((err) => {});
@@ -292,6 +325,27 @@ export default {
       audio.currentTime = 0;
       audio.play();
     },
+    updateTime(){
+      this.moveLrc();
+    },
+    //滚动歌词
+    moveLrc(){
+      this.currentLineNum = this.findCurrentNum(this.currentTime*1000);
+      if(this.currentLineNum>6){
+        this.$refs.lrcScroll.ScrollToElement(this.$refs.lrcItem[this.currentLineNum-6],1000);
+      }else{
+        this.$refs.lrcScroll.ScrollTo(0,0,1000);
+      }
+    },
+    findCurrentNum(time){
+      for(let i=0;i<this.lrcLines.length;i++){
+        if(time<this.lrcLines[i].time){
+          return i -1; 
+        }
+      }
+      //若歌词结束,歌曲还未结束
+      return this.lrcLines,length -1
+    },
     //播放开始前
     audioReady() {
       //存储播放总时长
@@ -351,10 +405,36 @@ export default {
         this.next();
       }
     },
+    //格式化歌词
+    initLins() {
+      this.lrcLines = [];
+      if (this.musicLrc) {
+        //将数据通过\n来分割成多个数组
+        const lines = this.musicLrc.split("\n");
+        const timeExp = /\[(\d{2}):(\d{2}\.\d{2,3})\]/g;
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          //正则匹配方法
+          const result = timeExp.exec(line);
+          if (result) {
+            const time =
+              Number(result[1] * 60 * 1000) + Number(result[2] * 1000);
+            const txt = line.replace(timeExp, "").trim();
+            this.lrcLines.push({
+              time,
+              txt,
+            });
+          }
+        }
+      }
+    },
     //歌词展开
     showLrcInfo() {
       this.showLrc = !this.showLrc;
       this.showPlaylist = false;
+      this.$nextTick(() => {
+        this.$refs.lrcScroll.Refresh();
+      });
     },
     //播放列表展开
     showplaylistInfo() {
@@ -363,7 +443,7 @@ export default {
     },
   },
   components: {
-    Lrc,
+    scroll,
     PlaylistTable,
   },
 };
@@ -412,6 +492,7 @@ export default {
 .icon-play img {
   width: 35px;
   height: 35px;
+  cursor: pointer;
 }
 .play-button .center img {
   width: 25px;
@@ -450,6 +531,7 @@ export default {
   height: 20px;
   margin-top: 20px;
   margin-right: 10px;
+  cursor: pointer;
 }
 .volume-control {
   display: flex;
@@ -467,14 +549,46 @@ export default {
   text-align: center;
   line-height: 70px;
 }
-.lrc {
+.lrc-contanier {
+  width: 280px;
+  height: 400px;
   position: fixed;
-  right: 0;
+  right: 5px;
   bottom: 70px;
+  border-radius: 6px;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+.lrc ul {
+  padding: 20px 0;
+  list-style: none;
+  text-align: center;
+}
+.lrc-item {
+  padding: 5px;
+  font-size: 12px;
+}
+.contanier {
+  height: 400px;
+  overflow: hidden;
 }
 .playlist-table {
   position: fixed;
   right: 0;
   bottom: 70px;
+}
+.activeLrc{
+  color: var(--color-high-text);
+  font-size: 13px;
+}
+.Occupation-img{
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 36%;
+}
+.Occupation-img img{
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
 }
 </style>
