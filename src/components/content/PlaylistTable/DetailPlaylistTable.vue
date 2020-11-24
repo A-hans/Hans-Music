@@ -87,8 +87,7 @@ export default {
       this.SET_PLAYLIST(this.playlistItem);
       this.SET_SEQUENCELIST(this.playlistItem);
       this.SET_CURRENTINDEX(index);
-      //播放状态激活
-      this.compCurrentIndex = this.currentIndex;
+
     },
   },
 };

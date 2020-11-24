@@ -23,14 +23,14 @@
           <el-col :span="5">
             <div class="play-button">
               <i class="icon-play">
-                <img src="~assets/img/上一曲.png" alt="" @click="prev"/>
+                <img src="~assets/img/上一曲.png" alt="" @click="prev" />
               </i>
               <i class="icon-play center" @click="togglePlay">
                 <img src="~assets/img/暂停.png" alt="" v-if="playing" />
                 <img src="~assets/img/播放.png" alt="" v-else />
               </i>
               <i class="icon-play">
-                <img src="~assets/img/下一曲.png" alt="" @click="next"/>
+                <img src="~assets/img/下一曲.png" alt="" @click="next" />
               </i>
             </div>
           </el-col>
@@ -63,17 +63,31 @@
       </el-col>
       <el-col :span="3" class="play-option">
         <el-col :span="8">
-          <i class="play-mode">
-            <img src="~assets/img/顺序播放.png" alt="" />
+          <i class="play-mode" @click="changeMode">
+            <img
+              src="~assets/img/顺序播放.png"
+              alt=""
+              v-show="currentMode == 0"
+            />
+            <img
+              src="~assets/img/单曲循环.png"
+              alt=""
+              v-show="currentMode == 1"
+            />
+            <img
+              src="~assets/img/随机播放.png"
+              alt=""
+              v-show="currentMode == 2"
+            />
           </i>
         </el-col>
         <el-col :span="8">
-          <i class="lrc">
+          <i class="lrc-icon" @click="showLrcInfo">
             <img src="~assets/img/歌词.png" alt="" />
           </i>
         </el-col>
         <el-col :span="8">
-          <i class="playlist">
+          <i class="playlist-icon" @click="showplaylistInfo">
             <img src="~assets/img/播放列表.png" alt="" />
           </i>
         </el-col>
@@ -85,13 +99,22 @@
       @playing="audioReady"
       @ended="playEnd"
     ></audio>
+    <transition name="el-zoom-in-bottom">
+      <Lrc class="lrc" v-show="showLrc" />
+    </transition>
+    <transition name="el-zoom-in-bottom">
+      <playlist-table class="playlist-table" v-show="showPlaylist" />
+    </transition>
   </div>
 </template>
 
 <script>
 import { getMusicUrl, getMusicLrc } from "network/Song";
+import { playMode } from "common/alias";
 import { formatDate } from "common/utils";
 import { mapGetters, mapMutations } from "vuex";
+import Lrc from "components/common/Player/ChildComps/Lrc";
+import PlaylistTable from "components/common/Player/ChildComps/PlaylistTable";
 export default {
   name: "player",
   data() {
@@ -102,6 +125,8 @@ export default {
       musicLrc: {},
       //播放状态
       playing: false,
+      //当前播放模式
+      currentMode: 0,
       //当前播放进度
       currentProcess: 0,
       //当前音量大小
@@ -116,6 +141,10 @@ export default {
       isMute: true,
       //上一次的音量值
       preVolume: 0,
+      //歌词是否显示
+      showLrc: false,
+      //播放列表是否显示
+      showPlaylist: false,
     };
   },
   computed: {
@@ -161,7 +190,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["SET_CURRENTINDEX"]),
+    ...mapMutations(["SET_CURRENTINDEX", "SET_MODE", "SET_PLAYLIST"]),
     //获取音乐地址
     getMusicApi(id) {
       getMusicUrl(id)
@@ -227,6 +256,42 @@ export default {
       //更新currnetIndex的值
       this.SET_CURRENTINDEX(newIndex);
     },
+    //播放模式
+    changeMode() {
+      //点击后每次加1,对3进行取余,进行0,1,2的循环
+      this.currentMode = (this.mode + 1) % 3;
+      //更新vuex内数据
+      this.SET_MODE(this.currentMode);
+      //用于存放随机播放后的新列表
+      let newPlaylist = [];
+      //是否进入随机模式
+      if (this.mode == 2) {
+        newPlaylist = this.getRandomList(this.sequenceList);
+      } else {
+        //非随机模式下将列表恢复顺序播放
+        newPlaylist = this.sequenceList;
+      }
+      //随机列表当前播放歌曲与原列表歌曲做匹配
+      const newIndex = newPlaylist.findIndex(
+        (item) => item.id === this.currentSong.id
+      );
+      //更新Vuex内数据
+      this.SET_PLAYLIST(newPlaylist);
+      this.SET_CURRENTINDEX(newIndex);
+    },
+    //随机播放列表的操作
+    getRandomList(arr) {
+      //不改变原数组的值
+      const newArr = [].concat(arr);
+      //使用sort方法进行排序,a>b返回大于0的值,a<b返回小于0的值
+      return newArr.sort((a, b) => (Math.random() > 0.5 ? -1 : 1));
+    },
+    //单曲循环操作
+    loop() {
+      const audio = this.$refs.audio;
+      audio.currentTime = 0;
+      audio.play();
+    },
     //播放开始前
     audioReady() {
       //存储播放总时长
@@ -279,11 +344,28 @@ export default {
       //播放结束时清除所有数据
       clearInterval(this.time1);
       this.currentProcess = 0;
-      this.currentTime = 0;
-      this.isShowIcon = true;
+      //若是单曲循环
+      if (this.mode === playMode.loop) {
+        this.loop();
+      } else {
+        this.next();
+      }
+    },
+    //歌词展开
+    showLrcInfo() {
+      this.showLrc = !this.showLrc;
+      this.showPlaylist = false;
+    },
+    //播放列表展开
+    showplaylistInfo() {
+      this.showPlaylist = !this.showPlaylist;
+      this.showLrc = false;
     },
   },
-  mounted() {},
+  components: {
+    Lrc,
+    PlaylistTable,
+  },
 };
 </script>
 
@@ -384,5 +466,15 @@ export default {
 .play-option .el-col {
   text-align: center;
   line-height: 70px;
+}
+.lrc {
+  position: fixed;
+  right: 0;
+  bottom: 70px;
+}
+.playlist-table {
+  position: fixed;
+  right: 0;
+  bottom: 70px;
 }
 </style>
