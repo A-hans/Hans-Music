@@ -1,19 +1,19 @@
 <template>
-  <div class="header-info" v-if="Object.keys(singerInfo).length !== 0">
+  <div class="header-info" >
     <el-row>
       <div class="header-content">
         <el-col :span="6">
           <div class="singer-avatar">
-            <img :src="singerInfo.artist.picUrl + '?param=300y300'" alt="" />
+            <img :src="singerInfo.picUrl + '?param=300y300'" alt="" />
           </div>
         </el-col>
 
         <el-col :span="17">
           <div class="singer-info">
             <div class="singer-name">
-              <h2>{{ singerInfo.artist.name }}</h2>
+              <h2>{{ singerInfo.name }}</h2>
             </div>
-            <div class="singer-desc" v-html="singerInfo.briefDesc"></div>
+            <div class="singer-desc" v-html="descs.briefDesc"></div>
             <el-popover
               class="detail-desc"
               placement="right-end"
@@ -24,21 +24,21 @@
             >
               <!-- 插入html识别换行 -->
               <ul class="desc-info">
-                <li v-for="(item, index) in descs" :key="index" >
+                <li v-for="(item, index) in descs.introduction" :key="index" >
                   <h4>{{ item.ti }}</h4>
                   <p class="detail-info" v-html="item.txt"></p>
                 </li>
               </ul>
-              <span slot="reference" v-if="descs.length !==0" class="desc-all">详细介绍</span>
+              <span slot="reference" v-show="descs.introduction.length !==0" class="desc-all">详细介绍</span>
             </el-popover>
             <div class="singer-data">
               <div>
                 <ul>
                   <li>
-                    单曲<span>{{ singerInfo.artist.musicSize }}</span>
+                    单曲<span>{{ singerInfo.musicSize }}</span>
                   </li>
                   <li>
-                    专辑<span>{{ singerInfo.artist.albumSize }}</span>
+                    专辑<span>{{ singerInfo.albumSize }}</span>
                   </li>
                 </ul>
               </div>
@@ -70,9 +70,9 @@ export default {
       },
     },
     descs: {
-      type: Array,
+      type: Object,
       default() {
-        return [];
+        return {};
       },
     },
   },

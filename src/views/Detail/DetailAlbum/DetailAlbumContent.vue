@@ -24,7 +24,7 @@ import { getAlbumDetail, getAlbumComment,getAlbumActiveInfo } from "network/Albu
 
 import DetailHeader from "views/Detail/DetailAlbum/ChildComps/DetailHeader";
 import DetailAlbumInfo from "views/Detail/DetailAlbum/ChildComps/DetailAlbumInfo";
-import DetailPlaylistTable from "views/Detail/DetailSinger/ChildComps/DetailPlaylistTable";
+import DetailPlaylistTable from "components/content/PlaylistTable/DetailPlaylistTable";
 import DetailComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments";
 
 export default {

@@ -27,7 +27,9 @@
                     {{ item.name }}
                   </div>
                   <div class="artist-name">
-                    {{ item.song.artists[0].name }}
+                    <span v-for="(i, index) in item.song.artists" :key="index">{{
+                  i.name
+                }} </span>
                   </div>
                 </div>
               </div>
@@ -46,7 +48,6 @@
 </template>
 
 <script>
-import { getMusicUrl } from "network/Song";
 export default {
   name: "HomeRecommendSong",
   props: {
@@ -65,27 +66,7 @@ export default {
   },
   methods: {
     playMusic(item,index) {
-      //获取音乐url
-      getMusicUrl(item.id)
-        .then((res) => {
-          //定义需要传出去的数据
-          let musicUrl = res.data[0].url;
-          let musicName = item.name;
-          let musicPic = item.picUrl;
-          let singerName = item.song.artists[0].name
-          //将数据带到mutaitions
-          this.$store.commit({
-            type:"addMusic",
-            musicUrl,
-            musicName,
-            musicPic,
-            singerName
-          });
-        })
-        .catch((err) => {});
-        //点击后在播放器中执行操作
-        this.$bus.$emit("reloadProcess");
-        //播放暂停图标切换
+      
         this.currentIndex = index;
     },
   },

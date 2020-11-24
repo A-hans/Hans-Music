@@ -42,6 +42,7 @@ export function getPlaylistDetail(num){
 export function getSongDetail(id){
   return request({
     url:'/song/detail',
+    isActive:true,
     params:{
       ids:id
     }

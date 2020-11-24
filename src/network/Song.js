@@ -12,3 +12,13 @@ export function getMusicUrl(num){
     }
   })
 }
+
+//获取歌词
+export function getMusicLrc(num){
+  return request({
+    url:"/lyric",
+    params:{
+      id:num
+    }
+  })
+}

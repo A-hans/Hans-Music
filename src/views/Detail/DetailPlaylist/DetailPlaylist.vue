@@ -25,7 +25,7 @@ import {
   getCommentInfo,
 } from "network/Playlist";
 import DetailHeader from "views/Detail/DetailPlaylist/ChildComps/DetailHeader";
-import DetailPlaylistTable from "views/Detail/DetailSinger/ChildComps/DetailPlaylistTable";
+import DetailPlaylistTable from "components/content/PlaylistTable/DetailPlaylistTable";
 import DetailSubscribers from "views/Detail/DetailPlaylist/ChildComps/DetailSubscribers";
 import DetailRelatedList from "views/Detail/DetailPlaylist/ChildComps/DetailRelatedList";
 import DetailHotComments from "views/Detail/DetailPlaylist/ChildComps/DetailHotComments";
@@ -66,18 +66,16 @@ export default {
         //将歌曲的id储存起来,进行网络请求完整的歌单
         this.trackIds.push(item.id);
       }
+      //将数组转为字符串,统一网络请求
+     this.trackIds = this.trackIds.join(",");
     },
     //请求所有歌单歌曲(使用递归函数保证每次网络请求顺序一致)
-    getAllSong(i, length) {
+    getAllSong() {
       //请求所有歌曲数据
-      getSongDetail(this.trackIds[i])
+      getSongDetail(this.trackIds)
         .then((res) => {
-          this.index++;
-          res.songs[0].orderNum = this.index;
-          this.allSong.push(res.songs[0]);
-          if (++i < length) {
-            this.getAllSong(i, length);
-          }
+        this.addOrder(res);
+        this.allSong = res.songs;
         })
         .catch((err) => {});
     },
@@ -91,7 +89,7 @@ export default {
       this.relatedList = [];
       this.hotComments = [];
       this.index =0;
-     //获取点击传入歌单的id信息
+    //获取点击传入歌单的id信息
     let num = this.$route.query.id;
     //获取歌单详细信息
     getPlaylistDetail(num)

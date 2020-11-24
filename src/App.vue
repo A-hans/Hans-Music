@@ -5,7 +5,7 @@
         <tab-bar></tab-bar>
       </el-header>
       <el-main>
-        <keep-alive
+        <keep-alive 
         >
           <router-view  :key="$route.fullPath"/>
         </keep-alive>

@@ -34,7 +34,11 @@
                 /></span>
                 {{ item.name }}
               </td>
-              <td class="art-name">{{ item.ar[0].name }}</td>
+              <td class="art-name">
+                <span v-for="(i, index) in item.ar" :key="index">{{
+                  i.name
+                }} </span>
+              </td>
               <td class="collection-name">{{ item.al.name }}</td>
               <td class="time">{{ item.dt | formatTime }}</td>
             </tr>
@@ -47,7 +51,7 @@
 
 <script>
 import { formatDate } from "common/utils";
-import { getMusicUrl } from "network/Song";
+import { mapMutations,mapGetters } from "vuex";
 export default {
   name: "DetailPlaylistTable",
   props: {
@@ -61,8 +65,13 @@ export default {
   data() {
     return {
       isShow: true,
-      currentIndex: null,
+      compCurrentIndex: null,
     };
+  },
+  computed:{
+    ...mapGetters([
+      'currentIndex'
+    ])
   },
   filters: {
     formatTime(value) {
@@ -71,31 +80,15 @@ export default {
     },
   },
   methods: {
-    playMusic(item,index) {
-      //获取音乐url
-      getMusicUrl(item.id)
-        .then((res) => {
-          let musicUrl = res.data[0].url;
-          let musicName = item.name;
-          let musicPic = item.al.picUrl;
-          let singerName = item.ar[0].name;
-          //将数据带到mutaitions
-          this.$store.commit({
-            type: "addMusic",
-            musicUrl,
-            musicName,
-            musicPic,
-            singerName,
-          });
-        })
-        .catch((err) => {});
-      //点击后在播放器中执行操作
-      this.$bus.$emit("reloadProcess");
-      this.currentIndex = index;
-    },
-    showPlay(index) {
-      //播放暂停图标切换
-      
+    ...mapMutations(["SET_PLAYLIST", "SET_SEQUENCELIST", "SET_CURRENTINDEX"]),
+    //将歌曲添加到播放器
+    playMusic(item, index) {
+      //传递数据至vuex
+      this.SET_PLAYLIST(this.playlistItem);
+      this.SET_SEQUENCELIST(this.playlistItem);
+      this.SET_CURRENTINDEX(index);
+      //播放状态激活
+      this.compCurrentIndex = this.currentIndex;
     },
   },
 };

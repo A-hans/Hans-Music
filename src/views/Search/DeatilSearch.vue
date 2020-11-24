@@ -12,7 +12,7 @@
                 根据<span>{{ keyWord }}</span
                 >的搜索结果:
               </div>
-              <song-list :playlistItem="searchSongs" />
+              <detail-playlist-table :playlistItem="searchSongs" />
             </el-tab-pane>
             <el-tab-pane label="歌手" name="second">
               <div class="search-title">
@@ -26,7 +26,7 @@
                 根据<span>{{ keyWord }}</span
                 >的搜索结果:
               </div>
-              <song-lists :playlistData="searchSongLists" />
+              <song-list :playlistData="searchSongLists" />
             </el-tab-pane>
             <el-tab-pane label="专辑" name="fourth">
               <div class="search-title">
@@ -44,9 +44,9 @@
 <script>
 import { getSearchInfo } from "network/Search";
 
-import SongList from "views/Detail/DetailSinger/ChildComps/DetailPlaylistTable";
+import DetailPlaylistTable from "components/content/PlaylistTable/DetailPlaylistTable";
 import SingerList from "components/content/SingerList/SingerList";
-import SongLists from "components/content/SongList/SongList";
+import SongList from "components/content/SongList/SongList";
 import DetailAlbum from "views/Detail/DetailSinger/ChildComps/DetailAlbum";
 export default {
   name: "DetailSearch",
@@ -99,9 +99,9 @@ export default {
     },
   },
   components: {
-    SongList,
+   DetailPlaylistTable,
     SingerList,
-    SongLists,
+    SongList,
     DetailAlbum,
   },
   watch: {

@@ -1,20 +1,19 @@
 <template>
-  <div id="music-player" v-if="$store.state.currentSong !== null">
+  <div id="music-player">
     <el-row :gutter="30">
       <el-col :span="4">
         <div class="song-info">
           <div class="cover">
-            <img
-              :src="$store.state.currentSong.musicPic + '?param=100y100'"
-              alt=""
-            />
+            <img :src="showImg" alt="" />
           </div>
           <div class="text-info">
             <div class="song-name">
-              <h4>{{ $store.state.currentSong.musicName }}</h4>
+              <h4>{{ songName }}</h4>
             </div>
             <div class="singer-name">
-              {{ $store.state.currentSong.singerName }}
+              <span v-for="(item, index) in singerName" :key="index">{{
+                item.name
+              }}</span>
             </div>
           </div>
         </div>
@@ -24,14 +23,14 @@
           <el-col :span="5">
             <div class="play-button">
               <i class="icon-play">
-                <img src="~assets/img/上一曲.png" alt="" />
+                <img src="~assets/img/上一曲.png" alt="" @click="prev"/>
               </i>
-              <i class="icon-play center" @click="playMusic">
-                <img src="~assets/img/播放.png" alt="" v-if="isShowIcon" />
-                <img src="~assets/img/暂停.png" alt="" v-else />
+              <i class="icon-play center" @click="togglePlay">
+                <img src="~assets/img/暂停.png" alt="" v-if="playing" />
+                <img src="~assets/img/播放.png" alt="" v-else />
               </i>
               <i class="icon-play">
-                <img src="~assets/img/下一曲.png" alt="" />
+                <img src="~assets/img/下一曲.png" alt="" @click="next"/>
               </i>
             </div>
           </el-col>
@@ -48,8 +47,7 @@
             <div class="currentTime">{{ totalTime | formatTime }}</div>
           </el-col>
           <el-col :span="6" class="volume-control">
-            <i class="volume-icon" 
-            @click="mute">
+            <i class="volume-icon" @click="mute">
               <img src="~assets/img/喇叭.png" alt="" v-if="isMute" />
               <img src="~assets/img/静音 .png" alt="" v-else />
             </i>
@@ -83,26 +81,31 @@
     </el-row>
     <audio
       ref="audio"
-      :src="$store.state.currentSong.musicUrl"
+      :src="musicData.url"
       @playing="audioReady"
       @ended="playEnd"
-      autoplay
     ></audio>
   </div>
 </template>
 
 <script>
+import { getMusicUrl, getMusicLrc } from "network/Song";
 import { formatDate } from "common/utils";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "player",
   data() {
     return {
+      //音乐地址
+      musicData: {},
+      //歌词信息
+      musicLrc: {},
+      //播放状态
+      playing: false,
       //当前播放进度
       currentProcess: 0,
       //当前音量大小
       currentVolume: 50,
-      //播放按钮是否显示
-      isShowIcon: false,
       //当前播放时间
       currentTime: 0,
       //播放总时长
@@ -112,8 +115,29 @@ export default {
       //是否静音
       isMute: true,
       //上一次的音量值
-      preVolume:0
+      preVolume: 0,
     };
+  },
+  computed: {
+    ...mapGetters([
+      "playlist",
+      "sequenceList",
+      "currentIndex",
+      "currentSong",
+      "mode",
+    ]),
+    songName() {
+      //currentSong非空判断(三目运算符)
+      return this.currentSong ? this.currentSong.name : "";
+    },
+    singerName() {
+      return this.currentSong ? this.currentSong.ar : "";
+    },
+    showImg() {
+      return this.currentSong
+        ? this.currentSong.al.picUrl + "?param=100y100"
+        : "";
+    },
   },
   filters: {
     //对播放总时长进行时间格式化
@@ -122,25 +146,89 @@ export default {
       return formatDate(date, "mm:ss");
     },
   },
-  methods: {
-    //音乐播放暂停
-    playMusic() {
-      //播放暂停图标切换
-      this.isShowIcon = !this.isShowIcon;
-      if (this.isShowIcon) {
-        //播放暂停
-        this.$refs.audio.pause();
-        //计时器停止
-        clearInterval(this.time1);
-      } else {
-        //继续播放
-        this.$refs.audio.play();
+  watch: {
+    //监听当前播放的歌曲,判断是否需要发起新的网络请求
+    currentSong(newVal, oldVal) {
+      //第一进来为undefined,需要发生请求,当两次值不匹配时发生请求
+      if (oldVal === undefined || newVal.id != oldVal.id) {
+        //获取音乐地址
+        this.getMusicApi(newVal.id);
+        //获取歌词信息
+        this.getMusicLrcApi(newVal.id);
+        //进度条清零
+        this.currentProcess = 0;
       }
+    },
+  },
+  methods: {
+    ...mapMutations(["SET_CURRENTINDEX"]),
+    //获取音乐地址
+    getMusicApi(id) {
+      getMusicUrl(id)
+        .then((res) => {
+          if (res.code === 200 && res.data[0].code === 200) {
+            this.musicData = res.data[0];
+            //播放音乐时按钮状态
+            this.$nextTick(() => {
+              this.togglePlay(true);
+            });
+          }
+        })
+        .catch((err) => {});
+    },
+    //获取歌词信息
+    getMusicLrcApi(id) {
+      getMusicLrc(id)
+        .then((res) => {
+          if (res.code === 200) {
+            this.musicLrc = res.lrc;
+          }
+        })
+        .catch((err) => {});
+    },
+    //播放状态控制
+    togglePlay(val) {
+      if (!this.currentSong) return;
+      //第一次进行播放时,给定准确值
+      if (val == true || val == false) {
+        this.playing = val;
+      } else {
+        //播放时点击按钮进行取反
+        this.playing = !this.playing;
+      }
+      const audio = this.$refs.audio;
+      if (this.playing) {
+        audio.play();
+      } else {
+        audio.pause();
+        clearInterval(this.time1);
+      }
+    },
+    //上一曲
+    prev() {
+      //获取播放列表长度
+      const len = this.playlist.length;
+      let newIndex = this.currentIndex - 1;
+      if (newIndex < 0) {
+        //若当前是第一首,则点击返回至最后一首
+        newIndex = len - 1;
+      }
+      //更新currnetIndex的值
+      this.SET_CURRENTINDEX(newIndex);
+    },
+    //下一曲
+    next() {
+      const len = this.playlist.length;
+      let newIndex = this.currentIndex + 1;
+      if (newIndex == len - 1) {
+        //若是最后一首时,返回第一首
+        newIndex = 0;
+      }
+      //更新currnetIndex的值
+      this.SET_CURRENTINDEX(newIndex);
     },
     //播放开始前
     audioReady() {
-      //重置播放图标
-      this.isShowIcon = false;
       //存储播放总时长
       this.totalTime = this.$refs.audio.duration;
       //进度条开启
@@ -168,22 +256,22 @@ export default {
       //是否显示静音
       if (this.currentVolume == 0) {
         this.isMute = false;
-      }else{
+      } else {
         this.isMute = true;
       }
     },
     //点击静音
-    mute(){
-      if(this.isMute){
-        this.isMute =false;
+    mute() {
+      if (this.isMute) {
+        this.isMute = false;
         //储存静音前的音量值
         this.preVolume = this.currentVolume;
         this.$refs.audio.volume = 0;
         this.currentVolume = 0;
-      }else{
-        this.isMute =true;
-        this.$refs.audio.volume = (this.preVolume/100);
-        this.currentVolume =this.preVolume;
+      } else {
+        this.isMute = true;
+        this.$refs.audio.volume = this.preVolume / 100;
+        this.currentVolume = this.preVolume;
       }
     },
     //播放结束时
@@ -195,12 +283,7 @@ export default {
       this.isShowIcon = true;
     },
   },
-  mounted() {
-    //外部组件切歌时重置播放进度条
-    this.$bus.$on("reloadProcess", () => {
-      this.currentProcess = 0;
-    });
-  },
+  mounted() {},
 };
 </script>
 
