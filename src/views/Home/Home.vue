@@ -5,7 +5,10 @@
     </transition>
     <home-playlist :playlistData="playlist" />
     <home-recommend-song :recommendSongsData="recomendSongs" />
-    <home-recommend-singer class="recommend-singer" :recommendSingerData="recomendSingers" />
+    <home-recommend-singer
+      class="recommend-singer"
+      :recommendSingerData="recomendSingers"
+    />
   </div>
 </template>
 
@@ -29,6 +32,7 @@ export default {
       bannerlist: [],
       playlist: [],
       recomendSongs: [],
+
       recomendSingers: [],
     };
   },
@@ -58,7 +62,23 @@ export default {
     //获取推荐歌曲
     getHomeRecommendSong()
       .then((res) => {
-        this.recomendSongs = res.result;
+        for (let item of res.result) {
+           let recomendSong = {
+            id: 0,
+            name: null,
+            dt: 0,
+            al: {
+              picUrl: "",
+            },
+            ar: [],
+          };
+         recomendSong.name = item.name;
+          recomendSong.id = item.id;
+          recomendSong.al.picUrl = item.picUrl;
+          recomendSong.ar = item.song.artists;
+          recomendSong.dt = item.song.duration;
+          this.recomendSongs.push(recomendSong);
+        }
       })
       .catch((err) => {});
     //获取推荐歌手
@@ -72,10 +92,10 @@ export default {
 </script>
 
 <style scoped>
-.swiper{
+.swiper {
   margin-bottom: 20px;
 }
-.recommend-singer{
+.recommend-singer {
   margin-top: 35px;
 }
 </style>

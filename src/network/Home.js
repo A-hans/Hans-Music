@@ -38,4 +38,3 @@ export function getRecommendSinger(num1,num2){
     }
   })
 }
-

@@ -1,10 +1,11 @@
 <template>
-  <div id="music-player">
+  <div id="music-player" v-if="currentSong">
     <el-row :gutter="30">
       <el-col :span="4">
         <div class="song-info">
           <div class="cover">
-            <img :src="showImg" alt="" />
+            <img :src="showImg" alt="" v-show="currentSong"/>
+            <img src="~assets/img/唱片.png" alt="" v-show="!currentSong">
           </div>
           <div class="text-info">
             <div class="song-name">
@@ -110,23 +111,25 @@
                 :key="index"
                 ref="lrcItem"
                 class="lrc-item"
-                :class="{activeLrc:currentLineNum==index}"
+                :class="{ activeLrc: currentLineNum == index }"
               >
                 {{ item.txt }}
               </li>
             </ul>
-            <div class ="Occupation-img" v-else>
-              <img src="~assets/img/歌词占位图.png" alt="">
-              <div>
-                 暂无歌词
-              </div>
-              </div>
+            <div class="Occupation-img" v-else>
+              <img src="~assets/img/歌词占位图.png" alt="" />
+              <div>暂无歌词</div>
+            </div>
           </div>
         </scroll>
       </div>
     </transition>
     <transition name="el-zoom-in-bottom">
-      <playlist-table class="playlist-table" v-show="showPlaylist" />
+      <div class="playlist-table" v-show="showPlaylist">
+        <scroll class="playlist-contanier" ref="playlistScroll">
+          <playlist-table @stopMusic="stopMusic" />
+        </scroll>
+      </div>
     </transition>
   </div>
 </template>
@@ -137,7 +140,8 @@ import { playMode } from "common/alias";
 import { formatDate } from "common/utils";
 import { mapGetters, mapMutations } from "vuex";
 import scroll from "components/common/Scroll/Scroll";
-import PlaylistTable from "components/common/Player/ChildComps/PlaylistTable";
+import PlaylistTable from "components/content/Player/ChildComps/PlaylistTable";
+import Scroll from "../../common/Scroll/Scroll.vue";
 export default {
   name: "player",
   data() {
@@ -151,7 +155,7 @@ export default {
       //播放状态
       playing: false,
       //当前播放歌词
-      currentLineNum:0,
+      currentLineNum: 0,
       //当前播放模式
       currentMode: 0,
       //当前播放进度
@@ -187,12 +191,14 @@ export default {
       return this.currentSong ? this.currentSong.name : "";
     },
     singerName() {
-      return this.currentSong ? this.currentSong.ar : "";
+      return this.currentSong
+        ? this.currentSong.ar
+        : "" ;
     },
     showImg() {
       return this.currentSong
         ? this.currentSong.al.picUrl + "?param=100y100"
-        : "";
+        : "" ;
     },
   },
   filters: {
@@ -325,26 +331,29 @@ export default {
       audio.currentTime = 0;
       audio.play();
     },
-    updateTime(){
+    updateTime() {
       this.moveLrc();
     },
     //滚动歌词
-    moveLrc(){
-      this.currentLineNum = this.findCurrentNum(this.currentTime*1000);
-      if(this.currentLineNum>6){
-        this.$refs.lrcScroll.ScrollToElement(this.$refs.lrcItem[this.currentLineNum-6],1000);
-      }else{
-        this.$refs.lrcScroll.ScrollTo(0,0,1000);
+    moveLrc() {
+      this.currentLineNum = this.findCurrentNum(this.currentTime * 1000);
+      if (this.currentLineNum > 6) {
+        this.$refs.lrcScroll.ScrollToElement(
+          this.$refs.lrcItem[this.currentLineNum - 6],
+          1000
+        );
+      } else {
+        this.$refs.lrcScroll.ScrollTo(0, 0, 1000);
       }
     },
-    findCurrentNum(time){
-      for(let i=0;i<this.lrcLines.length;i++){
-        if(time<this.lrcLines[i].time){
-          return i -1; 
+    findCurrentNum(time) {
+      for (let i = 0; i < this.lrcLines.length; i++) {
+        if (time < this.lrcLines[i].time) {
+          return i - 1;
         }
       }
       //若歌词结束,歌曲还未结束
-      return this.lrcLines,length -1
+      return this.lrcLines, length - 1;
     },
     //播放开始前
     audioReady() {
@@ -440,6 +449,16 @@ export default {
     showplaylistInfo() {
       this.showPlaylist = !this.showPlaylist;
       this.showLrc = false;
+      //更新better-scroll
+      this.$nextTick(() => {
+        this.$refs.playlistScroll.Refresh();
+      });
+    },
+    //播放列表中点击清空停止音乐播放
+    stopMusic() {
+      this.$nextTick(() => {
+        this.$refs.playlistScroll.Refresh();
+      });
     },
   },
   components: {
@@ -447,6 +466,7 @@ export default {
     PlaylistTable,
   },
 };
+Scroll;
 </script>
 
 <style scoped>
@@ -553,7 +573,7 @@ export default {
   width: 280px;
   height: 400px;
   position: fixed;
-  right: 5px;
+  right: 10px;
   bottom: 70px;
   border-radius: 6px;
   background-color: var(--color-background);
@@ -573,22 +593,31 @@ export default {
   overflow: hidden;
 }
 .playlist-table {
+  width: 300px;
+  padding: 15px;
+  border-radius: 6px;
   position: fixed;
   right: 0;
   bottom: 70px;
+  background-color: var(--color-background);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
-.activeLrc{
+.activeLrc {
   color: var(--color-high-text);
   font-size: 13px;
 }
-.Occupation-img{
+.Occupation-img {
   text-align: center;
   margin: 0 auto;
   margin-top: 36%;
 }
-.Occupation-img img{
+.Occupation-img img {
   width: 100px;
   height: 100px;
   margin-bottom: 10px;
+}
+.playlist-contanier {
+  height: 400px;
+  overflow: hidden;
 }
 </style>

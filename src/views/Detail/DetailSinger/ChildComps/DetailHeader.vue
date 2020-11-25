@@ -101,6 +101,7 @@ export default {
 }
 .singer-desc {
   margin: 20px 0 10px 0;
+  line-height: 28px;
   overflow: hidden;
   /* 设置内容显示多少行 */
   display: -webkit-box;

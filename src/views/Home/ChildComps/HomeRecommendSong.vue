@@ -20,14 +20,14 @@
             <el-col :span="17">
               <div class="song-info">
                 <div class="cover">
-                  <img :src="item.picUrl + '?param=100y100'" alt="" />
+                  <img :src="item.al.picUrl + '?param=100y100'" alt="" />
                 </div>
                 <div class="song">
                   <div class="song-name">
                     {{ item.name }}
                   </div>
                   <div class="artist-name">
-                    <span v-for="(i, index) in item.song.artists" :key="index">{{
+                    <span v-for="(i, index) in item.ar" :key="index">{{
                   i.name
                 }} </span>
                   </div>
@@ -36,8 +36,8 @@
             </el-col>
             <el-col :span="2" class="song-play">
               <div class="play" @click="playMusic(item,index)">
-                <img src="~assets/img/play.png" alt="" :class="{deactive:currentIndex == index}"/>
-                <img src="~assets/img/pause.png" alt="" class="pause-icon" :class="{active:currentIndex == index}"/>
+                <img src="~assets/img/play.png" alt="" :class="{deactive:songName===item.id}"/>
+                <img src="~assets/img/pause.png" alt="" class="pause-icon" :class="{active:songName===item.id}"/>
               </div>
             </el-col>
           </el-row>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import {mapGetters,mapMutations} from "vuex"
 export default {
   name: "HomeRecommendSong",
   props: {
@@ -60,14 +61,25 @@ export default {
   },
   data(){
     return{
-      //当前下标
-      currentIndex:null
+      
+    }
+  },
+  computed:{
+    ...mapGetters([
+      "currentSong"
+    ]),
+    songName(){
+      return this.currentSong ? this.currentSong.id : "";
     }
   },
   methods: {
-    playMusic(item,index) {
-      
-        this.currentIndex = index;
+     ...mapMutations(["SET_PLAYLIST", "SET_SEQUENCELIST", "SET_CURRENTINDEX"]),
+    //将歌曲添加到播放器
+    playMusic(item, index) {
+      //传递数据至vuex
+      this.SET_PLAYLIST(this.recommendSongsData);
+      this.SET_SEQUENCELIST(this.recommendSongsData);
+      this.SET_CURRENTINDEX(index);
     },
   },
 };

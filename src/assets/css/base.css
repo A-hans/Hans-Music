@@ -56,3 +56,7 @@ a {
   margin-bottom:20px ;
   border-left: 5px solid red;
 }
+
+::-webkit-scrollbar{
+  display:none;
+}

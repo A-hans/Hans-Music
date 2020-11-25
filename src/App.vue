@@ -2,7 +2,7 @@
   <div id="app">
     <el-container>
       <el-header>
-        <tab-bar></tab-bar>
+        <tab-bar />
       </el-header>
       <el-main>
         <keep-alive 
@@ -26,7 +26,7 @@
 <script>
 import TabBar from "components/content/TabBar/TabBar.vue";
 import FooterBar from "components/content/Footer/FooterBar.vue";
-import Player from "components/common/Player/Player";
+import Player from "components/content/Player/Player";
 
 export default {
   name: "App",
