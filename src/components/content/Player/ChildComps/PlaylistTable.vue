@@ -85,7 +85,6 @@ export default {
 }
 .song-name{
   flex: 2;
-  text-align: center;
 }
 .singer-name{
   flex: 2;

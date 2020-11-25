@@ -48,7 +48,7 @@
       </div>
     </el-row>
     <div class="loading">
-      <el-button type="danger">
+      <el-button type="danger" @click="playAllSong">
         <i class="el-icon-caret-right"></i>
         <span>播放热门歌曲</span>
       </el-button>
@@ -81,6 +81,11 @@ export default {
       title: "歌手简介",
     };
   },
+  methods:{
+    playAllSong(){
+      this.$bus.$emit("playAllSong")
+    }
+  }
 };
 </script>
 

@@ -4,14 +4,14 @@
       <el-col :span="4">
         <div class="song-info">
           <div class="cover">
-            <img :src="showImg" alt="" v-show="currentSong"/>
-            <img src="~assets/img/唱片.png" alt="" v-show="!currentSong">
+            <img :src="showImg" alt="" v-show="currentSong" />
+            <img src="~assets/img/唱片.png" alt="" v-show="!currentSong" />
           </div>
           <div class="text-info">
             <div class="song-name">
               <h4>{{ songName }}</h4>
             </div>
-            <div class="singer-name">
+            <div class="singer-name" @click="toSinger">
               <span v-for="(item, index) in singerName" :key="index">{{
                 item.name
               }}</span>
@@ -191,14 +191,12 @@ export default {
       return this.currentSong ? this.currentSong.name : "";
     },
     singerName() {
-      return this.currentSong
-        ? this.currentSong.ar
-        : "" ;
+      return this.currentSong ? this.currentSong.ar : "";
     },
     showImg() {
       return this.currentSong
         ? this.currentSong.al.picUrl + "?param=100y100"
-        : "" ;
+        : "";
     },
   },
   filters: {
@@ -288,7 +286,7 @@ export default {
     next() {
       const len = this.playlist.length;
       let newIndex = this.currentIndex + 1;
-      if (newIndex == len - 1) {
+      if (newIndex == len) {
         //若是最后一首时,返回第一首
         newIndex = 0;
       }
@@ -460,6 +458,15 @@ export default {
         this.$refs.playlistScroll.Refresh();
       });
     },
+    //点击跳转进歌手页
+    toSinger(item) {
+      this.$router.push({
+        path: "/singer-detail",
+        query: {
+          id: this.currentSong.ar[0].id,
+        },
+      });
+    },
   },
   components: {
     scroll,
@@ -506,6 +513,7 @@ Scroll;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  cursor: pointer;
   overflow: hidden;
   font-size: 10px;
 }
@@ -593,7 +601,7 @@ Scroll;
   overflow: hidden;
 }
 .playlist-table {
-  width: 300px;
+  width: 380px;
   padding: 15px;
   border-radius: 6px;
   position: fixed;
@@ -617,7 +625,7 @@ Scroll;
   margin-bottom: 10px;
 }
 .playlist-contanier {
-  height: 400px;
+  height: 450px;
   overflow: hidden;
 }
 </style>

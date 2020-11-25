@@ -51,7 +51,7 @@
             </el-popover>
           </div>
           <div class="loading">
-            <el-button type="danger">
+            <el-button type="danger" @click="playAllSong">
               <i class="el-icon-caret-right"></i>
               <span>播放全部</span>
             </el-button>
@@ -103,6 +103,9 @@ export default {
         },
       });
     },
+    playAllSong(){
+      this.$bus.$emit("playAllSong")
+    }
   },
 };
 </script>

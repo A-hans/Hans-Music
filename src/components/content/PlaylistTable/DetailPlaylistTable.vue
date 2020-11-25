@@ -93,6 +93,18 @@ export default {
       this.SET_CURRENTINDEX(index);
     },
   },
+  mounted(){
+    //点击播放全部
+    this.$nextTick(()=>{
+       this.$bus.$on("playAllSong",()=>{
+         console.log(1);
+       this.SET_PLAYLIST(this.playlistItem);
+      this.SET_SEQUENCELIST(this.playlistItem);
+      this.SET_CURRENTINDEX(0);
+    })
+    })
+   
+  }
 };
 </script>
 

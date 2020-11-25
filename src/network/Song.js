@@ -8,7 +8,7 @@ export function getMusicUrl(num){
     isActive:true,
     params:{
       id:num,
-      br:128000 //128Kbps码率播放
+      br:320000 //320Kbps码率播放
     }
   })
 }

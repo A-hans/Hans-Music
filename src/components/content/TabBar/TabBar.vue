@@ -104,6 +104,7 @@ export default {
     //回到首页
     backHome() {
       this.$router.push("home");
+      this.isShow = true;
       let oDiv = this.$refs.line;
       oDiv.style.width = "70px";
       oDiv.style.left = "8px";
