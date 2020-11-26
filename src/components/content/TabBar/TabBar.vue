@@ -31,7 +31,11 @@
           <div class="search">
              <Search class="search-input"/>
           </div>
-          <div class="login">登录</div>
+          <div class="login" @click="showLogin" v-if="isShowLoginTxt" >登录</div>
+           <LoginSucceed  v-if=" isShowLoginSucceed" :userInfo="userInfo" @logOut="logOut"/>
+           <transition name="el-zoom-in-top">
+               <login v-if="isShowLogin" @loginSucceed="loginSucceed" />
+         </transition>
         </div>
       </el-col>
     </el-row>
@@ -40,6 +44,8 @@
 
 <script>
 import Search from "components/content/TabBar/Search"
+import login from "components/content/TabBar/Login"
+import LoginSucceed from "components/content/TabBar/LoginSucceed"
 export default {
   name: "tab-bar",
   data() {
@@ -64,7 +70,17 @@ export default {
       ],
       currentIndex: 0,
       currentRoute: null,
+      //滚动条是否显示
       isShow: true,
+      //登录框是否显示
+      isShowLogin:false,
+      //存储用户信息
+      userInfo:{},
+      //登陆成功后整个登录消失
+      isShowLoginTxt:true,
+      //登陆成功后显示
+      isShowLoginSucceed:false
+      
     };
   },
   methods: {
@@ -112,9 +128,28 @@ export default {
         this.currentIndex = 0;
       }, 0.3);
     },
+    //登录框弹出
+    showLogin(){
+      this.isShowLogin =!this.isShowLogin
+    },
+    //登录成功后操作
+    loginSucceed(res){
+      this.isShowLogin =false
+      this.isShowLoginTxt=false
+      this.isShowLoginSucceed=true
+      this.userInfo = res.profile
+    },
+    //退出登录后操作
+    logOut(){
+      this.isShowLoginTxt=true;
+      //登陆成功后显示
+      this.isShowLoginSucceed=false;
+    }
   },
   components:{
-    Search
+    Search,
+    login,
+    LoginSucceed
   },
   mounted() {
     //获取当前路由路径,$route在刷新页面后获取不了
@@ -255,6 +290,16 @@ export default {
 .center .tab-item:nth-child(4):hover ~ .line {
   width: 35px !important;
   left: 228px !important;
+}
+.login-contanier{
+  width: 240px;
+  border-radius: 6px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  background: var(--color-background);
+  position: fixed;
+  top: 10%;
+  left:76%;
+  z-index: 999;
 }
 @media only screen and (max-width: 700px) {
   .center .line {

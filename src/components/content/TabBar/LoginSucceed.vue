@@ -1,0 +1,66 @@
+<template>
+  <div class="login-succeed">
+    <div class="row clear-fix">
+      <div class="user-avatar left">
+        <el-dropdown trigger="click">
+          <img :src="userInfo.avatarUrl + '?param=100y100'" alt="" />
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-user"
+              >个人主页</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-switch-button"
+            @click.native="logOut"
+              >退出登录</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div class="user-name left">
+        {{ userInfo.nickname }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "LoginSucceed",
+  props: {
+    userInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  methods:{
+    logOut(){
+      window.sessionStorage.clear();
+      this.$emit("logOut")
+    }
+  }
+};
+</script>
+
+<style scoped>
+.user-avatar {
+  padding-left: 20px;
+  height: 40px;
+  line-height: 30px;
+  cursor: pointer;
+  border-left: 1px solid var(--color-border);
+}
+.user-avatar img {
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  vertical-align: middle;
+  border-radius: 25px;
+}
+.user-name {
+  margin-left: 10px;
+  font-size: 15px;
+  color: #606266;
+  margin-top: 2px;
+}
+</style>

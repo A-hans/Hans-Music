@@ -24,12 +24,21 @@
 </template>
 
 <script>
-import TabBar from "components/content/TabBar/TabBar.vue";
-import FooterBar from "components/content/Footer/FooterBar.vue";
+import TabBar from "components/content/TabBar/TabBar";
+import FooterBar from "components/content/Footer/FooterBar";
 import Player from "components/content/Player/Player";
-
 export default {
   name: "App",
+  data(){
+    return{
+
+    }
+  },
+  methods:{
+    showLogin(){
+      this.isShowLogin = !this.isShowLogin;
+    }
+  },
   components: {
     TabBar,
     FooterBar,
@@ -123,4 +132,5 @@ body {
 .el-slider__runway {
   background-color: WhiteSmoke !important;
 }
+
 </style>
