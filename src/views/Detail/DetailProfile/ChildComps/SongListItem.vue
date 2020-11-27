@@ -1,6 +1,6 @@
 <template>
-  <!-- 一行6个栏目 -->
-  <el-col :span="4" v-if="Object.keys(listItemData).length !== 0">
+  <!-- 一行2个栏目 -->
+  <el-col :span="12" v-if="Object.keys(listItemData).length !== 0">
     <div class="playlist-item">
       <div class="img">
         <img v-lazy="showImg+'?param=200y200'" alt="" />
@@ -49,7 +49,7 @@ export default {
 <style scoped>
 .el-col {
  
-  height: 230px;
+  height: 180px;
   display: flex;
   justify-content: center;
   cursor: pointer;
@@ -67,7 +67,7 @@ export default {
   height: 100%;
 }
 .playlist-item {
-  width: 200px;
+  width: 120px;
 }
 .playlist-item .count {
   position: absolute;
@@ -100,7 +100,7 @@ export default {
 
 .playlist-item .text {
   text-align: left;
-  width: 150px;
+  width: 120px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   /* 显示几行,多余内容用省略号替代 */

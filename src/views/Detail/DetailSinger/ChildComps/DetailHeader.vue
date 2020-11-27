@@ -90,7 +90,9 @@ export default {
 </script>
 
 <style scoped>
-
+.header-info{
+   position:relative;
+}
 .singer-info {
   padding: 0 10px;
 
@@ -153,8 +155,8 @@ export default {
 }
 .img-cover {
   position: absolute;
-  left: 960px;
-  top: 260px;
+  left: 84%;
+  top: 176px;
 }
 .img-cover img{
   width: 100px;

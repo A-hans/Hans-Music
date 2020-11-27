@@ -15,7 +15,7 @@ module.exports ={
       proxy: {//解决跨域问题
           '/api': {
               // 此处的写法，目的是为了 将 /api 替换成 http://140.143.128.100:3000
-              target: 'http://localhost:3000',
+              target: 'http://47.115.119.92:3000',
               // 允许跨域
               changeOrigin: true,
               ws: true,

@@ -6,7 +6,9 @@
           <img :src="userInfo.avatarUrl + '?param=100y100'" alt="" />
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user"
-              >个人主页</el-dropdown-item
+                        @click.native="toProfile"
+              >个人主页
+              </el-dropdown-item
             >
             <el-dropdown-item icon="el-icon-switch-button"
             @click.native="logOut"
@@ -37,6 +39,10 @@ export default {
     logOut(){
       window.sessionStorage.clear();
       this.$emit("logOut")
+    },
+    toProfile(){
+      this.$router.push("detail-profile")
+      this.$bus.$emit('cancelActive');
     }
   }
 };
@@ -62,5 +68,8 @@ export default {
   font-size: 15px;
   color: #606266;
   margin-top: 2px;
+}
+.link:hover{
+  color: var(--color-high-text);
 }
 </style>

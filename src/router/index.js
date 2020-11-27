@@ -15,6 +15,7 @@ const DetailPlaylist =()=> import ('views/Detail/DetailPlaylist/DetailPlaylist.v
 const DetailSinger =()=> import ('views/Detail/DetailSinger/DetailSinger.vue');
 const DetailAlbumContent =()=> import ('views/Detail/DetailAlbum/DetailAlbumContent.vue');
 const DeatilSearch =()=> import ('views/Search/DeatilSearch.vue');
+const DetailProfile =()=> import ('views/Detail/DetailProfile/DetailProfile');
 
 Vue.use(VueRouter);
 
@@ -77,6 +78,13 @@ const routes=[
     component:DeatilSearch,
     meta:{
       title:'搜索详情'
+    }
+  },
+  {
+    path:'/detail-profile',
+    component:DetailProfile,
+    meta:{
+      title:'我的'
     }
   }
 ];

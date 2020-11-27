@@ -7,7 +7,7 @@
   >
     <div class="singer">
       <div class='cover'>
-        <img :src="singerItemData.picUrl+'?param=200y200'" alt="">
+        <img v-lazy="singerItemData.picUrl+'?param=200y200'" alt="">
       </div>
       <div class='name'>
         {{singerItemData.name}}

@@ -1,13 +1,13 @@
 //封装网路请求模块
 import axios from 'axios'
 import { Loading } from 'element-ui'
-
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 export function request(config) {
   //创建局部请求对象
   const instance = axios.create({
-     baseURL:'http://localhost:3000',
+     baseURL:'http://47.115.119.92:3000',
     //  baseURL: 'http://140.143.128.100:3000',
-    timeout: 5000
+    timeout: 5000,
   })
   
   //配置element Loading
@@ -24,7 +24,7 @@ export function request(config) {
   function endLoading() {
       loading.close();
   }
-
+  
   // 请求拦截器
   instance.interceptors.request.use((config) => {
     //动态决定是否开启加载中

@@ -29,13 +29,23 @@
       <el-col :span="8">
         <div class="right">
           <div class="search">
-             <Search class="search-input"/>
+            <Search class="search-input" />
           </div>
-          <div class="login" @click="showLogin" v-if="isShowLoginTxt" >登录</div>
-           <LoginSucceed  v-if=" isShowLoginSucceed" :userInfo="userInfo" @logOut="logOut"/>
-           <transition name="el-zoom-in-top">
-               <login v-if="isShowLogin" @loginSucceed="loginSucceed" />
-         </transition>
+          <div
+            class="login"
+            @click="showLogin"
+            v-if="Object.keys(userInfo).length == 0"
+          >
+            登录
+          </div>
+          <login-succeed
+            v-if="Object.keys(userInfo).length !== 0"
+            :userInfo="userInfo"
+            @logOut="logOut"
+          />
+          <transition name="el-zoom-in-top">
+            <login v-if="isShowLogin" @loginSucceed="loginSucceed" />
+          </transition>
         </div>
       </el-col>
     </el-row>
@@ -43,9 +53,9 @@
 </template>
 
 <script>
-import Search from "components/content/TabBar/Search"
-import login from "components/content/TabBar/Login"
-import LoginSucceed from "components/content/TabBar/LoginSucceed"
+import Search from "components/content/TabBar/Search";
+import login from "components/content/TabBar/Login";
+import LoginSucceed from "components/content/TabBar/LoginSucceed";
 export default {
   name: "tab-bar",
   data() {
@@ -73,14 +83,9 @@ export default {
       //滚动条是否显示
       isShow: true,
       //登录框是否显示
-      isShowLogin:false,
+      isShowLogin: false,
       //存储用户信息
-      userInfo:{},
-      //登陆成功后整个登录消失
-      isShowLoginTxt:true,
-      //登陆成功后显示
-      isShowLoginSucceed:false
-      
+      userInfo: {}
     };
   },
   methods: {
@@ -129,32 +134,33 @@ export default {
       }, 0.3);
     },
     //登录框弹出
-    showLogin(){
-      this.isShowLogin =!this.isShowLogin
+    showLogin() {
+      this.isShowLogin = !this.isShowLogin;
     },
     //登录成功后操作
-    loginSucceed(res){
-      this.isShowLogin =false
-      this.isShowLoginTxt=false
-      this.isShowLoginSucceed=true
-      this.userInfo = res.profile
+    loginSucceed(res) {
+      this.isShowLogin = false;
+      this.userInfo = window.sessionStorage.getItem("userInfo");
+      this.userInfo = JSON.parse(this.userInfo);
     },
     //退出登录后操作
-    logOut(){
-      this.isShowLoginTxt=true;
-      //登陆成功后显示
-      this.isShowLoginSucceed=false;
-    }
+    logOut() {
+      this.userInfo ={};
+    },
   },
-  components:{
+  components: {
     Search,
     login,
-    LoginSucceed
+    LoginSucceed,
   },
   mounted() {
     //获取当前路由路径,$route在刷新页面后获取不了
     this.currentRoute = window.location.href;
     let oDiv = this.$refs.line;
+    if(window.sessionStorage.getItem("userInfo")){
+       this.userInfo = window.sessionStorage.getItem("userInfo");
+       this.userInfo = JSON.parse(this.userInfo);
+    }
     //根据当前路由的名字判断导航的激活状态
     if (this.currentRoute.indexOf("/home") !== -1) {
       this.currentIndex = 0;
@@ -172,13 +178,14 @@ export default {
       this.currentIndex = 3;
       oDiv.style.width = "35px";
       oDiv.style.left = "228px";
-    } 
+    }
     //详情页刷新后依旧不选中导航
     if (
       this.currentRoute.indexOf("/playlist-detail") !== -1 ||
       this.currentRoute.indexOf("/singer-detail") !== -1 ||
       this.currentRoute.indexOf("/ablum-detail") !== -1 ||
-      this.currentRoute.indexOf("/search-result") !== -1 
+      this.currentRoute.indexOf("/search-result") !== -1 ||
+      this.currentRoute.indexOf("/detail-profile") !== -1
     ) {
       this.currentIndex = null;
       this.isShow = false;
@@ -196,6 +203,7 @@ export default {
 .tab-bar {
   height: 60px;
   width: 1020px;
+  margin: 0 auto;
 }
 .el-row {
   margin-top: 10px;
@@ -238,7 +246,7 @@ export default {
 .right {
   display: flex;
   width: 100%;
-   height: 100%;
+  height: 100%;
   padding: 0 10px;
 }
 .right .search {
@@ -291,14 +299,14 @@ export default {
   width: 35px !important;
   left: 228px !important;
 }
-.login-contanier{
+.login-contanier {
   width: 240px;
   border-radius: 6px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: var(--color-background);
   position: fixed;
   top: 10%;
-  left:76%;
+  left: 76%;
   z-index: 999;
 }
 @media only screen and (max-width: 700px) {

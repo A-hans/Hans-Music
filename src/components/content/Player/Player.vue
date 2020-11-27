@@ -217,6 +217,16 @@ export default {
         this.getMusicLrcApi(newVal.id);
         //进度条清零
         this.currentProcess = 0;
+         if (this.playlist&&this.mode == 2) {
+          let newPlaylist = this.getRandomList(this.sequenceList);
+          //随机列表当前播放歌曲与原列表歌曲做匹配
+          const newIndex = newPlaylist.findIndex(
+            (item) => item.id === this.currentSong.id
+          );
+          //更新Vuex内数据
+          this.SET_PLAYLIST(newPlaylist);
+          this.SET_CURRENTINDEX(newIndex);
+        }
       }
     },
   },
@@ -405,6 +415,9 @@ export default {
       //播放结束时清除所有数据
       clearInterval(this.time1);
       this.currentProcess = 0;
+      if (this.playlist.length == 1) {
+        this.loop();
+      }
       //若是单曲循环
       if (this.mode === playMode.loop) {
         this.loop();
@@ -466,6 +479,7 @@ export default {
           id: this.currentSong.ar[0].id,
         },
       });
+      this.$bus.$emit("cancelActive");
     },
   },
   components: {
@@ -481,6 +495,9 @@ Scroll;
   width: 1200px;
   height: 60px;
   margin: 0 auto;
+}
+.el-row{
+  position: relative;
 }
 .el-col {
   height: 60px;
@@ -580,9 +597,9 @@ Scroll;
 .lrc-contanier {
   width: 280px;
   height: 400px;
-  position: fixed;
-  right: 10px;
+  position: absolute;
   bottom: 70px;
+  right: 10px;
   border-radius: 6px;
   background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
@@ -604,8 +621,8 @@ Scroll;
   width: 380px;
   padding: 15px;
   border-radius: 6px;
-  position: fixed;
-  right: 0;
+  position: absolute;
+  right: 10px;
   bottom: 70px;
   background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);

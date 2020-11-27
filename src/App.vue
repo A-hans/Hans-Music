@@ -132,5 +132,9 @@ body {
 .el-slider__runway {
   background-color: WhiteSmoke !important;
 }
-
+.el-dropdown-menu__item:hover{
+  color:var(--color-high-text)!important;
+  background-color: rgba(	255,99,71,0.1)!important;
+  
+}
 </style>

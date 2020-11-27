@@ -71,14 +71,14 @@ export default {
        if(valid){
          getLogin(this.form.userPhoneNum,this.form.userPassword).then(res=>{
          if(res.code===200){
-           console.log(res);
-           console.log(res.token);
            this.$notify({
           title: '成功',
           message: '登录成功',
           type: 'success'
         });
-        window.sessionStorage.setItem('token',res.token)
+        window.sessionStorage.setItem('token',res.token);
+        console.log(res);
+        window.sessionStorage.setItem('userInfo',JSON.stringify(res.profile));
         this.$emit('loginSucceed',res)
          }
          if(res.code===502){
