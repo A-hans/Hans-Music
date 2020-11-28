@@ -37,6 +37,10 @@ export default {
       playlist: {},
       //存放歌曲的id
       trackIds: [],
+      //小于700首的id
+      trackIds1:[],
+      //大于700首后的id
+      trackIds2:[],
       //存放所有歌曲
       allSong: [],
       //喜欢此歌单的人
@@ -62,28 +66,68 @@ export default {
     },
     //获取歌单中所有歌曲id
     getAllSongId() {
-      for (let item of this.playlist.trackIds) {
+      if(this.playlist.trackIds.length<600){
+         for (let item of this.playlist.trackIds) {
         //将歌曲的id储存起来,进行网络请求完整的歌单
         this.trackIds.push(item.id);
       }
-      //将数组转为字符串,统一网络请求
+      //将数组转为字符串,统一网络请求 
      this.trackIds = this.trackIds.join(",");
+      }
+      if(this.playlist.trackIds.length>600) {
+        for(let i=0;i<600;i++){
+          this.trackIds1.push(this.playlist.trackIds[i].id);
+        }
+         this.trackIds1 = this.trackIds1.join(",");
+
+        for(let j=600;j<this.playlist.trackIds.length;j++){
+          this.trackIds2.push(this.playlist.trackIds[j].id);
+        }
+         this.trackIds2 = this.trackIds2.join(",");
+      }
     },
     //请求所有歌单歌曲(使用递归函数保证每次网络请求顺序一致)
     getAllSong() {
       //请求所有歌曲数据
-      getSongDetail(this.trackIds)
+      if(this.playlist.trackIds.length<600){
+        getSongDetail(this.trackIds)
         .then((res) => {
         this.addOrder(res);
         this.allSong = res.songs;
         })
         .catch((err) => {});
+      }else{
+        getSongDetail(this.trackIds1)
+        .then((res) => {
+        this.addOrder(res);
+        this.allSong = res.songs;
+        getSongDetail(this.trackIds2)
+        .then((res) => {
+        let num = 600; //用于存放当前序号
+        for (let item of res.songs) {
+        //循环开始则自加1
+        ++num;
+        //定义一个orderNum来存放当前序号
+        item.orderNum = num;
+      }
+        let songs =res.songs;
+        this.allSong =this.allSong.concat(songs);
+        
+        })
+        .catch((err) => {});
+        })
+        .catch((err) => {});
+        
+      }
+     
     },
     //重新加载数据
     reloadRoute() {
       //数据重置
       this.playlist = {};
       this.trackIds = [];
+      this.trackIds1 = [],
+      this.trackIds2 = [],
       this.allSong = [];
       this.subscriber = [];
       this.relatedList = [];
@@ -95,10 +139,11 @@ export default {
     getPlaylistDetail(num)
       .then((res) => {
         this.playlist = res.playlist;
+        this.playlistTrackId = res.playlist.trackIds
         //获取歌单中所有歌曲的id
         this.getAllSongId();
         //请求所有歌曲
-        this.getAllSong(0, this.trackIds.length);
+        this.getAllSong();
       })
       .catch((err) => {});
 
@@ -148,7 +193,7 @@ export default {
         //获取歌单中所有歌曲的id
         this.getAllSongId();
         //请求所有歌曲
-        this.getAllSong(0, this.trackIds.length);
+        this.getAllSong();
       })
       .catch((err) => {});
 

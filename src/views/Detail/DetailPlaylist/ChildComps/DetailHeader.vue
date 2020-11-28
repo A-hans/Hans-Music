@@ -24,7 +24,7 @@
           <div class="user">
             <div class="user-info">
               <img :src="detailHeader.creator.avatarUrl" alt="" />
-              <span>{{ detailHeader.creator.nickname }}</span>
+              <span class="nickname" @click="toUser(detailHeader)">{{ detailHeader.creator.nickname }}</span>
               <span>{{ detailHeader.createTime | showDate }}创建</span>
             </div>
             <div class="desc-none" v-if="detailHeader.description == null">
@@ -111,6 +111,13 @@ export default {
     playAllSong() {
       this.$bus.$emit("playAllSong");
     },
+    //跳转至用户页
+    toUser(item){
+      this.$router.push({path:'/detail-user',query:{
+        id:item.creator.userId
+      }})
+      this.$bus.$emit('cancelActive');
+    }
   },
   filters: {
     //时间格式化
@@ -143,6 +150,10 @@ export default {
 }
 .content {
   margin-top: 20px;
+}
+.nickname:hover{
+  cursor: pointer;
+  color: var(--color-high-text);
 }
 .user {
   font-size: 14px;

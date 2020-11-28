@@ -7,7 +7,7 @@
       :key="index"
       >
         <div class="subscriber">
-          <img :src="item.avatarUrl+'?param=100y100'" alt="">
+          <img :src="item.avatarUrl+'?param=100y100'" alt="" @click="toUser(item)">
           </div>
           </el-col>
     </el-row>
@@ -28,6 +28,15 @@ export default {
       }
     }
   },
+  methods:{
+    //进用户详情页
+    toUser(item){
+     this.$router.push({path:'/detail-user',query:{
+        id:item.userId
+      }})
+      this.$bus.$emit('cancelActive');
+    }
+  }
 }
 </script>
 
@@ -46,6 +55,7 @@ export default {
     width: 90%;
     height: 90%;
     border-radius: 4px;
+    cursor: pointer;
   }
   .subscriber-none{
     font-size: 13px;

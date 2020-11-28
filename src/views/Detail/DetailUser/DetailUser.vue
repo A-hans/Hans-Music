@@ -42,17 +42,8 @@
                   <i class="el-icon-female" v-if="userInfo.gender === 2"></i>
                 </li>
                 <li><span>年龄:</span>{{ userInfo.birthday | formatTime }}</li>
-                <li v-if="userInfo.signature">
-                  <span>签名:</span>{{ singerNature }}
-                </li>
+                <li v-if="userInfo.signature"><span>签名:</span>{{ singerNature }}</li>
               </ul>
-              <div class="user-level">
-                <div class="level">
-                  当前等级:
-                  <span style="color:#FF6347">Lv&nbsp;{{userLevel.level}}</span>
-                </div>
-                <el-progress v-if="levelProgress" :percentage="levelProgress" color="#FF6347"></el-progress>
-              </div>
             </div>
             <div class="activeinfo">
               <ul>
@@ -87,13 +78,12 @@
             </div>
           </div>
           <div>
-            <detail-playlist-table
-              :playlistItem="recordPlaylist"
-              v-if="recordPlaylist.length !== 0"
-            />
+            <detail-playlist-table :playlistItem="recordPlaylist" v-if="recordPlaylist.length!==0"/>
             <div class="playlist-none" v-else>
-              <img src="~assets/img/占位图2.png" alt="" />
-              <div class="text">该用户暂无此听歌记录</div>
+              <img src="~assets/img/占位图2.png" alt="">
+              <div class="text">
+              该用户暂无此听歌记录
+              </div>
             </div>
           </div>
         </div>
@@ -111,17 +101,12 @@
 </template>
 
 <script>
-import {
-  getUserInfo,
-  getUserRecord,
-  getUserPlaylist,
-  getUserLevel,
-} from "network/Login";
+import { getUserInfo, getUserRecord, getUserPlaylist } from "network/Login";
 import { formatDate } from "common/utils";
 import DetailPlaylistTable from "components/content/PlaylistTable/DetailPlaylistTable";
-import SongList from "views/Detail/DetailProfile/ChildComps/SongList";
+import SongList from "views/Detail/DetailUser/ChildComps/SongList";
 export default {
-  name: "DetailProfile",
+  name: "DetailUser",
   data() {
     return {
       //用户信息
@@ -136,17 +121,12 @@ export default {
       weekShow: true,
       //所有歌曲显示
       allShow: false,
-      //用户等级
-      userLevel: {},
     };
   },
   computed: {
     singerNature() {
-      return this.userInfo ? this.userInfo.signature : "暂无签名";
+      return this.userInfo ? this.userInfo.signature : "";
     },
-    levelProgress(){
-      return parseInt(this.userLevel.progress*100);
-    }
   },
   methods: {
     weekList() {
@@ -169,12 +149,14 @@ export default {
       this.weekShow = false;
       getUserRecord(this.uid, 0)
         .then((res) => {
-          this.recordPlaylist = [];
+          if(res.code===200){
+             this.recordPlaylist = [];
           let i = 0;
           for (let item of res.allData) {
             ++i;
             item.song.orderNum = i;
             this.recordPlaylist.push(item.song);
+          }
           }
         })
         .catch((err) => {});
@@ -199,34 +181,33 @@ export default {
     DetailPlaylistTable,
     SongList,
   },
-  mounted() {
-    //获取用户信息
-    this.$nextTick(() => {
-      this.userInfo = window.sessionStorage.getItem("userInfo");
-      this.userInfo = JSON.parse(this.userInfo);
-      this.uid = JSON.parse(this.userInfo.userId);
+  created() {
+    //获取用户信
+     this.uid = this.$route.query.id
+      getUserInfo(this.uid).then(res=>{
+        this.userInfo = res.profile;
+      }).catch(err=>{
+      })
       getUserRecord(this.uid, 1)
         .then((res) => {
-          let i = 0;
+          if(res.code===200){
+             let i = 0;
           for (let item of res.weekData) {
             ++i;
             item.song.orderNum = i;
             this.recordPlaylist.push(item.song);
           }
+          }
+         
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
       getUserPlaylist(this.uid)
         .then((res) => {
           this.myPlaylist = res.playlist;
         })
         .catch((err) => {});
-      //获取用户等级
-      getUserLevel()
-        .then((res) => {
-          this.userLevel = res.data;
-        })
-        .catch((err) => {});
-    });
   },
 };
 </script>
@@ -240,7 +221,7 @@ export default {
   border-radius: 4px;
   margin-top: -80px;
 }
-.banner-container {
+.banner-container{
   width: 100%;
   background: #fff;
   position: fixed;
@@ -251,6 +232,7 @@ export default {
   width: 1200px;
   height: 230px;
   margin: 0 auto;
+
 }
 .user-background {
   border-top-left-radius: 4px;
@@ -334,23 +316,15 @@ export default {
 .active {
   color: var(--color-high-text);
 }
-.playlist-none {
+.playlist-none{
   height: 500px;
   text-align: center;
+  
 }
-.playlist-none img {
+.playlist-none img{
   margin-top: calc(50% - 71.25px);
 }
-.playlist-none .text {
-  margin-top: 20px;
-}
-.level{
-  font-size: 13px;
-  font-weight: bold;
-}
-.level img{
-  width: 40px;
-  height: 40px;
-  vertical-align: middle;
-}
+.playlist-none .text{
+  margin-top:20px ;
+} 
 </style>

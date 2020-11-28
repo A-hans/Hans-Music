@@ -1,13 +1,12 @@
 //封装网路请求模块
 import axios from 'axios'
 import { Loading } from 'element-ui'
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 export function request(config) {
   //创建局部请求对象
   const instance = axios.create({
-     baseURL:'http://47.115.119.92:3000',
-    //  baseURL: 'http://140.143.128.100:3000',
+     baseURL:'/api',
     timeout: 5000,
+    withCredentials :true
   })
   
   //配置element Loading
@@ -30,6 +29,9 @@ export function request(config) {
     //动态决定是否开启加载中
     if(config.isActive){
       startLoading();
+      setTimeout(() => {
+        endLoading()
+      }, 5000);
     }
       return config;
       

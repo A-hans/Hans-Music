@@ -185,7 +185,8 @@ export default {
       this.currentRoute.indexOf("/singer-detail") !== -1 ||
       this.currentRoute.indexOf("/ablum-detail") !== -1 ||
       this.currentRoute.indexOf("/search-result") !== -1 ||
-      this.currentRoute.indexOf("/detail-profile") !== -1
+      this.currentRoute.indexOf("/detail-profile") !== -1 ||
+      this.currentRoute.indexOf("/detail-user") !== -1 
     ) {
       this.currentIndex = null;
       this.isShow = false;

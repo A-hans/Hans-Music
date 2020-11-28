@@ -38,7 +38,10 @@ export default {
   methods:{
     logOut(){
       window.sessionStorage.clear();
-      this.$emit("logOut")
+      this.$emit("logOut");
+      if(this.$route.path==="/detail-profile"){
+        this.$router.push('/home');
+      }
     },
     toProfile(){
       this.$router.push("detail-profile")

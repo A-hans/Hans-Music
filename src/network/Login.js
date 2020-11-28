@@ -8,7 +8,7 @@ export function getLogin(num, psd) {
     isActive: true,
     params: {
       phone: num,
-      password: psd
+      password: psd,
     }
 
   })
@@ -18,7 +18,6 @@ export function getLogin(num, psd) {
 export function getUserRecord(id,num){
   return request({
     url:"/user/record",
-    isActive:true,
     params:{
       uid:id,
       type:num
@@ -34,5 +33,23 @@ export function getUserPlaylist(id){
     params:{
       uid:id
     }
+  })
+}
+
+//获取用户详情
+export function getUserInfo(id){
+  return request({
+    url:"/user/detail",
+    isActive:true,
+    params:{
+      uid:id
+    }
+  })
+}
+
+//获取用户等级
+export function getUserLevel(){
+  return request({
+    url:"/user/level",
   })
 }

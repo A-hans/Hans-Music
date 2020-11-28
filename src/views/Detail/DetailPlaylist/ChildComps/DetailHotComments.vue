@@ -8,7 +8,7 @@
       <ul>
         <li v-for="(item,index) in hotComments" :key="index" class="clear-fix">
           <div class='avatar left'>
-            <img :src="item.user.avatarUrl+'?param=100y100'" alt="">
+            <img :src="item.user.avatarUrl+'?param=100y100'" alt="" @click="toUser(item)">
           </div>
           <div class="user-info right">
             <div class="user-name">
@@ -49,6 +49,14 @@ export default {
       formatTime(value) {
       let date = new Date(value);
       return formatDate(date, "yy-MM-dd");
+    }
+  },
+  methods:{
+    toUser(item){
+      this.$router.push({path:'/detail-user',query:{
+        id:item.user.userId
+      }})
+      this.$bus.$emit('cancelActive');
     }
   }
 }
