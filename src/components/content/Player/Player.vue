@@ -63,7 +63,7 @@
         </el-row>
       </el-col>
       <el-col :span="3" class="play-option">
-        <el-col :span="8">
+        <el-col class="play-option-icon" :span="8">
           <i class="play-mode" @click="changeMode">
             <img
               src="~assets/img/顺序播放.png"
@@ -82,7 +82,7 @@
             />
           </i>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" class="play-option-icon">
           <i class="lrc-icon" @click="showLrcInfo">
             <img src="~assets/img/歌词.png" alt="" />
           </i>
@@ -110,7 +110,7 @@
       </div>
     </transition>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" class="play-option-icon">
           <i class="playlist-icon" @click="showplaylistInfo">
             <img src="~assets/img/播放列表.png" alt="" />
           </i>
@@ -584,12 +584,12 @@ Scroll;
   margin-top: 12px;
   width: 100px !important;
 }
-.play-option .el-col img {
+.play-option .play-option-icon img {
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
-.play-option .el-col {
+.play-option .play-option-icon {
   text-align: center;
   line-height: 70px;
 }
@@ -597,7 +597,7 @@ Scroll;
   position: relative;
 }
 .lrc-contanier {
-  width: 280px;
+  width: 300px;
   height: 400px;
   position: absolute;
   bottom: 70px;
@@ -613,10 +613,8 @@ Scroll;
   text-align: center;
 }
 .lrc-item {
-  height: 20px;
-  line-height: 20px;
-  margin-bottom:5px ;
-  font-size: 12px;
+  line-height: 30px;
+  font-size: 13px;
 }
 .contanier {
   height: 400px;
@@ -634,7 +632,7 @@ Scroll;
 }
 .activeLrc {
   color: var(--color-high-text);
-  font-size: 13px;
+  font-size: 15px;
 }
 .Occupation-img {
   text-align: center;

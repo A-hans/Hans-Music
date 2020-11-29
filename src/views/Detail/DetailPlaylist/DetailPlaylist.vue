@@ -7,7 +7,7 @@
           <detail-playlist-table :playlistItem="allSong" />
         </div>
       </el-col>
-      <el-col :span="8" class="right">
+      <el-col :span="8">
         <detail-subscribers :subscribers="subscriber" />
         <detail-related-list :relatedList="relatedList" />
         <detail-hot-comments :hotComments="hotComments" />
