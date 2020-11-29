@@ -8,11 +8,11 @@
           <th>歌手</th>
           <th>专辑</th>
           <th>时长</th>
-          <col style="width: 10%" />
+          <col style="width: 8%" />
           <col style="width: 35%" />
           <col style="width: 22%" />
           <col style="width: 20%" />
-          <col style="width: 10%" />
+          <col style="width: 12%" />
           <tbody>
             <tr
               v-for="(item, index) of playlistItem"

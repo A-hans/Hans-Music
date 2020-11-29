@@ -4,7 +4,7 @@ import { Loading } from 'element-ui'
 export function request(config) {
   //创建局部请求对象
   const instance = axios.create({
-     baseURL:'/api',
+    baseURL:'/api',
     timeout: 5000,
     withCredentials :true
   })

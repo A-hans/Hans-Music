@@ -67,15 +67,22 @@ export default {
 
 .playlistTable .playlist-title {
   font-weight: bold;
+  line-height: 30px;
+  height: 30px;
+  text-align: left;
   font-size: 18px;
 }
+.el-icon-close{
+  margin-top: 8px;
+}
 .playlist-content ul {
-  margin-top: 20px;
+  margin-top:10px;
   list-style: none;
   font-size: 13px;
 }
 .playlist-content li {
-  margin: 15px 0;
+  height: 30px;
+  line-height: 30px;
 }
 .playlist-content li {
   display: flex;

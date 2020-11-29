@@ -34,10 +34,10 @@
               <p class="ellipsis-two" v-html="detailHeader.description"></p>
               <el-popover
                 class="detail-desc"
-                placement="right"
+                placement="right-start"
                 offset="0"
                 :title="detailHeader.name"
-                width="400"
+                width="500"
                 trigger="click"
               >
                 <!-- 插入html识别换行 -->

@@ -86,22 +86,7 @@
           <i class="lrc-icon" @click="showLrcInfo">
             <img src="~assets/img/歌词.png" alt="" />
           </i>
-        </el-col>
-        <el-col :span="8">
-          <i class="playlist-icon" @click="showplaylistInfo">
-            <img src="~assets/img/播放列表.png" alt="" />
-          </i>
-        </el-col>
-      </el-col>
-    </el-row>
-    <audio
-      ref="audio"
-      :src="musicData.url"
-      @playing="audioReady"
-      @ended="playEnd"
-      @timeupdate="updateTime"
-    ></audio>
-    <transition name="el-zoom-in-bottom">
+          <transition name="el-zoom-in-bottom">
       <div class="lrc-contanier" v-show="showLrc">
         <scroll class="contanier" ref="lrcScroll">
           <div class="lrc">
@@ -124,13 +109,30 @@
         </scroll>
       </div>
     </transition>
-    <transition name="el-zoom-in-bottom">
+        </el-col>
+        <el-col :span="8">
+          <i class="playlist-icon" @click="showplaylistInfo">
+            <img src="~assets/img/播放列表.png" alt="" />
+          </i>
+           <transition name="el-zoom-in-bottom">
       <div class="playlist-table" v-show="showPlaylist">
         <scroll class="playlist-contanier" ref="playlistScroll">
           <playlist-table @stopMusic="stopMusic" />
         </scroll>
       </div>
     </transition>
+        </el-col>
+      </el-col>
+    </el-row>
+    <audio
+      ref="audio"
+      :src="musicData.url"
+      @playing="audioReady"
+      @ended="playEnd"
+      @timeupdate="updateTime"
+    ></audio>
+    
+   
   </div>
 </template>
 
@@ -496,9 +498,6 @@ Scroll;
   height: 60px;
   margin: 0 auto;
 }
-.el-row{
-  position: relative;
-}
 .el-col {
   height: 60px;
 }
@@ -594,23 +593,29 @@ Scroll;
   text-align: center;
   line-height: 70px;
 }
+.play-option {
+  position: relative;
+}
 .lrc-contanier {
   width: 280px;
   height: 400px;
   position: absolute;
   bottom: 70px;
-  right: 10px;
+  right: 0;
   border-radius: 6px;
   background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 .lrc ul {
-  padding: 20px 0;
+  padding-top: 20px;
   list-style: none;
+  line-height: 0;
   text-align: center;
 }
 .lrc-item {
-  padding: 5px;
+  height: 20px;
+  line-height: 20px;
+  margin-bottom:5px ;
   font-size: 12px;
 }
 .contanier {
@@ -622,7 +627,7 @@ Scroll;
   padding: 15px;
   border-radius: 6px;
   position: absolute;
-  right: 10px;
+  right: 0;
   bottom: 70px;
   background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
@@ -633,13 +638,16 @@ Scroll;
 }
 .Occupation-img {
   text-align: center;
+  line-height: 0;
   margin: 0 auto;
   margin-top: 36%;
 }
 .Occupation-img img {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 10px;
+  width: 100px!important;
+  height: 100px!important;
+}
+.Occupation-img div{
+  margin-top: 20px;
 }
 .playlist-contanier {
   height: 450px;

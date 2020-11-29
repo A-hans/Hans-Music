@@ -50,7 +50,8 @@ export default {
       //存放热门评论
       hotComments: [],
       //存放序号
-      index :0
+      index :0,
+     
     };
   },
   methods: {
@@ -75,18 +76,20 @@ export default {
      this.trackIds = this.trackIds.join(",");
       }
       if(this.playlist.trackIds.length>600) {
+        //目前只能展示1200首
+        const newTracksId=this.playlist.trackIds.slice(600,1200);
         for(let i=0;i<600;i++){
           this.trackIds1.push(this.playlist.trackIds[i].id);
         }
          this.trackIds1 = this.trackIds1.join(",");
-
-        for(let j=600;j<this.playlist.trackIds.length;j++){
+          
+        for(let j=0;j<newTracksId.length;j++){
           this.trackIds2.push(this.playlist.trackIds[j].id);
         }
          this.trackIds2 = this.trackIds2.join(",");
       }
     },
-    //请求所有歌单歌曲(使用递归函数保证每次网络请求顺序一致)
+    //请求所有歌单歌曲
     getAllSong() {
       //请求所有歌曲数据
       if(this.playlist.trackIds.length<600){

@@ -44,7 +44,7 @@
             @logOut="logOut"
           />
           <transition name="el-zoom-in-top">
-            <login v-if="isShowLogin" @loginSucceed="loginSucceed" />
+            <login v-if="isShowLogin" @loginSucceed="loginSucceed" class="login-contanier"/>
           </transition>
         </div>
       </el-col>
@@ -258,6 +258,7 @@ export default {
 }
 .right .login {
   flex: 1;
+  position: relative;
   margin-top: 5px;
   padding-left: 20px;
   height: 30px;
@@ -305,9 +306,9 @@ export default {
   border-radius: 6px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   background: var(--color-background);
-  position: fixed;
-  top: 10%;
-  left: 76%;
+  position: absolute;
+  top: 136%;
+  left: 84%;
   z-index: 999;
 }
 @media only screen and (max-width: 700px) {

@@ -39,12 +39,13 @@ export function getPlaylistDetail(num){
 } 
 
 //获取歌曲详情
-export function getSongDetail(id){
+export function getSongDetail(id,time){
   return request({
     url:'/song/detail',
     isActive:true,
     params:{
-      ids:id
+      ids:id,
+      timestamp:time
     }
   })
 }

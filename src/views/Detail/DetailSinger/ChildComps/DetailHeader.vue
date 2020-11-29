@@ -137,7 +137,7 @@ export default {
 }
 .loading {
   margin-left: 26%;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .desc-info {
