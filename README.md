@@ -44,9 +44,6 @@ cd Hans-Music
 
 \```
 
-cd Hans-Music
-
-\```
 
 \# 安装依赖
 
