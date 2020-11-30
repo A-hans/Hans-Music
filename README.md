@@ -10,7 +10,7 @@
 
 初步学习完Vue的知识后急需找一个项目来练手,在网上看了很多人做的"网易云音乐"(本人也是重度网易云用户😂),也想着自己着手搞一个自己的''网易云'',于是就有了这个项目    
 
-本项目基于Vue全家桶编写,使用了EmlementUI组件库,布局方面参考了lxhcool的[nicemusic](http://nicenav.cn/desktop-music/#/home)(界面真的超级漂亮😉)
+本项目基于Vue全家桶编写,使用了ElementUI组件库,布局方面参考了lxhcool的[nicemusic](http://nicenav.cn/desktop-music/#/home)(界面真的超级漂亮😉)
 
 在此还要感谢binaryify大佬提供的接口 。
 
