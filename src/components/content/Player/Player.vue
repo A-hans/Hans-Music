@@ -250,9 +250,12 @@ export default {
     },
     //获取歌词信息
     getMusicLrcApi(id) {
+      this.lrcLines = [];
+      this.musicLrc = null
       getMusicLrc(id)
         .then((res) => {
           if (res.code === 200 && res.lrc) {
+            //格式化歌词数据
             this.musicLrc = res.lrc.lyric;
             //格式化歌词
             this.initLins();
@@ -429,7 +432,6 @@ export default {
     },
     //格式化歌词
     initLins() {
-      this.lrcLines = [];
       if (this.musicLrc) {
         //将数据通过\n来分割成多个数组
         const lines = this.musicLrc.split("\n");
@@ -632,7 +634,7 @@ Scroll;
 }
 .activeLrc {
   color: var(--color-high-text);
-  font-size: 15px;
+  font-size: 14px;
 }
 .Occupation-img {
   text-align: center;
