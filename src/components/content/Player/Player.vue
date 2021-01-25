@@ -3,7 +3,7 @@
     <el-row :gutter="30">
       <el-col :span="4">
         <div class="song-info">
-          <div class="cover">
+          <div class="cover" @click="showPlayDetail">
             <img :src="showImg" alt="" v-show="currentSong" />
             <img src="~assets/img/唱片.png" alt="" v-show="!currentSong" />
           </div>
@@ -131,8 +131,9 @@
       @ended="playEnd"
       @timeupdate="updateTime"
     ></audio>
-    
-   
+    <transition name="el-zoom-in-bottom">
+       <play-detail v-if="showDetail"/>
+      </transition>
   </div>
 </template>
 
@@ -143,7 +144,7 @@ import { formatDate } from "common/utils";
 import { mapGetters, mapMutations } from "vuex";
 import scroll from "components/common/Scroll/Scroll";
 import PlaylistTable from "components/content/Player/ChildComps/PlaylistTable";
-import Scroll from "../../common/Scroll/Scroll.vue";
+import PlayDetail from "components/content/Player/ChildComps/PlayDetail";
 export default {
   name: "player",
   data() {
@@ -178,6 +179,8 @@ export default {
       showLrc: false,
       //播放列表是否显示
       showPlaylist: false,
+      //展开播放详细页
+      showDetail: false
     };
   },
   computed: {
@@ -483,13 +486,17 @@ export default {
       });
       this.$bus.$emit("cancelActive");
     },
+    //展开播放详细页
+    showPlayDetail(){
+        this.showDetail = !this.showDetail;
+    }
   },
   components: {
     scroll,
     PlaylistTable,
+    PlayDetail
   },
-};
-Scroll;
+}
 </script>
 
 <style scoped>

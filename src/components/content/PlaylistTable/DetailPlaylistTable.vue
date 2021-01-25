@@ -16,15 +16,18 @@
           <tbody>
             <tr
               v-for="(item, index) of playlistItem"
-              :class="{ activeplay: currentSongName== item.id}"
+              :class="{ activeplay: currentSongName == item.id }"
               :key="index"
-              @click="playMusic(item, index)"
+              @dblclick="playMusic(item, index)"
             >
               <td style="width: 50px" class="order">
-                <span :class="{ deactive: currentSongName== item.id }">
+                <span :class="{ deactive: currentSongName == item.id }">
                   {{ item.orderNum }}
                 </span>
-                <span class="play" :class="{ active: currentSongName== item.id }">
+                <span
+                  class="play"
+                  :class="{ active: currentSongName == item.id }"
+                >
                   <i class="el-icon-video-play"></i>
                 </span>
               </td>
@@ -34,12 +37,13 @@
                 /></span>
                 {{ item.name }}
               </td>
-              <td class="art-name">
-                <span v-for="(i, index) in item.ar" :key="index">{{
-                  i.name
-                }} </span>
+              <td class="art-name" @click="toSingerDetail(item)">
+                <span v-for="(i, index) in item.ar" :key="index"
+                  >{{ i.name }}
+                </span>
               </td>
-              <td class="collection-name">{{ item.al.name }}</td>
+              <td class="collection-name"
+                  @click="toAblumDetail(item)">{{ item.al.name }}</td>
               <td class="time">{{ item.dt | formatTime }}</td>
             </tr>
           </tbody>
@@ -51,7 +55,7 @@
 
 <script>
 import { formatDate } from "common/utils";
-import { mapMutations,mapGetters } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 export default {
   name: "DetailPlaylistTable",
   props: {
@@ -68,14 +72,11 @@ export default {
       compCurrentIndex: null,
     };
   },
-  computed:{
-    ...mapGetters([
-      'currentIndex',
-      'currentSong'
-    ]),
-    currentSongName(){
-       return this.currentSong ? this.currentSong.id : ""
-      }
+  computed: {
+    ...mapGetters(["currentIndex", "currentSong"]),
+    currentSongName() {
+      return this.currentSong ? this.currentSong.id : "";
+    },
   },
   filters: {
     formatTime(value) {
@@ -92,19 +93,39 @@ export default {
       this.SET_SEQUENCELIST(this.playlistItem);
       this.SET_CURRENTINDEX(index);
     },
+    //跳转至歌手页
+    toSingerDetail(item) {
+      //若在歌手详细页则不再重复跳转
+      if (this.$route.path !== "/singer-detail") {
+        this.$router.push({
+          path: "/singer-detail",
+          query: { id: item.ar[0].id },
+        });
+      }
+    },
+    //跳转至专辑详细页
+    toAblumDetail(item){
+      if(this.$route.path !=="/ablum-detail") {
+        this.$router.push({
+          path:"/ablum-detail",
+          query: {
+            id: item.al.id
+          }
+        })
+      }
+    }
   },
-  mounted(){
+  mounted() {
     //点击播放全部
-    this.$nextTick(()=>{
-       this.$bus.$on("playAllSong",()=>{
-         console.log(1);
-       this.SET_PLAYLIST(this.playlistItem);
-      this.SET_SEQUENCELIST(this.playlistItem);
-      this.SET_CURRENTINDEX(0);
-    })
-    })
-   
-  }
+    this.$nextTick(() => {
+      this.$bus.$on("playAllSong", () => {
+        console.log(1);
+        this.SET_PLAYLIST(this.playlistItem);
+        this.SET_SEQUENCELIST(this.playlistItem);
+        this.SET_CURRENTINDEX(0);
+      });
+    });
+  },
 };
 </script>
 
@@ -164,13 +185,20 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  cursor: pointer;
+}
+.playlist-table .art-name:hover {
+  color: var(--color-high-text);
 }
 .playlist-table .collection-name {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  cursor: pointer;
 }
-
+.playlist-table .collection-name:hover {
+  color: var(--color-high-text);
+}
 .playlist-table .deactive {
   display: none;
 }

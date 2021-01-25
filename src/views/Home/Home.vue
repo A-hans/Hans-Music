@@ -50,6 +50,7 @@ export default {
     //获取轮播图数据
     getHomeBanner()
       .then((res) => {
+        console.log(res);
         this.bannerlist = res.banners;
       })
       .catch((err) => {});

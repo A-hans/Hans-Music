@@ -11,7 +11,7 @@
 <script>
 import { getHotListTag, getAllListTag, getAllList } from "network/Playlist";
 
-import ListNav from "views/Playlist/ChildComps/ListNav";
+import ListNav from "views/PlayList/ChildComps/ListNav";
 import SongList from "components/content/SongList/SongList";
 export default {
   name: "Playlist",
