@@ -131,6 +131,8 @@ export default {
 
 <style scoped>
 .playlist-table {
+  height: 800px;
+  overflow: auto;
   font-size: 13px;
 }
 .playlist-table table,
