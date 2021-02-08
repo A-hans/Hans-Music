@@ -19,7 +19,7 @@
               v-for="(item, index) of playlistItem"
               :class="{ activeplay: currentSongName == item.id }"
               :key="index"
-              @dblclick="playMusic(item, index)"
+              @click="playMusic(item, index)"
             >
               <td style="width: 50px" class="order">
                 <span :class="{ deactive: currentSongName == item.id }">
@@ -38,21 +38,13 @@
                 /></span>
                 {{ item.name }}
               </td>
-<<<<<<< HEAD
               <td class="art-name" @click.stop="toSingerDetail(item)">
-=======
-              <td class="art-name" @click="toSingerDetail(item)">
->>>>>>> 695e74f3ed2b0c810fac65c6ee44693c2f89bc20
                 <span v-for="(i, index) in item.ar" :key="index"
                   >{{ i.name }}
                 </span>
               </td>
               <td class="collection-name"
-<<<<<<< HEAD
                   @click.stop="toAblumDetail(item)">{{ item.al.name }}</td>
-=======
-                  @click="toAblumDetail(item)">{{ item.al.name }}</td>
->>>>>>> 695e74f3ed2b0c810fac65c6ee44693c2f89bc20
               <td class="time">{{ item.dt | formatTime }}</td>
             </tr>
           </tbody>
@@ -123,7 +115,6 @@ export default {
         })
       }
     }
-<<<<<<< HEAD
   },
   watch:{
     /* playlistItem(newVal,oldValue){
@@ -132,8 +123,6 @@ export default {
         this.isScroll = true;
       }
     } */
-=======
->>>>>>> 695e74f3ed2b0c810fac65c6ee44693c2f89bc20
   },
   mounted() {
     //点击播放全部
@@ -145,7 +134,6 @@ export default {
         this.SET_CURRENTINDEX(0);
       });
     });
-<<<<<<< HEAD
     //个人详情页列表超15条,激活滚动样式
     /* console.log(this.$route.path);
     if(this.$route.path === "/detail-profile"){
@@ -153,16 +141,12 @@ export default {
           this.isScroll = true
         }
     } */
-=======
->>>>>>> 695e74f3ed2b0c810fac65c6ee44693c2f89bc20
   },
 };
 </script>
 
 <style scoped>
 .playlist-table {
-  height: 800px;
-  overflow: auto;
   font-size: 13px;
 }
 .playlistscroll {

@@ -64,8 +64,6 @@ export default {
 
 <style scoped>
 .hot-comments{
-  height: 300px;
-  overflow: auto;
   margin-top: 20px;
   padding: 15px;
   border-radius: 15px;

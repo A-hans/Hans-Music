@@ -491,7 +491,9 @@ export default {
         },
       });
       this.$bus.$emit("cancelActive");
-      this.showDetail = !this.showDetail;
+      if(this.showDetail===true){
+         this.showDetail = false;
+      }
     },
     //展开播放详细页
     showPlayDetail(){
