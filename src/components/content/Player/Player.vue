@@ -132,11 +132,14 @@
       @timeupdate="updateTime"
     ></audio>
     <transition name="el-zoom-in-bottom">
-       <play-detail v-show="showDetail" 
+       <play-detail v-if="showDetail" 
                     :lrcData="lrcLines"
                     :currentTime="currentTime"
                     @hideDetail="hideDetail"
                     />
+      </transition>
+      <transition name="el-fade-in-linear">
+         <play-mode-toast v-if="showMode"/>
       </transition>
   </div>
 </template>
@@ -149,6 +152,8 @@ import { mapGetters, mapMutations } from "vuex";
 import scroll from "components/common/Scroll/Scroll";
 import PlaylistTable from "components/content/Player/ChildComps/PlaylistTable";
 import PlayDetail from "components/content/Player/ChildComps/PlayDetail";
+import PlayModeToast from "components/content/Player/ChildComps/PlayModeToast";
+
 export default {
   name: "player",
   data() {
@@ -184,7 +189,9 @@ export default {
       //播放列表是否显示
       showPlaylist: false,
       //展开播放详细页
-      showDetail: false
+      showDetail: false,
+      //播放模式弹窗
+      showMode:false
     };
   },
   computed: {
@@ -334,6 +341,14 @@ export default {
       //更新Vuex内数据
       this.SET_PLAYLIST(newPlaylist);
       this.SET_CURRENTINDEX(newIndex);
+      this.showModeToast()
+    },
+    //播放模式弹窗
+    showModeToast(){
+      this.showMode = true;
+      setTimeout(() => {
+        this.showMode =false;
+      }, 1500);
     },
     //随机播放列表的操作
     getRandomList(arr) {
@@ -511,7 +526,8 @@ export default {
   components: {
     scroll,
     PlaylistTable,
-    PlayDetail
+    PlayDetail,
+    PlayModeToast 
   },
 }
 </script>

@@ -151,6 +151,10 @@ export default {
   },
   components: {
     scroll,
+  },
+  mounted(){
+    //进入详细页进行刷新
+    this.$refs.lrcScroll.Refresh();
   }
 };
 </script>
@@ -202,7 +206,7 @@ export default {
 
 .lrc-contanier {
   overflow: hidden;
-  width: 280px;
+  width: 500px;
   height: 360px;
   margin-top:20px ;
 }
@@ -213,7 +217,7 @@ export default {
 }
 .lrc-item {
   line-height: 30px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .contanier {
   height: 400px;
@@ -221,7 +225,7 @@ export default {
 }
 .activeLrc {
   color: var(--color-high-text);
-  font-size: 16px;
+  font-size: 18px;
 }
 .singer-name:hover{
   color: var(--color-high-text);
