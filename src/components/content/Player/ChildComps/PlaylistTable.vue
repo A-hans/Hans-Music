@@ -64,7 +64,6 @@ export default {
 </script>
 
 <style scoped>
-
 .playlistTable .playlist-title {
   font-weight: bold;
   line-height: 30px;

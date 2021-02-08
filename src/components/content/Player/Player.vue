@@ -3,7 +3,7 @@
     <el-row :gutter="30">
       <el-col :span="4">
         <div class="song-info">
-          <div class="cover">
+          <div class="cover" @click="showPlayDetail">
             <img :src="showImg" alt="" v-show="currentSong" />
             <img src="~assets/img/唱片.png" alt="" v-show="!currentSong" />
           </div>
@@ -131,8 +131,13 @@
       @ended="playEnd"
       @timeupdate="updateTime"
     ></audio>
-    
-   
+    <transition name="el-zoom-in-bottom">
+       <play-detail v-if="showDetail" 
+                    :lrcData="lrcLines"
+                    :currentTime="currentTime"
+                    @hideDetail="hideDetail"
+                    />
+      </transition>
   </div>
 </template>
 
@@ -143,7 +148,7 @@ import { formatDate } from "common/utils";
 import { mapGetters, mapMutations } from "vuex";
 import scroll from "components/common/Scroll/Scroll";
 import PlaylistTable from "components/content/Player/ChildComps/PlaylistTable";
-import Scroll from "../../common/Scroll/Scroll.vue";
+import PlayDetail from "components/content/Player/ChildComps/PlayDetail";
 export default {
   name: "player",
   data() {
@@ -178,6 +183,8 @@ export default {
       showLrc: false,
       //播放列表是否显示
       showPlaylist: false,
+      //展开播放详细页
+      showDetail: false
     };
   },
   computed: {
@@ -250,12 +257,9 @@ export default {
     },
     //获取歌词信息
     getMusicLrcApi(id) {
-      this.lrcLines = [];
-      this.musicLrc = null
       getMusicLrc(id)
         .then((res) => {
           if (res.code === 200 && res.lrc) {
-            //格式化歌词数据
             this.musicLrc = res.lrc.lyric;
             //格式化歌词
             this.initLins();
@@ -350,6 +354,7 @@ export default {
     //滚动歌词
     moveLrc() {
       this.currentLineNum = this.findCurrentNum(this.currentTime * 1000);
+      //歌词大于六行则开始滚动
       if (this.currentLineNum > 6) {
         this.$refs.lrcScroll.ScrollToElement(
           this.$refs.lrcItem[this.currentLineNum - 6],
@@ -359,6 +364,7 @@ export default {
         this.$refs.lrcScroll.ScrollTo(0, 0, 1000);
       }
     },
+    //判断滚动的行数
     findCurrentNum(time) {
       for (let i = 0; i < this.lrcLines.length; i++) {
         if (time < this.lrcLines[i].time) {
@@ -366,7 +372,7 @@ export default {
         }
       }
       //若歌词结束,歌曲还未结束
-      return this.lrcLines, length - 1;
+      return this.lrcLines.length - 1;
     },
     //播放开始前
     audioReady() {
@@ -432,6 +438,7 @@ export default {
     },
     //格式化歌词
     initLins() {
+      this.lrcLines = [];
       if (this.musicLrc) {
         //将数据通过\n来分割成多个数组
         const lines = this.musicLrc.split("\n");
@@ -476,7 +483,7 @@ export default {
       });
     },
     //点击跳转进歌手页
-    toSinger(item) {
+    toSinger() {
       this.$router.push({
         path: "/singer-detail",
         query: {
@@ -485,13 +492,25 @@ export default {
       });
       this.$bus.$emit("cancelActive");
     },
+    //展开播放详细页
+    showPlayDetail(){
+        this.showDetail = !this.showDetail;
+        this.$nextTick(() => {
+        this.$refs.lrcScroll.Refresh();
+      });
+    },
+    //详细页跳转隐藏
+    hideDetail(){
+      this.showDetail = !this.showDetail;
+    }
   },
+  //详细页歌词滚动
   components: {
     scroll,
     PlaylistTable,
+    PlayDetail
   },
-};
-Scroll;
+}
 </script>
 
 <style scoped>
@@ -507,6 +526,7 @@ Scroll;
   display: flex;
 }
 .cover {
+  cursor: pointer;
   margin-top: 5px;
 }
 .cover img {
@@ -629,12 +649,13 @@ Scroll;
   position: absolute;
   right: 0;
   bottom: 70px;
+  z-index: 999;
   background-color: var(--color-background);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 .activeLrc {
   color: var(--color-high-text);
-  font-size: 14px;
+  font-size: 15px;
 }
 .Occupation-img {
   text-align: center;

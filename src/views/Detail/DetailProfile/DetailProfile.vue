@@ -8,8 +8,8 @@
             background:
               'url(' + require('assets/img/banner.jpg') + ')0px -2px/108%',
           }"
-        ></div>
-      </el-col>
+        ></div> 
+      </el-col>   
     </el-row>
     <el-row :gutter="10" class="content">
       <el-col :span="6">

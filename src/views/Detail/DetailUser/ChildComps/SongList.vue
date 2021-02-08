@@ -1,5 +1,5 @@
 <template>
-  <div class="playList">
+  <div class="playList" >
     <el-row :gutter="20">
       <song-list-item
         :listItemData="item"

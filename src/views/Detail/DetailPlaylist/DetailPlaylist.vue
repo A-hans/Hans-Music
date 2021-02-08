@@ -2,7 +2,7 @@
   <div class="detail-plalist">
     <el-row :gutter="20">
       <el-col :span="15" class="left">
-        <div class="grid-content bg-purple">
+        <div>
           <detail-header :detailHeader="playlist" />
           <detail-playlist-table :playlistItem="allSong" />
         </div>
@@ -82,7 +82,6 @@ export default {
           this.trackIds1.push(this.playlist.trackIds[i].id);
         }
          this.trackIds1 = this.trackIds1.join(",");
-          
         for(let j=0;j<newTracksId.length;j++){
           this.trackIds2.push(this.playlist.trackIds[j].id);
         }

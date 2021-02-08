@@ -50,6 +50,7 @@ export default {
     //获取轮播图数据
     getHomeBanner()
       .then((res) => {
+        console.log(res);
         this.bannerlist = res.banners;
       })
       .catch((err) => {});
@@ -72,7 +73,7 @@ export default {
             },
             ar: [],
           };
-         recomendSong.name = item.name;
+          recomendSong.name = item.name;
           recomendSong.id = item.id;
           recomendSong.al.picUrl = item.picUrl;
           recomendSong.ar = item.song.artists;

@@ -77,7 +77,6 @@
               >
             </div>
           </div>
-          <div>
             <detail-playlist-table :playlistItem="recordPlaylist" v-if="recordPlaylist.length!==0"/>
             <div class="playlist-none" v-else>
               <img src="~assets/img/占位图2.png" alt="">
@@ -85,7 +84,6 @@
               该用户暂无此听歌记录
               </div>
             </div>
-          </div>
         </div>
       </el-col>
       <el-col :span="7">
@@ -182,7 +180,7 @@ export default {
     SongList,
   },
   created() {
-    //获取用户信
+    //获取用户信息
      this.uid = this.$route.query.id
       getUserInfo(this.uid).then(res=>{
         this.userInfo = res.profile;
@@ -197,8 +195,7 @@ export default {
             item.song.orderNum = i;
             this.recordPlaylist.push(item.song);
           }
-          }
-         
+          }      
         })
         .catch((err) => {
           console.log(err);
