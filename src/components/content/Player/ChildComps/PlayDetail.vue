@@ -155,8 +155,10 @@ export default {
 };
 </script>
 
+
+
 <style scoped>
-.play-detail {
+.play-detail{
   position: fixed;
   left: 0;
   top: 0;

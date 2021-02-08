@@ -57,6 +57,7 @@ export default {
       if(item.targetType === 3000){
         window.open(item.url,'-blank')
       }
+<<<<<<< HEAD
       //跳转至专辑列表
       if(item.targetType === 10){
         this.$router.push({
@@ -69,6 +70,8 @@ export default {
         this.$bus.$emit("cancelActive");
       }
 
+=======
+>>>>>>> 695e74f3ed2b0c810fac65c6ee44693c2f89bc20
     },
     //处理轮播图数据
     bannerListHandel(){

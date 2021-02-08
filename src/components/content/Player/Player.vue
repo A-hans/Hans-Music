@@ -132,7 +132,7 @@
       @timeupdate="updateTime"
     ></audio>
     <transition name="el-zoom-in-bottom">
-       <play-detail v-if="showDetail" 
+       <play-detail v-show="showDetail" 
                     :lrcData="lrcLines"
                     :currentTime="currentTime"
                     @hideDetail="hideDetail"
@@ -491,6 +491,7 @@ export default {
         },
       });
       this.$bus.$emit("cancelActive");
+      this.showDetail = !this.showDetail;
     },
     //展开播放详细页
     showPlayDetail(){
