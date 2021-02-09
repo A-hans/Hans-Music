@@ -19,8 +19,10 @@ const mutations = {
     if(payload.delSong.id !==payload.curSong.id){
       //在删除当前歌曲之前的歌曲不改变原index
       state.currentIndex = state.playlist.findIndex(item=>item.id ===payload.curSong.id);
-    }
-   
+    }  
+  },
+  SET_USERID(state,payload){
+    state.SET_USERID = payload
   }
 }
 

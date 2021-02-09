@@ -13,6 +13,9 @@ const getters ={
   },
   mode(state){
     return state.mode;
+  },
+  userId(state){
+    return state.userId;
   }
 }
 

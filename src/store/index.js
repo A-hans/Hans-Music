@@ -13,7 +13,9 @@ const state ={
   //当前播放歌曲
   currentIndex: null,
   //播放模式(默认顺序播放)
-  mode: playMode.sequence
+  mode: playMode.sequence,
+  //用户ID
+  userId:''
 }
 
 const store = new Vuex.Store({

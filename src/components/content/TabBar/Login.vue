@@ -79,6 +79,7 @@ export default {
         window.sessionStorage.setItem('token',res.token);
         window.sessionStorage.setItem('cookie',res.cookie);
         console.log(res);
+        const id = res.account.id
         window.sessionStorage.setItem('userInfo',JSON.stringify(res.profile));
         this.$emit('loginSucceed',res)
          }

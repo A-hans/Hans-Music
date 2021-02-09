@@ -3,37 +3,53 @@
     <el-row class="play-detail-info">
       <el-col :span="9">
         <div class="cover">
-          <img :src="songImg" alt="" /></div
-      ></el-col>
+          <img :src="songImg" alt="" />
+        </div>
+        <div class="function-bar">
+          <div class="like" @click="likeMusic">
+            <img
+              src="~assets/img/icon-like-active.png"
+              v-if="likeState"
+              alt=""
+            />
+            <img src="~assets/img/icon-like.png" v-else alt="" />
+            <div>喜欢</div>
+          </div>
+        </div>
+      </el-col>
       <el-col :span="15">
         <div class="content">
           <div class="song-name">
             {{ songName }}
           </div>
           <div class="song-info">
-            <div class="singer-name" @click="toSingerDetail"><span>歌手：</span>{{ singerName }}</div>
-            <div class="ablum-name"  @click="toAblumDetail"><span>专辑：</span>{{ ablumName }}</div>
-          </div>
-        <div class="lrc-contanier" >
-        <scroll class="contanier" ref="lrcScroll">
-          <div class="lrc">
-            <ul v-if="lrcData.length !== 0">
-              <li
-                v-for="(item, index) in lrcData"
-                :key="index"
-                ref="lrcItem"
-                class="lrc-item"
-                :class="{ activeLrc: currentLineNum == index }"
-              >
-                {{ item.txt }}
-              </li>
-            </ul>
-            <div class="Occupation-img" v-else>
-              <div>暂无歌词</div>
+            <div class="singer-name" @click="toSingerDetail">
+              <span>歌手：</span>{{ singerName }}
+            </div>
+            <div class="ablum-name" @click="toAblumDetail">
+              <span>专辑：</span>{{ ablumName }}
             </div>
           </div>
-        </scroll>
-      </div>
+          <div class="lrc-contanier">
+            <scroll class="contanier" ref="lrcScroll">
+              <div class="lrc">
+                <ul v-if="lrcData.length !== 0">
+                  <li
+                    v-for="(item, index) in lrcData"
+                    :key="index"
+                    ref="lrcItem"
+                    class="lrc-item"
+                    :class="{ activeLrc: currentLineNum == index }"
+                  >
+                    {{ item.txt }}
+                  </li>
+                </ul>
+                <div class="Occupation-img" v-else>
+                  <div>暂无歌词</div>
+                </div>
+              </div>
+            </scroll>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -45,6 +61,8 @@
 </template>
 
 <script>
+import { likeMusic, likelist } from "network/Song";
+
 import { mapGetters } from "vuex";
 
 import scroll from "components/common/Scroll/Scroll";
@@ -65,7 +83,13 @@ export default {
       //当前播放歌词
       currentLineNum: 0,
       //当前播放时间
-      currentPlayTime:0
+      currentPlayTime: 0,
+      //喜欢状态
+      likeState: false,
+      //喜欢列表
+      likeList: [],
+      //用户信息
+      userId: "",
     };
   },
   computed: {
@@ -89,20 +113,23 @@ export default {
       return this.currentSong ? this.currentSong.al.name : "暂无";
     },
   },
-  watch:{
-    currentTime(newVal){
-      if(newVal){
+  watch: {
+    currentTime(newVal) {
+      if (newVal) {
         this.currentPlayTime = newVal;
-        this.moveLrc()
+        this.moveLrc();
       }
     },
-    currentSong(newVal){
-      if(newVal){
+    currentSong(newVal) {
+      if (newVal) {
         this.$refs.lrcScroll.Refresh();
+        if(this.userId){
+          this.isLikeMusic();
+        } 
       }
-    }
+    },
   },
-  methods:{
+  methods: {
     //滚动歌词
     moveLrc() {
       this.currentLineNum = this.findCurrentNum(this.currentPlayTime * 1000);
@@ -135,34 +162,80 @@ export default {
         },
       });
       this.$bus.$emit("cancelActive");
-      this.$emit("hideDetail")
+      this.$emit("hideDetail");
     },
     //跳转至专辑详情页
     toAblumDetail() {
-       this.$router.push({
+      this.$router.push({
         path: "/ablum-detail",
         query: {
           id: this.currentSong.al.id,
         },
       });
       this.$bus.$emit("cancelActive");
-      this.$emit("hideDetail")
-    }
+      this.$emit("hideDetail");
+    },
+    //喜欢音乐
+    likeMusic() {
+      let id = this.currentSong.id;
+      if(this.userId){
+         likeMusic(id, this.likeState)
+        .then((res) => {
+          console.log(res);
+          if (res.code === 200) {
+            this.likeState = !this.likeState;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }else{
+        this.$message.error("请先登录!");
+      }
+    },
+    //判断是否已喜欢音乐
+    isLikeMusic() {
+      for (let item of this.likeList) {
+        let result = String(item).indexOf(String(this.currentSong.id));
+        if (result === 0) {
+          this.likeState = true;
+          return;
+        } else {
+          this.likeState = false;
+        }
+      }
+    },
   },
   components: {
     scroll,
   },
-  mounted(){
+  mounted() {
     //进入详细页进行刷新
     this.$refs.lrcScroll.Refresh();
-  }
+    //获取用户信息
+    if (!this.userId) {
+      this.userId = JSON.parse(
+        window.sessionStorage.getItem("userInfo")
+      ).userId;
+    }
+    if (this.userId) {
+      likelist(this.userId)
+        .then((res) => {
+          this.likeList = res.ids;
+          this.isLikeMusic();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },
 };
 </script>
 
 
 
 <style scoped>
-.play-detail{
+.play-detail {
   position: fixed;
   left: 0;
   top: 0;
@@ -208,7 +281,7 @@ export default {
   overflow: hidden;
   width: 500px;
   height: 360px;
-  margin-top:20px ;
+  margin-top: 20px;
 }
 .lrc ul {
   padding-top: 20px;
@@ -221,18 +294,39 @@ export default {
 }
 .contanier {
   height: 400px;
- 
 }
 .activeLrc {
   color: var(--color-high-text);
   font-size: 18px;
 }
-.singer-name:hover{
+.singer-name:hover {
   color: var(--color-high-text);
   cursor: pointer;
 }
-.ablum-name:hover{
+.ablum-name:hover {
   color: var(--color-high-text);
   cursor: pointer;
+}
+.function-bar {
+  margin-top: 20px;
+  color: black;
+}
+.function-bar .like {
+  width: fit-content;
+  padding: 4px 8px;
+  background: rgba(220, 220, 220, 0.6);
+  display: flex;
+  border-radius: 24px;
+  cursor: pointer;
+}
+.function-bar .like img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-right: 5px;
+}
+.function-bar .like > div {
+  font-size: 14px;
+  line-height: 24px;
 }
 </style>

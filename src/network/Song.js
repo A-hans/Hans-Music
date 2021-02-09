@@ -23,3 +23,24 @@ export function getMusicLrc(num){
   })
 }
 
+//喜欢音乐
+export function likeMusic(id,isLike){
+  return request({
+    url:"/like",
+    params:{
+      id:id,
+      like:!isLike
+    }
+  })
+}
+
+//喜欢音乐列表
+export function likelist(userId){
+  return request({
+    url:"/likelist",
+    params:{
+      uid:userId
+    }
+  })
+}
+
