@@ -33,7 +33,7 @@ export default {
     albums:{
       type:Array,
       default(){
-        return{}
+        return []
       }
     }
   },

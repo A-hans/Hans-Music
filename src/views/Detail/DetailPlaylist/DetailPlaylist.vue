@@ -37,10 +37,10 @@ export default {
       playlist: {},
       //存放歌曲的id
       trackIds: [],
-      //小于700首的id
-      trackIds1:[],
-      //大于700首后的id
-      trackIds2:[],
+      //小于600首的id
+      trackIds1: [],
+      //大于600首后的id
+      trackIds2: [],
       //存放所有歌曲
       allSong: [],
       //喜欢此歌单的人
@@ -50,14 +50,12 @@ export default {
       //存放热门评论
       hotComments: [],
       //存放序号
-      index :0,
-     
+      index: 0,
     };
   },
   methods: {
     //给表格中的单曲增加一个序号属性
-    addOrder(res) {
-      let num = 0; //用于存放当前序号
+    addOrder(res,num) {
       for (let item of res.songs) {
         //循环开始则自加1
         ++num;
@@ -65,108 +63,114 @@ export default {
         item.orderNum = num;
       }
     },
-    //获取歌单中所有歌曲id
+    //获取所有歌曲ID
     getAllSongId() {
-      if(this.playlist.trackIds.length<600){
-         for (let item of this.playlist.trackIds) {
+      for (let item of this.playlist.trackIds) {
         //将歌曲的id储存起来,进行网络请求完整的歌单
         this.trackIds.push(item.id);
       }
-      //将数组转为字符串,统一网络请求 
-     this.trackIds = this.trackIds.join(",");
+      //歌单数量少于600
+      if (this.playlist.trackIds.length < 600) {
+        //数据格式化(做字符串拼接)
+        this.trackIds = this.trackIds.join(",");
       }
-      if(this.playlist.trackIds.length>600) {
-        //目前只能展示1200首
-        const newTracksId=this.playlist.trackIds.slice(600,1200);
-        for(let i=0;i<600;i++){
-          this.trackIds1.push(this.playlist.trackIds[i].id);
+      //歌单数量超过600
+      if (this.playlist.trackIds.length > 600) {
+        let arr = [];
+        let tempArr = [];
+        console.log(this.trackIds);
+        arr = this.groupArray(this.trackIds, 600);
+        for (let item of arr) {
+          tempArr.push(item.join(","));
+          this.trackIds = tempArr;
         }
-         this.trackIds1 = this.trackIds1.join(",");
-        for(let j=0;j<newTracksId.length;j++){
-          this.trackIds2.push(this.playlist.trackIds[j].id);
-        }
-         this.trackIds2 = this.trackIds2.join(",");
       }
+    },
+    //数组分割
+    groupArray(data, cols) {
+      const list = []; //存放分割好的数组
+      let current = []; //存放当前分割的数组
+      for (let t of data) {
+        current.push(t);
+        if (current.length === cols) {
+          list.push(current);
+          current = [];
+        }
+      }
+      //将余数当独存放一组
+      if (current.length) {
+        list.push(current);
+      }
+      return list;
     },
     //请求所有歌单歌曲
     getAllSong() {
       //请求所有歌曲数据
-      if(this.playlist.trackIds.length<600){
+      if (this.playlist.trackIds.length < 600) {
         getSongDetail(this.trackIds)
-        .then((res) => {
-        this.addOrder(res);
-        this.allSong = res.songs;
-        })
-        .catch((err) => {});
-      }else{
-        getSongDetail(this.trackIds1)
-        .then((res) => {
-        this.addOrder(res);
-        this.allSong = res.songs;
-        getSongDetail(this.trackIds2)
-        .then((res) => {
-        let num = 600; //用于存放当前序号
-        for (let item of res.songs) {
-        //循环开始则自加1
-        ++num;
-        //定义一个orderNum来存放当前序号
-        item.orderNum = num;
+          .then((res) => {
+            this.addOrder(res,0);
+            this.allSong = res.songs;
+          })
+          .catch((err) => {});
+      } else {
+        //大于600首
+        getMoreSongs(0, this);
+        function getMoreSongs(num, _this) {
+          if (num < _this.trackIds.length) {
+            getSongDetail(_this.trackIds[num]).then((res) => {
+              _this.addOrder(res,600*num);
+              _this.allSong = _this.allSong.concat(res.songs);
+              getMoreSongs(num + 1, _this);
+            });
+          }
+        }
       }
-        let songs =res.songs;
-        this.allSong =this.allSong.concat(songs);
-        
-        })
-        .catch((err) => {});
-        })
-        .catch((err) => {});
-        
-      }
-     
     },
     //重新加载数据
     reloadRoute() {
       //数据重置
       this.playlist = {};
       this.trackIds = [];
-      this.trackIds1 = [],
-      this.trackIds2 = [],
+      this.trackIds1 = [];
+      this.trackIds2 = []; 
       this.allSong = [];
       this.subscriber = [];
       this.relatedList = [];
       this.hotComments = [];
-      this.index =0;
-    //获取点击传入歌单的id信息
-    let num = this.$route.query.id;
-    //获取歌单详细信息
-    getPlaylistDetail(num)
-      .then((res) => {
-        this.playlist = res.playlist;
-        this.playlistTrackId = res.playlist.trackIds
-        //获取歌单中所有歌曲的id
-        this.getAllSongId();
-        //请求所有歌曲
-        this.getAllSong();
-      })
-      .catch((err) => {});
+      this.index = 0;
+      //获取点击传入歌单的id信息
+      let num = this.$route.query.id;
+      //获取歌单详细信息
+      getPlaylistDetail(num)
+        .then((res) => {
+          this.playlist = res.playlist;
+          this.playlistTrackId = res.playlist.trackIds;
+          //获取歌单中所有歌曲的id
+          this.getAllSongId();
+          //请求所有歌曲
+          this.getAllSong();
+        })
+        .catch((err) => {});
 
-    //获取喜欢此歌单的用户
-    getPlaylistSubscriber(num)
-      .then((res) => {
-        this.subscriber = res.subscribers;
-      })
-      .catch((err) => {});
-    //获取相似歌单列表
-    getRelatedList(num)
-      .then((res) => {
-        this.relatedList = res.playlists;
-      })
-      .catch((err) => {});
-    //获取热门评论
-    getCommentInfo(num)
-      .then((res) => {
-        this.hotComments = res.hotComments;
-      })
-      .catch((err) => {});
+      //获取喜欢此歌单的用户
+      getPlaylistSubscriber(num)
+        .then((res) => {
+          this.subscriber = res.subscribers;
+        })
+        .catch((err) => {});
+      //获取相似歌单列表
+      getRelatedList(num)
+        .then((res) => {
+          this.relatedList = res.playlists;
+        })
+        .catch((err) => {});
+      //获取热门评论
+      getCommentInfo(num)
+        .then((res) => {
+          this.hotComments = res.hotComments;
+        })
+        .catch((err) => {});
     },
   },
   components: {
