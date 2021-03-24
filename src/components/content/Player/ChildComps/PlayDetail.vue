@@ -213,13 +213,10 @@ export default {
     //进入详细页进行刷新
     this.$refs.lrcScroll.Refresh();
     //获取用户信息
-    if (!this.userId) {
-      this.userId = JSON.parse(
-        window.sessionStorage.getItem("userInfo")
-      ).userId;
-    }
-    if (this.userId) {
-      likelist(this.userId)
+    let state =  window.sessionStorage.getItem("userInfo") ? JSON.parse(window.sessionStorage.getItem("userInfo")).userId : "";
+    if (state) {
+       this.userId = state;
+        likelist(this.userId)
         .then((res) => {
           this.likeList = res.ids;
           this.isLikeMusic();

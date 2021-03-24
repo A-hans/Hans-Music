@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import {userLogOut} from "network/Login";
 import TabBar from "components/content/TabBar/TabBar";
 import FooterBar from "components/content/Footer/FooterBar";
 import Player from "components/content/Player/Player";
@@ -35,15 +36,26 @@ export default {
     }
   },
   methods:{
-    showLogin(){
-      this.isShowLogin = !this.isShowLogin;
-    }
+ 
   },
   components: {
     TabBar,
     FooterBar,
     Player,
   },
+  created(){
+    //检测用户登录状态
+    const userInfo = window.sessionStorage.getItem("userInfo");
+    if(!userInfo){
+      userLogOut().then(res => {
+        if(res.code===200){
+          console.log("退出成功");
+        }
+      }).catch(err =>{
+        console.log(err);
+      })
+    } 
+  }
 };
 </script>
 
@@ -55,6 +67,8 @@ body {
   min-width: 1250px;
   background: rgba(192, 192, 192, 0.1);
 }
+/* elementUI组件全局样式修改 */
+
 .el-main {
   width: 1100px;
   margin: 0 auto;
@@ -136,5 +150,11 @@ body {
   color:var(--color-high-text)!important;
   background-color: rgba(	255,99,71,0.1)!important;
   
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background: var(--color-high-text)!important;
+}
+.el-pagination.is-background .el-pager li:hover{
+  color: var(--color-high-text)!important;
 }
 </style>

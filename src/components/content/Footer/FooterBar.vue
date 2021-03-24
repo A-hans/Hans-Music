@@ -3,7 +3,7 @@
     <div class='content'>
         <img src="~assets/img/商标.png" alt="">
         <span class='text'>Hans-Music</span>
-        <span class='text'>2020</span>
+        <span class='text'>2021</span>
     </div>
   </div>
 </template>

@@ -5,13 +5,12 @@
         <el-dropdown trigger="click">
           <img :src="userInfo.avatarUrl + '?param=100y100'" alt="" />
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-user"
-                        @click.native="toProfile"
+            <el-dropdown-item icon="el-icon-user" @click.native="toProfile"
               >个人主页
-              </el-dropdown-item
-            >
-            <el-dropdown-item icon="el-icon-switch-button"
-            @click.native="logOut"
+            </el-dropdown-item>
+            <el-dropdown-item
+              icon="el-icon-switch-button"
+              @click.native="logOut"
               >退出登录</el-dropdown-item
             >
           </el-dropdown-menu>
@@ -25,6 +24,7 @@
 </template>
 
 <script>
+import { userLogOut } from "network/Login";
 export default {
   name: "LoginSucceed",
   props: {
@@ -35,19 +35,25 @@ export default {
       },
     },
   },
-  methods:{
-    logOut(){
-      window.sessionStorage.clear();
-      this.$emit("logOut");
-      if(this.$route.path==="/detail-profile"){
-        this.$router.push('/home');
-      }
+  methods: {
+    logOut() {
+      userLogOut()
+        .then((res) => {
+          window.sessionStorage.clear();
+          this.$emit("logOut");
+          if (this.$route.path === "/detail-profile") {
+            this.$router.push("/home");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    toProfile(){
-      this.$router.push("detail-profile")
-      this.$bus.$emit('cancelActive');
-    }
-  }
+    toProfile() {
+      this.$router.push("detail-profile");
+      this.$bus.$emit("cancelActive");
+    },
+  },
 };
 </script>
 
@@ -72,7 +78,7 @@ export default {
   color: #606266;
   margin-top: 2px;
 }
-.link:hover{
+.link:hover {
   color: var(--color-high-text);
 }
 </style>

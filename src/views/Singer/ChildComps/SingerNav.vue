@@ -225,7 +225,7 @@ export default {
     },
     sAlphabet(item, index) {
       this.currentIndex3 = index;
-      this.$emit('wordItem',item.str);
+      this.$emit('initialItem',item.str);
     },
   },
 };

@@ -1,16 +1,16 @@
 import { request } from "./Request";
 
 //获取歌手信息
-export function getSingetList(num1,num2,word,num3,num4){
+export function getSingetList(typeNum,areaNum,initial,limit,offset){
   return request({
     url:'/artist/list',
-    isActive:true,  
+    // isActive:true,  
     params:{
-      type: num1,
-      area: num2,
-      initial: word,
-      limit:num3,
-      offset:num4
+      type: typeNum,
+      area: areaNum,
+      initial: initial,
+      limit:limit,
+      offset:offset
     },
   })
 }

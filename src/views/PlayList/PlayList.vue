@@ -3,8 +3,18 @@
     <list-nav :hotTags="hotTags" :allTags="allTags" @sListType="sCurrentType" />
     <song-list :playlistData="playlist" class="song-list" />
     <div class="text">
-      <span @click="loadMore">--------加载更多--------</span>
     </div>
+    <!-- 分页 -->
+    <el-pagination
+    class="el-pagination"
+    :background="true"
+    layout="prev, pager, next"
+    :total="totalNum"
+    :page-size="18"
+    :current-page="currentPage"
+    @current-change="pageChange"
+    >
+</el-pagination>
   </div>
 </template>
 
@@ -21,46 +31,32 @@ export default {
       allTags: [],
       currentType: "华语",
       playlist: [],
-      offset: 0,
+      totalNum:0,//歌单总条目数
+      currentPage:1
     };
   },
   methods: {
     //当前标签类型
     sCurrentType(item) {
+      this.currentPage = 1;
       this.currentType = item.name;
       //每次点击请求对应标签数据
-      getAllList(this.currentType, 42)
+      getAllList(this.currentType, 18)
         .then((res) => {
+          console.log("总条目数:"+res.total);
+          this.totalNum = res.total;
           this.playlist = res.playlists;
         })
         .catch((err) => {});
     },
-    //获取数组最大长度进行offset传值
-    getOffset() {
-      let j = 0;
-      for (let i in this.playlist) {
-        j++;
-      }
-      let lastIndex = Number(j + 1);
-      this.offset = lastIndex;
-    },
     //获取更多歌单
-    loadMore() {
-      getAllList(this.currentType, 42, this.offset)
-        .then((res) => {
-          //将请求到的新数据存储在临时变量做数据格式化
-          let tempArr = [];
-          for (let item of res.playlists) {
-            tempArr.push(item);
-          }
-          //将格式化好的新数据加入数组
-          for (let item of tempArr) {
-            this.playlist.push(item);
-          }
-          //获取新数组数组长度
-          this.getOffset();
-        })
-        .catch((err) => {});
+    loadMore(type,offset){
+      getAllList(type,18,offset).then(res =>{
+        console.log(res);
+        this.playlist = res.playlists
+      }).catch(err=>{
+        console.log(err);
+      })
     },
     //通过外部标签跳转
     toLoad() {
@@ -69,14 +65,21 @@ export default {
       //当路径中有cat才执行
       if (currentHref.indexOf("cat") !== -1) {
         this.currentType = this.$route.query.cat;
-        getAllList(this.currentType, 42)
+        getAllList(this.currentType, 18)
           .then((res) => {
+            console.log("总条目数:"+res.total);
+            this.totalNum = res.total;
             this.playlist = res.playlists;
-            //获取最后一数组长度
-            this.getOffset();
           })
           .catch((err) => {});
       }
+    },
+    //监听分页改变
+    pageChange(val){
+      this.currentPage = val;
+      console.log("页码改变"+val);
+      //分页offset计算值:页码-1*limit(默认0)
+      this.loadMore(this.currentType,(this.currentPage-1)*18)
     },
   },
   components: {
@@ -97,11 +100,11 @@ export default {
       })
       .catch((err) => {});
     //获取对应标签歌单列表
-    getAllList(this.currentType, 42)
+    getAllList(this.currentType, 18)
       .then((res) => {
+        console.log(res.total);
+        this.totalNum = res.total;
         this.playlist = res.playlists;
-        //对播放数量进行格式化
-        this.getOffset();
       })
       .catch((err) => {});
     //通过标签跳转后的网络请求
@@ -114,11 +117,9 @@ export default {
 .song-list {
   margin-top: 20px;
 }
-#play-list .text {
-  text-align: center;
-  cursor: pointer;
-}
-#play-list .text:hover {
-  color: var(--color-high-text);
+
+.el-pagination{
+  display: flex;
+  justify-content: center;
 }
 </style>

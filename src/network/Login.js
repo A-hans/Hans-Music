@@ -53,3 +53,17 @@ export function getUserLevel(){
     url:"/user/level",
   })
 }
+
+//退出登录
+export function userLogOut(){
+  return request({
+    url:"/logout"
+  })
+}
+
+//获取登录状态
+export function getLoginState(){
+  return request({
+    url:"/login/refresh"
+  })
+}

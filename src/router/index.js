@@ -16,7 +16,7 @@ const DetailSinger = () => import('views/Detail/DetailSinger/DetailSinger.vue');
 const DetailAlbumContent = () => import('views/Detail/DetailAlbum/DetailAlbumContent.vue');
 const DeatilSearch = () => import('views/Search/DeatilSearch.vue');
 const DetailProfile = () => import('views/Detail/DetailProfile/DetailProfile');
-const DetailUser = () => import('views/Detail/DetailUser/DetailUser')
+const DetailUser = () => import('views/Detail/DetailUser/DetailUser');
 
 Vue.use(VueRouter);
 
