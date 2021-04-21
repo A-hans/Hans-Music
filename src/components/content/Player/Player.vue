@@ -132,10 +132,11 @@
       @timeupdate="updateTime"
     ></audio>
     <transition name="el-zoom-in-bottom">
-       <play-detail v-if="showDetail" 
+       <play-detail v-show="showDetail" 
                     :lrcData="lrcLines"
                     :currentTime="currentTime"
                     @hideDetail="hideDetail"
+                    :state = playing
                     />
       </transition>
       <transition name="el-fade-in-linear">
