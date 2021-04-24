@@ -8,7 +8,7 @@
         <div class="active-info">
           <ul>
             <li>
-              <img src="~assets/img/收藏.png" alt="" />
+              <img src="~assets/img/爱心.png" alt="" />
               <span>{{ activeInfo.subCount }}</span>
             </li>
             <li>
@@ -24,7 +24,7 @@
       </el-col>
       <el-col :span="15">
         <div class="image">
-          <img src="~assets/img/记事本.png" alt="" />
+          <img src="~assets/img/ablum.png" alt="" />
         </div>
       </el-col>
     </el-row>
@@ -53,13 +53,13 @@ export default {
   padding-left: 8px;
 }
 .active-info li img {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 22px;
   vertical-align: middle;
-  margin-right: 5px;
+  margin-right: 12px;
 }
 .active-info li {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   font-size: 13px;
 }
 .active-info li:nth-child(3) {
@@ -67,8 +67,8 @@ export default {
 }
 
 .image img {
-  width: 120px;
-  margin-top: 5.5%;
-  margin-left: 28%;
+  width: 135px;
+  margin-top: 10.5%;
+  margin-left: 26%;
 }
 </style>

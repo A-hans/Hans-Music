@@ -90,7 +90,7 @@
       <div class="lrc-contanier" v-show="showLrc">
         <scroll class="contanier" ref="lrcScroll">
           <div class="lrc">
-            <ul v-if="lrcLines.length !== 0">
+            <ul v-if="musicLrc.length !== 0">
               <li
                 v-for="(item, index) in lrcLines"
                 :key="index"
@@ -134,6 +134,7 @@
     <transition name="el-zoom-in-bottom">
        <play-detail v-show="showDetail" 
                     :lrcData="lrcLines"
+                    :lrcShow="musicLrc"
                     :currentTime="currentTime"
                     @hideDetail="hideDetail"
                     :state = playing
@@ -267,6 +268,7 @@ export default {
     getMusicLrcApi(id) {
       getMusicLrc(id)
         .then((res) => {
+          this.musicLrc =[];
           if (res.code === 200 && res.lrc) {
             this.musicLrc = res.lrc.lyric;
             //格式化歌词

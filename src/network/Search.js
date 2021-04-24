@@ -19,3 +19,13 @@ export function getSearchInfo(keyWord,type){
     }
   })
 }
+
+//关键字搜搜
+export function getKeyWordResult(keyWord){
+  return request({
+      url:"/search/suggest",
+      params:{
+        keywords:keyWord
+      }
+  })
+}

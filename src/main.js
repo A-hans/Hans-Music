@@ -13,7 +13,7 @@ Vue.use(VueLazyload,{
   loading:require('./assets/img/占位.png')
 })
 //在Vue原型中增加一个$bus
-Vue.prototype.$bus=new Vue()
+Vue.prototype.$bus=new Vue();
 
 new Vue({
   router,

@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import { getHotSearch } from "network/Search";
+import { getHotSearch} from "network/Search";
 export default {
   data() {
     return {
-      //存放热门搜索
-      hotSerachList: [],
-      //存放input的值
-      state: "",
+      hotSerachList: [],//存放热门搜索
+      state: "",//存放input的值
     };
+  },
+  watch:{
   },
   methods: {
     querySearch(queryString, cb) {
@@ -68,7 +68,7 @@ export default {
         });
         this.$bus.$emit("cancelActive");
       }
-    },
+    }
   },
   mounted() {
     //获取热门搜所结果

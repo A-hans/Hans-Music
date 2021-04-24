@@ -34,7 +34,7 @@
           <div class="lrc-contanier">
             <scroll class="contanier" ref="lrcScroll">
               <div class="lrc">
-                <ul v-if="lrcData.length !== 0">
+                <ul v-if="lrcShow.length !== 0">
                   <li
                     v-for="(item, index) in lrcData"
                     :key="index"
@@ -82,6 +82,9 @@ export default {
     state:{
       type:Boolean,
       default:false
+    },
+    //lrc是否存在
+    lrcShow:{
     }
   },
   data() {
