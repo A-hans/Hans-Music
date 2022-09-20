@@ -1,11 +1,12 @@
 //封装网路请求模块
 import axios from 'axios'
 import { Loading } from 'element-ui'
+const url = process.env.VUE_APP_SERVER_URL;
 export function request(config) {
   //创建局部请求对象
   const instance = axios.create({
     // baseURL:'http://47.115.119.92:3000',
-    baseURL:'/api',
+    baseURL:url,
     timeout: 5000,
     withCredentials :true
   })
